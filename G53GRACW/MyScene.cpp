@@ -8,10 +8,20 @@ void setup()
 	glutInitWindowSize(width, height);              // set window size
 	glutCreateWindow("My Scene");                   // create and show window (named MyScene)
 
-	Windmill *windmill;
-	windmill = new Windmill();
-	objects["windmill"] = windmill;
+	Tree *tree;
+	tree = new Tree();
+	objects["tree"] = tree;
 	reshape(width, height);
+
+	prevTime = glutGet(GLUT_ELAPSED_TIME);
+}
+
+float runtime()
+{
+	int currTime = glutGet(GLUT_ELAPSED_TIME);      // number of milliseconds since start of program
+	float dT = static_cast<float>(currTime - prevTime) / 1000.f; // calculate time difference between calls to runtime
+	prevTime = currTime;                            // update time variable
+	return dT;                                      // return time change
 }
 
 void reshape(int _width, int _height)

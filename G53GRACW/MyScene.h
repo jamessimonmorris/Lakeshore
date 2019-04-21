@@ -1,5 +1,5 @@
-#ifndef __MyScene__
-#define __MyScene__
+#ifndef ___MyScene__
+#define ___MyScene__
 #ifdef __APPLE__ // if OS X
 #include <glut/glut.h> // include freeglut libraries
 #else // if Windows
@@ -10,16 +10,18 @@
 #define _USE_MATH_DEFINES
 #include <cmath>
 #include "Windmill.h"
+#include "Tree.h"
 #include <string>
 #include <map>
 
 void setup();
+float runtime();
 void reshape(int, int);
 void draw();
 int main(int argc, char **argv);
 void checkGLError();						// Prints any OpenGL errors to console
 
-int width, height;
+int width, height, prevTime;
 map<string, DisplayableObject*> objects;
 
 #endif

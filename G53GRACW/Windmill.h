@@ -1,5 +1,5 @@
-#ifndef ___Tree__
-#define ___Tree__
+#ifndef ___Windmill__
+#define ___Windmill__
 
 #define _USE_MATH_DEFINES
 #include "DisplayableObject.h"
