@@ -3,18 +3,24 @@
 
 #define _USE_MATH_DEFINES
 #include "DisplayableObject.h"
+#include "Animation.h"
 #include <cmath>
-#include <string>
 
 using namespace std;
 
-class Windmill : public DisplayableObject       // a Windmill is a DisplayableObject
+class Windmill : public DisplayableObject, public Animation       // a Windmill is a DisplayableObject
 {
 public:
 	Windmill();                                 // constructor
 	~Windmill() { };                            // destructor
 	void display();                         // overloaded virtual display function
+	void update(float dT);
 private:
-	void base();                          // draw base function
+	float animationTime;
+
+	void drawWindmill();
+	void drawBase();                          // draw base function
+	void drawRoof();
+	void drawRotors();
 };
 #endif

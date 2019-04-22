@@ -8,9 +8,15 @@ void setup()
 	glutInitWindowSize(width, height);              // set window size
 	glutCreateWindow("My Scene");                   // create and show window (named MyScene)
 
-	Tree *tree;
-	tree = new Tree();
+	glEnable(GL_DEPTH_TEST);
+	glDepthFunc(GL_LEQUAL);
+
+	Tree* tree = new Tree();
 	objects["tree"] = tree;
+
+	Windmill* windmill = new Windmill();
+	objects["windmill"] = windmill;
+
 	reshape(width, height);
 
 	prevTime = glutGet(GLUT_ELAPSED_TIME);

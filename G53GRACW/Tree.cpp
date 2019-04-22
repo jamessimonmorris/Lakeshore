@@ -12,9 +12,9 @@ void Tree::display()
 	// Project from Object Space to World Space
 	glTranslatef(pos[0], pos[1], pos[2]);			// Position
 	glScalef(scale[0], scale[1], scale[2]);			// Scale
-	glRotatef(rotation[0], 1.f, 0.f, 0.f);			// Set orientation (X - pitch)
 	glRotatef(rotation[1], 0.f, 1.f, 0.f);			// Set orientation (Y - roll)
 	glRotatef(rotation[2], 0.f, 0.f, 1.f);			// Set orientation (Z - yaw)
+	glRotatef(rotation[0], 1.f, 0.f, 0.f);			// Set orientation (X - pitch)
 
 	char curr;
 	string sequence = "[tt[>lll]]";
