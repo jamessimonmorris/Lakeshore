@@ -1,10 +1,9 @@
 #include "Tree.h"
 
-Tree::Tree()
+Tree::Tree(float randomNum) :
+	ranNum(randomNum),
+	tier((int)ranNum % 2)
 {
-	srand(time(NULL));
-	ranNum = (float) (rand() % 26) + 30;
-	tier = (int) ranNum % 2;
 }
 
 // define display function (to be called by MyScene)
@@ -34,6 +33,7 @@ void Tree::display()
 			switch (curr)				// check current char command
 			{
 			case 't':                   // draw trunk, move forward
+				glTranslatef(0.f, -0.1f, 0.f);
 				glScalef(0.95f, 0.95f, 0.95f);
 				trunk();
 				break;
@@ -78,20 +78,22 @@ void Tree::trunk()
 	float x = r, z = 0.f;                   // initialise x and z on right of cylinder centre
 	float t = 0.f;                          // initialise angle as 0
 
-	glPushAttrib(GL_ALL_ATTRIB_BITS);
-	glColor3f(0.545f, 0.271f, 0.075f);
+	glPushAttrib(GL_ALL_ATTRIB_BITS);       // save current style attributes
+	glColor3f(0.545f, 0.271f, 0.075f);         // set face colour to brown (rgb)
 
 	do
 	{                                     // create branch with multiple QUADS
 		glBegin(GL_QUADS);
-		// Create first points
+		// Create first points (with normals)
+		glNormal3f(x, 0.f, z);          // define a normal facing out from the centre (0,0,0)
 		glVertex3f(x, 0.f, z);          // bottom
 		glVertex3f(x, 0.75f, z);          // top
 		// Iterate around circle
 		t += res;                       // add increment to angle
 		x = r * cos(t);                   // move x and z around circle
 		z = r * sin(t);
-		// Close quad
+		// Close quad (with new vertex normals)
+		glNormal3f(x, 0.f, z);          // define a new normal now that x,z have moved around
 		glVertex3f(x, 0.75f, z);          // top
 		glVertex3f(x, 0.f, z);          // bottom
 		glEnd();

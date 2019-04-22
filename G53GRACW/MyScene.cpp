@@ -10,15 +10,27 @@ void setup()
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
+	
+	cameraRadius();                     // initialise camrad variable (based on window height)
+	Stage* stage = new Stage();         // new instance of Stage object    
+	stage->size(camrad);                // resize to bound scene
+	objects["_stage"] = stage;           // Add to objects map with id "stage"
 
 	Windmill* windmill = new Windmill();
 	windmill->size(75.f);
 	objects["windmill"] = windmill;
 
-	Tree* tree = new Tree();
+	srand((int)time(0));							// Seed rand() using current time
+
+	Tree* tree = new Tree(randomNumGen());
 	tree->position(500.f, 0.f, 0.f);
 	tree->size(75.f);
 	objects["tree"] = tree;
+
+	Tree* tree1 = new Tree(randomNumGen());
+	tree1->position(-360.f, 0.f, -173.f);
+	tree1->size(75.f);
+	objects["tree1"] = tree1;
 	
 	reshape(width, height);
 	prevTime = glutGet(GLUT_ELAPSED_TIME);
@@ -46,7 +58,8 @@ void reshape(int _width, int _height)
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();     // reset matrix
-	gluPerspective(60.0, aspect, 1, 4000.0);
+	gluPerspective(60.0, aspect, 1.0, camrad*10.f);
+	//glOrtho(-width/2.f, width/2.f, -height/2.f, height/2.f, 1.f, camrad*2.f);       // orthographic
 	glViewport(0, 0, width, height);
 	glMatrixMode(GL_MODELVIEW); // return matrix mode to modelling and viewing
 }
@@ -57,8 +70,14 @@ void draw()
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
+	glEnable(GL_DEPTH_TEST);
 
+	glEnable(GL_CULL_FACE);
+	glFrontFace(GL_CCW);
 	positionCamera();
+
+	glEnable(GL_NORMALIZE);
+	glDisable(GL_LIGHTING);
 
 	glTranslatef(0.f, -height / 2.f, 0.f);
 	glColor3f(0.f, 0.f, 0.f);
@@ -84,7 +103,8 @@ void positionCamera()
 {
 	cameraRadius();                                 // calculate current camera position
 	eye[0] = camrad * sin(camangle);                  // set eye x (at camrad*sin(0)[ = 0])
-	eye[1] = cen[1];                                // set eye y (at 0)
+	eye[1] = 840.f;
+	//eye[1] = cen[1];                                // set eye y (at 0)
 	eye[2] = camrad * cos(camangle);                  // set eye z (at camrad*cos(0)[ = 1])
 	gluLookAt(eye[0], eye[1], eye[2],               // eye position
 		cen[0], cen[1], cen[2],               // point that you are looking at (origin)
@@ -93,7 +113,8 @@ void positionCamera()
 
 void cameraRadius()
 {
-	camrad = (height / 2.f) / tan(M_PI / 8.f);      // calcualte camera radius based on height
+	camrad = (height / 2.f) / tan(M_PI / 24.f);
+	//camrad = (height / 2.f) / tan(M_PI / 8.f);      // calcualte camera radius based on height
 }
 
 void keyPressed(int keyCode, int xm, int ym)
@@ -124,6 +145,17 @@ void keyPressed(unsigned char key, int xm, int ym)
 	{
 		camangle += incr;
 	}
+}
+
+// TODO: Implement mouse functions
+
+float randomNumGen()
+{
+	ranNum = (float) ((rand() % 21) + 30);
+
+	printf("%f\n", ranNum);
+
+	return ranNum;
 }
 
 void checkGLError()

@@ -1,7 +1,7 @@
 #include "Windmill.h"
 
 Windmill::Windmill() :
-	animationTime(10.0),
+	animationTime(0.67f),
 	angle(0.f)
 {
 }
@@ -17,72 +17,74 @@ void Windmill::update(float dT)
 	}
 	else if (aS < 2.f)
 	{
-		angle -= 5.f;
+		angle = 5.f;
 	}
 	else if (aS < 3.f)
 	{
-		angle -= 5.f;
+		angle = 10.f;
 	}
 	else if (aS < 4.f)
 	{
-		angle -= 5.f;
+		angle = 15.f;
 	}
 	else if (aS < 5.f)
 	{
-		angle -= 5.f;
+		angle = 20.f;
 	}
 	else if (aS < 6.f)
 	{
-		angle -= 5.f;
+		angle = 25.f;
 	}
 	else if (aS < 7.f)
 	{
-		angle -= 5.f;
+		angle = 30.f;
 	}
 	else if (aS < 8.f)
 	{
-		angle -= 5.f;
+		angle = 35.f;
 	}
 	else if (aS < 9.f)
 	{
-		angle -= 5.f;
+		angle = 40.f;
 	}
 	else if (aS < 10.f)
 	{
-		angle -= 5.f;
+		angle = 45.f;
 	}
 	else if (aS < 11.f)
 	{
-		angle -= 5.f;
+		angle = 50.f;
 	}
 	else if (aS < 12.f)
 	{
-		angle -= 5.f;
+		angle = 55.f;
 	}
 	else if (aS < 13.f)
 	{
-		angle -= 5.f;
+		angle = 60.f;
 	}
 	else if (aS < 14.f)
 	{
-		angle -= 5.f;
+		angle = 65.f;
 	}
 	else if (aS < 15.f)
 	{
-		angle -= 5.f;
+		angle = 70.f;
 	}
 	else if (aS < 16.f)
 	{
-		angle -= 5.f;
+		angle = 75.f;
 	}
 	else if (aS < 17.f)
 	{
-		angle -= 5.f;
+		angle = 80.f;
 	}
 	else
 	{
-		angle -= 5.f;
+		angle = 85.f;
 	}
+
+	angle = -angle;
 }
 
 // define display function (to be called by MyScene)
@@ -137,14 +139,16 @@ void Windmill::drawBase(float radius)
 	{                                     // create branch with multiple QUADS
 		glBegin(GL_QUADS);
 		glColor3f(0.796f, 0.255f, 0.329f);
-		// Create first points
+		// Create first points (with normals)
+		glNormal3f(x, 0.f, z);          // define a normal facing out from the centre (0,0,0)
 		glVertex3f(x, 0.f, z);          // bottom
 		glVertex3f(x, h, z);          // top
 		// Iterate around circle
 		t += res;                       // add increment to angle
 		x = r * cos(t);                   // move x and z around circle
 		z = r * sin(t);
-		// Close quad
+		// Close quad (with new vertex normals)
+		glNormal3f(x, 0.f, z);          // define a new normal now that x,z have moved around
 		glVertex3f(x, h, z);          // top
 		glVertex3f(x, 0.f, z);          // bottom
 		glEnd();
@@ -155,7 +159,7 @@ void Windmill::drawBase(float radius)
 
 void Windmill::drawRoof(float radius)
 {
-	float r = radius * 0.9975;                        // ratio of radius to height
+	float r = radius * 0.99;                        // ratio of radius to height
 
 	glColor3f(0.231f, 0.416f, 0.627f);
 	glutSolidSphere(r, 50, 50);
@@ -166,7 +170,6 @@ void Windmill::drawRoof(float radius)
 void Windmill::drawRotors()
 {
 	glRotatef(90.f, 1.f, 0.f, 0.f);
-	glTranslatef(0.f, -0.1f, 0.1f);
 
 	float res = 0.04f * M_PI;                // resolution (in radians: equivalent to 7.2 degrees)
 	float r = 0.1f;                        // ratio of radius to height
@@ -221,9 +224,13 @@ void Windmill::drawRotors()
 
 void Windmill::drawRotor()
 {
-	float length = 3.f;
-	float width = 0.75f;
-	float thickness = -0.1f;
+	//float length = 3.f;
+	//float width = 0.75f;
+	//float thickness = -0.1f;
+
+	float length = 4.f;
+	float width = 1.f;
+	float thickness = 0.25f;
 	float d = 0.f;
 
 	glBegin(GL_POLYGON);
@@ -251,11 +258,11 @@ void Windmill::drawRotor()
 
 	// Back
 	glVertex3f(d, d, -thickness);
-	glVertex3f(d, length, -thickness);
-	glVertex3f(-width, length, -thickness);
-	glVertex3f(-width, length / 3, -thickness);
-	glVertex3f(-width / 5, length / 3, -thickness);
 	glVertex3f(-width / 5, d, -thickness);
+	glVertex3f(-width / 5, length / 3, -thickness);
+	glVertex3f(-width, length / 3, -thickness);
+	glVertex3f(-width, length, -thickness);
+	glVertex3f(d, length, -thickness);
 	glVertex3f(d, d, -thickness);
 
 	// Top

@@ -9,6 +9,7 @@
 #include <stdio.h>
 #define _USE_MATH_DEFINES
 #include <cmath>
+#include "Stage.h"
 #include "Windmill.h"
 #include "Tree.h"
 #include <string>
@@ -18,6 +19,7 @@ void setup();
 float runtime();
 void reshape(int, int);
 void draw();
+float randomNumGen();
 void checkGLError();						// Prints any OpenGL errors to console
 void destroyObjects();
 int main(int argc, char **argv);
@@ -32,5 +34,7 @@ void positionCamera();
 void cameraRadius();
 void keyPressed(int, int, int);
 void keyPressed(unsigned char, int, int);
+
+float ranNum;
 
 #endif

@@ -12,7 +12,7 @@ using namespace std;
 class Tree : public DisplayableObject       // a Tree is a DisplayableObject
 {
 public:
-	Tree();                                 // constructor
+	Tree(float);                                 // constructor
 	~Tree() { };                            // destructor
 	void display();                         // overloaded virtual display function
 private:
