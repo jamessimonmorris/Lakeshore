@@ -1,14 +1,88 @@
 #include "Windmill.h"
 
 Windmill::Windmill() :
-	animationTime(2.f)
+	animationTime(10.0),
+	angle(0.f)
 {
 }
 
 void Windmill::update(float dT)
 {
 	aT = fmod(aT + dT, animationTime);
-	
+	float aS = 18.f * aT / animationTime;
+
+	if (aS < 1.f)
+	{
+		angle = 0.f;
+	}
+	else if (aS < 2.f)
+	{
+		angle -= 5.f;
+	}
+	else if (aS < 3.f)
+	{
+		angle -= 5.f;
+	}
+	else if (aS < 4.f)
+	{
+		angle -= 5.f;
+	}
+	else if (aS < 5.f)
+	{
+		angle -= 5.f;
+	}
+	else if (aS < 6.f)
+	{
+		angle -= 5.f;
+	}
+	else if (aS < 7.f)
+	{
+		angle -= 5.f;
+	}
+	else if (aS < 8.f)
+	{
+		angle -= 5.f;
+	}
+	else if (aS < 9.f)
+	{
+		angle -= 5.f;
+	}
+	else if (aS < 10.f)
+	{
+		angle -= 5.f;
+	}
+	else if (aS < 11.f)
+	{
+		angle -= 5.f;
+	}
+	else if (aS < 12.f)
+	{
+		angle -= 5.f;
+	}
+	else if (aS < 13.f)
+	{
+		angle -= 5.f;
+	}
+	else if (aS < 14.f)
+	{
+		angle -= 5.f;
+	}
+	else if (aS < 15.f)
+	{
+		angle -= 5.f;
+	}
+	else if (aS < 16.f)
+	{
+		angle -= 5.f;
+	}
+	else if (aS < 17.f)
+	{
+		angle -= 5.f;
+	}
+	else
+	{
+		angle -= 5.f;
+	}
 }
 
 // define display function (to be called by MyScene)
@@ -40,6 +114,7 @@ void Windmill::drawWindmill()
 			drawRoof(radius);                                          // draw the roof
 			glPushMatrix();
 			{
+				glRotatef(angle, 0.f, 0.f, 1.f);
 				drawRotors();
 			}
 			glPopMatrix();

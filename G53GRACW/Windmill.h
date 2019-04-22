@@ -16,7 +16,8 @@ public:
 	void display();                         // overloaded virtual display function
 	void update(float dT);
 private:
-	float animationTime;
+	float aT, animationTime;
+	float angle;
 
 	void drawWindmill();
 	void drawBase(float);                          // draw base function
