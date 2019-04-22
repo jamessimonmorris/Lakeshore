@@ -18,10 +18,19 @@ void setup();
 float runtime();
 void reshape(int, int);
 void draw();
-int main(int argc, char **argv);
 void checkGLError();						// Prints any OpenGL errors to console
+void destroyObjects();
+int main(int argc, char **argv);
 
 int width, height, prevTime;
 map<string, DisplayableObject*> objects;
+float camrad, camangle = 0.f;
+float eye[3];
+float cen[3];
+
+void positionCamera();
+void cameraRadius();
+void keyPressed(int, int, int);
+void keyPressed(unsigned char, int, int);
 
 #endif

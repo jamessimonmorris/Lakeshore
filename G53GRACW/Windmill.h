@@ -8,7 +8,7 @@
 
 using namespace std;
 
-class Windmill : public DisplayableObject, public Animation       // a Windmill is a DisplayableObject
+class Windmill : public DisplayableObject, public Animation       // a Windmill is a DisplayableObject and Animation
 {
 public:
 	Windmill();                                 // constructor
@@ -19,8 +19,9 @@ private:
 	float animationTime;
 
 	void drawWindmill();
-	void drawBase();                          // draw base function
-	void drawRoof();
+	void drawBase(float);                          // draw base function
+	void drawRoof(float);
 	void drawRotors();
+	void drawRotor();
 };
 #endif

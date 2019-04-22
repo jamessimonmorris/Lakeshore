@@ -20,5 +20,6 @@ private:
 	void leaves();
 
 	float ranNum;
+	int tier;
 };
 #endif

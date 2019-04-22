@@ -11,15 +11,21 @@ void setup()
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
 
-	Tree* tree = new Tree();
-	objects["tree"] = tree;
-
 	Windmill* windmill = new Windmill();
+	windmill->size(75.f);
 	objects["windmill"] = windmill;
 
+	Tree* tree = new Tree();
+	tree->position(500.f, 0.f, 0.f);
+	tree->size(75.f);
+	objects["tree"] = tree;
+	
 	reshape(width, height);
-
 	prevTime = glutGet(GLUT_ELAPSED_TIME);
+
+	cen[0] = 0.f;
+	cen[1] = 0.f;
+	cen[2] = 0.f;
 }
 
 float runtime()
@@ -40,7 +46,7 @@ void reshape(int _width, int _height)
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();     // reset matrix
-	gluPerspective(60.0, aspect, 1, 1000);
+	gluPerspective(60.0, aspect, 1, 4000.0);
 	glViewport(0, 0, width, height);
 	glMatrixMode(GL_MODELVIEW); // return matrix mode to modelling and viewing
 }
@@ -52,29 +58,72 @@ void draw()
 	glMatrixMode(GL_MODELVIEW);
 	glLoadIdentity();
 
-	glTranslatef(0.f, -4.f, -10.f);
+	positionCamera();
+
+	glTranslatef(0.f, -height / 2.f, 0.f);
 	glColor3f(0.f, 0.f, 0.f);
+
+	// calculate runtime between now and last draw call
+	float dT = runtime();
+	Animation* ani_obj;
 
 	// for each pair in the objects map (in this case, one Windmill called "windmill")
 		// pair is type <string, DisplayableObject*> so must call on 'second' element
 	for (map <string, DisplayableObject*>::iterator itr = objects.begin(); itr != objects.end(); ++itr)
 	{
-		itr->second->display();
+		ani_obj = dynamic_cast<Animation*>(itr->second);
+		if (ani_obj != NULL) ani_obj->update(dT);        // update if subclasses Animation
+		itr->second->display();                         // call display method on DisplayableObject
 	}
 
 	checkGLError();
 	glutSwapBuffers();
 }
 
-int main(int argc, char **argv)
+void positionCamera()
 {
-	glutInit(&argc, argv);          // Initialise GL environment
-	setup();                        // Call additional initialisation commands
-	glutDisplayFunc(draw);          // Register scene to render contents of draw() function
-	glutReshapeFunc(reshape);		// Register scene to render contents of reshape() function
-	checkGLError();                 // Check any OpenGL errors in initialisation
-	glutMainLoop();                 // Begin rendering sequence
-	return 0;
+	cameraRadius();                                 // calculate current camera position
+	eye[0] = camrad * sin(camangle);                  // set eye x (at camrad*sin(0)[ = 0])
+	eye[1] = cen[1];                                // set eye y (at 0)
+	eye[2] = camrad * cos(camangle);                  // set eye z (at camrad*cos(0)[ = 1])
+	gluLookAt(eye[0], eye[1], eye[2],               // eye position
+		cen[0], cen[1], cen[2],               // point that you are looking at (origin)
+		0.f, 1.f, 0.f);                       // up vector (0, 1 0)
+}
+
+void cameraRadius()
+{
+	camrad = (height / 2.f) / tan(M_PI / 8.f);      // calcualte camera radius based on height
+}
+
+void keyPressed(int keyCode, int xm, int ym)
+{	// Special (coded) key pressed
+	float incr = (float)M_PI / 36.f;   // increment angle by 5 degrees
+	if (keyCode == GLUT_KEY_LEFT)
+	{                      // left arrow (move camera left around scene)
+		camangle -= incr;     // decrement camera angle
+	}
+	else if (keyCode == GLUT_KEY_RIGHT)
+	{              // right arrow (move camera right around scene)
+		camangle += incr;     // increment camera angle
+	}
+}
+
+void keyPressed(unsigned char key, int xm, int ym)
+{	// ASCII key pressed
+	float incr = (float)M_PI / 36.f;
+	if (key == ' ')
+	{                                     // if space bar pressed
+		camangle = 0.f;                   //reset angle to 0.0
+	}
+	else if (key == 'a')
+	{
+		camangle -= incr;
+	}
+	else if (key == 'd')
+	{
+		camangle += incr;
+	}
 }
 
 void checkGLError()
@@ -87,4 +136,28 @@ void checkGLError()
 		printf("GL Error %i: %s\n", e, gluErrorString(error)); // Display error string
 		error = glGetError();                                  // Get next glError
 	}
+}
+
+void destroyObjects()
+{
+	for (map <string, DisplayableObject*>::iterator itr = objects.begin(); itr != objects.end(); ++itr)
+	{
+		delete itr->second;                         // delete all objects from memory
+	}
+	objects.clear();                                // clear map
+}
+
+int main(int argc, char **argv)
+{
+	glutInit(&argc, argv);          // Initialise GL environment
+	setup();                        // Call additional initialisation commands
+	glutDisplayFunc(draw);          // Register scene to render contents of draw() function
+	glutIdleFunc(draw);				// Register scene to draw content on back buffer
+	glutReshapeFunc(reshape);		// Register reshape function to handle window resizing
+	glutKeyboardFunc(keyPressed);	// ASCII key handling
+	glutSpecialFunc(keyPressed);	// Coded key handling
+	checkGLError();                 // Check any OpenGL errors in initialisation
+	glutMainLoop();                 // Begin rendering sequence
+	destroyObjects();				// Run upon exit
+	return 0;
 }

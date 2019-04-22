@@ -3,46 +3,59 @@
 Tree::Tree()
 {
 	srand(time(NULL));
-	ranNum = (float) (rand() % 21) + 30;
+	ranNum = (float) (rand() % 26) + 30;
+	tier = (int) ranNum % 2;
 }
 
 // define display function (to be called by MyScene)
 void Tree::display()
 {
-	// Project from Object Space to World Space
-	glTranslatef(pos[0], pos[1], pos[2]);			// Position
-	glScalef(scale[0], scale[1], scale[2]);			// Scale
-	glRotatef(rotation[1], 0.f, 1.f, 0.f);			// Set orientation (Y - roll)
-	glRotatef(rotation[2], 0.f, 0.f, 1.f);			// Set orientation (Z - yaw)
-	glRotatef(rotation[0], 1.f, 0.f, 0.f);			// Set orientation (X - pitch)
-
-	char curr;
-	string sequence = "[tt[>lll]]";
-
-	for (unsigned int i = 0; i < sequence.size(); i++)
+	glPushMatrix();
 	{
-		curr = sequence[i];			// for each char in sequence
-		switch (curr)				// check current char command
-		{                 
-		case 't':                   // draw trunk, move forward
-			glScalef(0.95f, 0.95f, 0.95f);
-			trunk();
-			break;
-		case 'l':                   // leaves
-			glScalef(0.85f, 0.85f, 0.85f);
-			leaves();
-			break;
-		case '[':					// Save
-			glPushMatrix();
-			break;
-		case ']':					// Restore
-			glPopMatrix();
-			break;
-		case '>':
-			glRotatef(-90.f, 1.f, 0.f, 0.f);
-			break;
+		glPushAttrib(GL_ALL_ATTRIB_BITS);
+
+		glTranslatef(pos[0], pos[1], pos[2]);               // Position
+		glScalef(scale[0], scale[1], scale[2]);             // Scale
+		glRotatef(rotation[1], 0.f, 1.f, 0.f);              // Set orientation (Y)
+		glRotatef(rotation[2], 0.f, 0.f, 1.f);              // Set orientation (Z)
+		glRotatef(rotation[0], 1.f, 0.f, 0.f);              // Set orientation (X)
+
+		char curr;
+		string sequence;
+
+		if (tier)
+			sequence = "[tt[>lll]]";
+		else
+			sequence = "[tt[>llll]]";
+
+		for (unsigned int i = 0; i < sequence.size(); i++)
+		{
+			curr = sequence[i];			// for each char in sequence
+			switch (curr)				// check current char command
+			{
+			case 't':                   // draw trunk, move forward
+				glScalef(0.95f, 0.95f, 0.95f);
+				trunk();
+				break;
+			case 'l':                   // leaves
+				glScalef(0.85f, 0.85f, 0.85f);
+				leaves();
+				break;
+			case '[':					// Save
+				glPushMatrix();
+				break;
+			case ']':					// Restore
+				glPopMatrix();
+				break;
+			case '>':
+				glRotatef(-90.f, 1.f, 0.f, 0.f);
+				break;
+			}
 		}
+
+		glPopAttrib();
 	}
+	glPopMatrix();
 }
 
 void Tree::leaves()
@@ -84,6 +97,6 @@ void Tree::trunk()
 		glEnd();
 	} while (t <= 2 * M_PI);                // full rotation around circle
 
-	glTranslatef(0.f, 0.75f, 0.f);            // translate to top of branch
+	glTranslatef(0.f, 0.75f, 0.f);            // translate to top of trunk
 	glPopAttrib();
 }
