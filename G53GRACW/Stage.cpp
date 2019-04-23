@@ -22,122 +22,98 @@ void Stage::display()
 	glPopMatrix();
 }
 
+void Stage::setTextures(GLuint* _texids)
+{
+	texids = _texids;                       // Store texture references in pointer array
+	toTexture = true;                       // Assume all loaded correctly
+	for (int i = 0; i < 6; i++)             // Check if any textures failed to load (NULL)    
+		if (texids[i] == NULL) toTexture = false;   // If one texture failed, do not display any
+}
+
 void Stage::drawStage()
 {
-	// NEAR SIDE
-	float mat_colour1[]                      // colour reflected by diffuse light
-		= { 0.9f, 1.0f, 0.9f, 1.f };         // mid brown
-	float mat_ambient1[]                     // ambient colour
-		= { 0.9f, 1.0f, 0.9f, 1.f };         // dark brown
-	float mat_spec1[]                        // specular colour
-		= { 0.f, 0.f, 0.f, 1.f };               // no reflectance (black)
+	glDisable(GL_LIGHTING);                 // Disable lighting just for skybox
+	glColor4f(1.f, 1.f, 1.f, 0.f);          // Set fill to be invisible (only texture is rendered)
+	if (toTexture) glEnable(GL_TEXTURE_2D); // Enable 2D texturing
 
-	glPushAttrib(GL_ALL_ATTRIB_BITS);       // save current style attributes (inc. material properties)
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient1); // set colour for ambient reflectance
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_colour1);  // set colour for diffuse reflectance
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_spec1);   // set colour for specular reflectance
-	glColor3f(0.9f, 1.0f, 0.9f); // green
-
+	if (toTexture) glBindTexture(GL_TEXTURE_2D, texids[0]); // skybox_left.bmp
 	glBegin(GL_QUADS);
-	glVertex3f(-1.f, 1.f, 1.f);
-	glVertex3f(1.f, 1.f, 1.f);
-	glVertex3f(1.f, 0.f, 1.f);
-	glVertex3f(-1.f, 0.f, 1.f);
-	glEnd();
-	// FAR SIDE
-	float mat_colour2[]                      // colour reflected by diffuse light
-		= { 0.9f, 1.0f, 1.0f, 1.f };         // mid brown
-	float mat_ambient2[]                     // ambient colour
-		= { 0.9f, 1.0f, 1.0f, 1.f };         // dark brown
-	float mat_spec2[]                        // specular colour
-		= { 0.f, 0.f, 0.f, 1.f };               // no reflectance (black)
-
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient2); // set colour for ambient reflectance
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_colour2);  // set colour for diffuse reflectance
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_spec2);   // set colour for specular reflectance
-	glColor3f(0.9f, 1.0f, 1.0f); // cyan
-
-	glBegin(GL_QUADS);
-	glVertex3f(1.f, 1.f, -1.f);
-	glVertex3f(-1.f, 1.f, -1.f);
-	glVertex3f(-1.f, 0.f, -1.f);
-	glVertex3f(1.f, 0.f, -1.f);
-	glEnd();
-	// BOTTOM SIDE
-	float mat_colour3[]                      // colour reflected by diffuse light
-		= { 1.0f, 1.0f, 0.9f, 1.f };         // mid brown
-	float mat_ambient3[]                     // ambient colour
-		= { 1.0f, 1.0f, 0.9f, 1.f };         // dark brown
-	float mat_spec3[]                        // specular colour
-		= { 0.f, 0.f, 0.f, 1.f };               // no reflectance (black)
-
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient3); // set colour for ambient reflectance
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_colour3);  // set colour for diffuse reflectance
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_spec3);   // set colour for specular reflectance
-	glColor3f(1.0f, 1.0f, 0.9f); // yellow
-
-	glBegin(GL_QUADS);
-	glVertex3f(-1.f, 0.f, 1.f);
-	glVertex3f(1.f, 0.f, 1.f);
-	glVertex3f(1.f, 0.f, -1.f);
-	glVertex3f(-1.f, 0.f, -1.f);
-	glEnd();
-	// TOP SIDE
-	float mat_colour4[]                      // colour reflected by diffuse light
-		= { 1.0f, 0.9f, 0.9f, 1.f };         // mid brown
-	float mat_ambient4[]                     // ambient colour
-		= { 1.0f, 0.9f, 0.9f, 1.f };         // dark brown
-	float mat_spec4[]                        // specular colour
-		= { 0.f, 0.f, 0.f, 1.f };               // no reflectance (black)
-
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient4); // set colour for ambient reflectance
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_colour4);  // set colour for diffuse reflectance
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_spec4);   // set colour for specular reflectance
-	glColor3f(1.0f, 0.9f, 0.9f); // red
-
-	glBegin(GL_QUADS);
-	glVertex3f(1.f, 1.f, 1.f);
-	glVertex3f(-1.f, 1.f, 1.f);
-	glVertex3f(-1.f, 1.f, -1.f);
-	glVertex3f(1.f, 1.f, -1.f);
-	glEnd();
 	// LEFT SIDE
-	float mat_colour5[]                      // colour reflected by diffuse light
-		= { 0.9f, 0.9f, 1.0f, 1.f };         // mid brown
-	float mat_ambient5[]                     // ambient colour
-		= { 0.9f, 0.9f, 1.0f, 1.f };         // dark brown
-	float mat_spec5[]                        // specular colour
-		= { 0.f, 0.f, 0.f, 1.f };               // no reflectance (black)
-
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient5); // set colour for ambient reflectance
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_colour5);  // set colour for diffuse reflectance
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_spec5);   // set colour for specular reflectance
-	glColor3f(0.9f, 0.9f, 1.0f); // blue
-
-	glBegin(GL_QUADS);
+	if (toTexture) glTexCoord2f(1.f, 1.f);  // (u,v) = (1,1)
 	glVertex3f(-1.f, 1.f, -1.f);
+	if (toTexture) glTexCoord2f(0.f, 1.f);  // (u,v) = (0,1)
 	glVertex3f(-1.f, 1.f, 1.f);
+	if (toTexture) glTexCoord2f(0.f, 0.f);  // (u,v) = (0,0)
 	glVertex3f(-1.f, 0.f, 1.f);
+	if (toTexture) glTexCoord2f(1.f, 0.f);  // (u,v) = (1,0)
 	glVertex3f(-1.f, 0.f, -1.f);
 	glEnd();
-	// RIGHT SIDE
-	float mat_colour6[]                      // colour reflected by diffuse light
-		= { 1.0f, 0.9f, 1.0f, 1.f };         // mid brown
-	float mat_ambient6[]                     // ambient colour
-		= { 1.0f, 0.9f, 1.0f, 1.f };         // dark brown
-	float mat_spec6[]                        // specular colour
-		= { 0.f, 0.f, 0.f, 1.f };               // no reflectance (black)
 
-	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient6); // set colour for ambient reflectance
-	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_colour6);  // set colour for diffuse reflectance
-	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_spec6);   // set colour for specular reflectance
-	glColor3f(1.0f, 0.9f, 1.0f); // magenta
-
+	if (toTexture) glBindTexture(GL_TEXTURE_2D, texids[1]); // skybox_right.bmp
 	glBegin(GL_QUADS);
+	// RIGHT SIDE
+	if (toTexture) glTexCoord2f(1.f, 1.f);  // (u,v) = (1,1)
 	glVertex3f(1.f, 1.f, 1.f);
+	if (toTexture) glTexCoord2f(0.f, 1.f);  // (u,v) = (0,1)
 	glVertex3f(1.f, 1.f, -1.f);
+	if (toTexture) glTexCoord2f(0.f, 0.f);  // (u,v) = (0,0)
 	glVertex3f(1.f, 0.f, -1.f);
+	if (toTexture) glTexCoord2f(1.f, 0.f);  // (u,v) = (1,0)
 	glVertex3f(1.f, 0.f, 1.f);
 	glEnd();
-	glPopAttrib();
+
+	if (toTexture) glBindTexture(GL_TEXTURE_2D, texids[2]); // skybox_front.bmp
+	glBegin(GL_QUADS);
+	//  FAR SIDE
+	if (toTexture) glTexCoord2f(1.f, 1.f);  // (u,v) = (1,1)
+	glVertex3f(1.f, 1.f, -1.f);
+	if (toTexture) glTexCoord2f(0.f, 1.f);  // (u,v) = (0,1)
+	glVertex3f(-1.f, 1.f, -1.f);
+	if (toTexture) glTexCoord2f(0.f, 0.f);  // (u,v) = (0,0)
+	glVertex3f(-1.f, 0.f, -1.f);
+	if (toTexture) glTexCoord2f(1.f, 0.f);  // (u,v) = (1,0)
+	glVertex3f(1.f, 0.f, -1.f);
+	glEnd();
+
+	if (toTexture) glBindTexture(GL_TEXTURE_2D, texids[3]); // skybox_back.bmp
+	glBegin(GL_QUADS);
+	// NEAR SIDE
+	if (toTexture) glTexCoord2f(1.f, 1.f);  // (u,v) = (1,1)
+	glVertex3f(-1.f, 1.f, 1.f);
+	if (toTexture) glTexCoord2f(0.f, 1.f);  // (u,v) = (0,1)
+	glVertex3f(1.f, 1.f, 1.f);
+	if (toTexture) glTexCoord2f(0.f, 0.f);  // (u,v) = (0,0)
+	glVertex3f(1.f, 0.f, 1.f);
+	if (toTexture) glTexCoord2f(1.f, 0.f);  // (u,v) = (1,0)
+	glVertex3f(-1.f, 0.f, 1.f);
+	glEnd();
+
+	if (toTexture) glBindTexture(GL_TEXTURE_2D, texids[4]); // skybox_down.bmp
+	glBegin(GL_QUADS);
+	// BOTTOM SIDE
+	if (toTexture) glTexCoord2f(0.f, 0.f);  // (u,v) = (0,0)
+	glVertex3f(-1.f, 0.f, 1.f);
+	if (toTexture) glTexCoord2f(1.f, 0.f);  // (u,v) = (1,0)
+	glVertex3f(1.f, 0.f, 1.f);
+	if (toTexture) glTexCoord2f(1.f, 1.f);  // (u,v) = (1,1)
+	glVertex3f(1.f, 0.f, -1.f);
+	if (toTexture) glTexCoord2f(0.f, 1.f);  // (u,v) = (0,1)
+	glVertex3f(-1.f, 0.f, -1.f);
+	glEnd();
+
+	if (toTexture) glBindTexture(GL_TEXTURE_2D, texids[5]); // skybox_up.bmp
+	glBegin(GL_QUADS);
+	// TOP SIDE
+	if (toTexture) glTexCoord2f(1.f, 1.f);  // (u,v) = (1,1)
+	glVertex3f(1.f, 1.f, 1.f);
+	if (toTexture) glTexCoord2f(0.f, 1.f);  // (u,v) = (0,1)
+	glVertex3f(-1.f, 1.f, 1.f);
+	if (toTexture) glTexCoord2f(0.f, 0.f);  // (u,v) = (0,0)
+	glVertex3f(-1.f, 1.f, -1.f);
+	if (toTexture) glTexCoord2f(1.f, 0.f);  // (u,v) = (1,0)
+	glVertex3f(1.f, 1.f, -1.f);
+	glEnd();
+
+	if (toTexture) glDisable(GL_TEXTURE_2D);    // Disable texturing until reenabled
+	glEnable(GL_LIGHTING);                      // Reenable lighting after drawing skybox
 }

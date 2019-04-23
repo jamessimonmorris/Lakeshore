@@ -1,9 +1,19 @@
 #include "TreeLong.h"
 
+TreeLong::TreeLong(float randomNum, GLuint _texid) :
+	ranNum(randomNum),
+	height(((int)ranNum % 2) + 6)
+{
+	texid = _texid;
+	if (texid != NULL)
+		toTexture = true;
+}
+
 TreeLong::TreeLong(float randomNum) :
 	ranNum(randomNum),
 	height(((int)ranNum % 2) + 6)
 {
+
 }
 
 // define display function (to be called by MyScene)
@@ -22,7 +32,7 @@ void TreeLong::display()
 		char curr;
 		string sequence;
 
-		sequence = "[tt[>l]]";
+		sequence = "[ttt[>l]]";
 
 		for (unsigned int i = 0; i < sequence.size(); i++)
 		{
@@ -98,12 +108,20 @@ void TreeLong::trunk()
 
 	glColor3f(0.545f, 0.271f, 0.075f);         // set face colour to brown (rgb)
 
+	if (toTexture)
+	{
+		glEnable(GL_TEXTURE_2D);
+		glBindTexture(GL_TEXTURE_2D, texid);
+	}
+
 	do
 	{                                     // create branch with multiple QUADS
 		glBegin(GL_QUADS);
 		// Create first points (with normals)
 		glNormal3f(x, 0.f, z);          // define a normal facing out from the centre (0,0,0)
+		if (toTexture) glTexCoord2f(0.f, 0.f);  // assign texture coordinates to next vertex (u,v) = (0,0)
 		glVertex3f(x, 0.f, z);          // bottom
+		if (toTexture) glTexCoord2f(0.f, 1.f);  // assign texture coordinates to next vertex (u,v) = (0,1)
 		glVertex3f(x, 0.75f, z);          // top
 		// Iterate around circle
 		t += res;                       // add increment to angle
@@ -111,10 +129,14 @@ void TreeLong::trunk()
 		z = r * sin(t);
 		// Close quad (with new vertex normals)
 		glNormal3f(x, 0.f, z);          // define a new normal now that x,z have moved around
+		if (toTexture) glTexCoord2f(1.f, 1.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
 		glVertex3f(x, 0.75f, z);          // top
+		if (toTexture) glTexCoord2f(1.f, 0.f);  // assign texture coordinates to next vertex (u,v) = (1,0)
 		glVertex3f(x, 0.f, z);          // bottom
 		glEnd();
 	} while (t <= 2 * M_PI);                // full rotation around circle
+
+	if (toTexture) glDisable(GL_TEXTURE_2D);    // disable texturing following this point
 
 	glTranslatef(0.f, 0.75f, 0.f);            // translate to top of trunk
 	glPopAttrib();

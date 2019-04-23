@@ -13,26 +13,37 @@ void setup()
 	
 	cameraRadius();                     // initialise camrad variable (based on window height)
 	Stage* stage = new Stage();         // new instance of Stage object    
-	stage->size(camrad);                // resize to bound scene
+	stage->size(camrad * 5.f, camrad * 2.f, camrad * 5.f);                // resize to bound scene
+	GLuint* skybox = new GLuint[6];
+	skybox[0] = textureManager.loadImage("Textures/skybox/skybox_left.bmp");
+	skybox[1] = textureManager.loadImage("Textures/skybox/skybox_right.bmp");
+	skybox[2] = textureManager.loadImage("Textures/skybox/skybox_front.bmp");
+	skybox[3] = textureManager.loadImage("Textures/skybox/skybox_back.bmp");
+	skybox[4] = textureManager.loadImage("Textures/skybox/skybox_down.bmp");
+	skybox[5] = textureManager.loadImage("Textures/skybox/skybox_up.bmp");
+	stage->setTextures(skybox);
 	objects["_stage"] = stage;           // Add to objects map with id "stage"
 
-	Windmill* windmill = new Windmill();
+	GLuint brick = textureManager.loadImage("Textures/brick.bmp");
+	GLuint roof = textureManager.loadImage("Textures/roof.bmp");
+	Windmill* windmill = new Windmill(brick, roof);
 	windmill->size(scale);
 	objects["windmill"] = windmill;
 
 	srand((int)time(0));							// Seed rand() using current time
 
-	Tree* tree = new Tree(randomNumGen());
+	GLuint bark = textureManager.loadImage("Textures/bark.bmp");
+	Tree* tree = new Tree(randomNumGen(), bark);
 	tree->position(500.f, 0.f, 0.f);
 	tree->size(scale);
 	objects["tree"] = tree;
 
-	Tree* tree1 = new Tree(randomNumGen());
+	Tree* tree1 = new Tree(randomNumGen(), bark);
 	tree1->position(-360.f, 0.f, -173.f);
 	tree1->size(scale);
 	objects["tree1"] = tree1;
 
-	TreeLong* treeL = new TreeLong(randomNumGen());
+	TreeLong* treeL = new TreeLong(randomNumGen(), bark);
 	treeL->position(-450.f, 0.f, 250.f);
 	treeL->size(scale);
 	objects["treeL"] = treeL;

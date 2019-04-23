@@ -12,7 +12,8 @@ using namespace std;
 class TreeLong : public DisplayableObject       // a Tree1 is a DisplayableObject
 {
 public:
-	TreeLong(float);                                 // constructor
+	TreeLong(float, GLuint);                                 // constructor
+	TreeLong(float);
 	~TreeLong() { };                            // destructor
 	void display();                         // overloaded virtual display function
 private:
@@ -21,5 +22,8 @@ private:
 
 	float ranNum;
 	int height;
+
+	bool toTexture = false;
+	GLuint texid;
 };
 #endif

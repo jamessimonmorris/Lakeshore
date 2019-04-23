@@ -42,4 +42,6 @@ float ranNum;
 bool ortho = false;
 int scale = 75.f;
 
+TextureManager textureManager;
+
 #endif

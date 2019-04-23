@@ -12,7 +12,8 @@ using namespace std;
 class Tree : public DisplayableObject       // a Tree is a DisplayableObject
 {
 public:
-	Tree(float);                                 // constructor
+	Tree(float, GLuint _texid);                                 // constructor
+	Tree(float);
 	~Tree() { };                            // destructor
 	void display();                         // overloaded virtual display function
 private:
@@ -21,5 +22,8 @@ private:
 
 	float ranNum;
 	int tier;
+
+	bool toTexture = false;
+	GLuint texid;
 };
 #endif

@@ -15,7 +15,12 @@ public:
 	Stage();
 	~Stage() {};
 	void display();
+
+	void setTextures(GLuint* _texids);	// Setter to assign texture binding ids
 private:
 	void drawStage();
+
+	bool toTexture = false;             // Flag to check if texture loaded correctly
+	GLuint* texids;                     // Store a copy of the loaded texture binding id
 };
 #endif
