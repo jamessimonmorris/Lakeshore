@@ -26,7 +26,7 @@ int main(int argc, char **argv);
 
 int width, height, prevTime;
 map<string, DisplayableObject*> objects;
-float camrad, camangle = 0.f;
+float camrad, camangle = 0.f, zoom = 24.f, camh = 35.f;
 float eye[3];
 float cen[3];
 

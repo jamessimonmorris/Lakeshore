@@ -76,7 +76,7 @@ void draw()
 	glFrontFace(GL_CCW);
 	positionCamera();
 
-	glTranslatef(0.f, -height / 2.f, 0.f);
+	glTranslatef(0.f, -height / 3.f, 0.f);
 	glColor3f(0.f, 0.f, 0.f);
 
 	glEnable(GL_NORMALIZE);
@@ -120,7 +120,7 @@ void positionCamera()
 {
 	cameraRadius();                                 // calculate current camera position
 	eye[0] = camrad * sin(camangle);                  // set eye x (at camrad*sin(0)[ = 0])
-	eye[1] = 840.f;
+	eye[1] = camh * zoom;
 	//eye[1] = cen[1];                                // set eye y (at 0)
 	eye[2] = camrad * cos(camangle);                  // set eye z (at camrad*cos(0)[ = 1])
 	gluLookAt(eye[0], eye[1], eye[2],               // eye position
@@ -130,7 +130,7 @@ void positionCamera()
 
 void cameraRadius()
 {
-	camrad = (height / 2.f) / tan(M_PI / 24.f);
+	camrad = (height / 2.f) / tan(M_PI / zoom);
 	//camrad = (height / 2.f) / tan(M_PI / 8.f);      // calcualte camera radius based on height
 }
 
@@ -161,6 +161,34 @@ void keyPressed(unsigned char key, int xm, int ym)
 	else if (key == 'd')
 	{
 		camangle += incr;
+	}
+	else if (key == 'w')
+	{
+		zoom -= 1.f;
+
+		if (zoom < 5.f)
+			zoom = 5.f;
+	}
+	else if (key == 's')
+	{
+		zoom += 1.f;
+
+		if (zoom > 30.f)
+			zoom = 30.f;
+	}
+	else if (key == 'e')
+	{
+		camh += 5.f;
+
+		if (camh > 120.f)
+			camh = 120.f;
+	}
+	else if (key == 'q')
+	{
+		camh -= 5.f;
+
+		if (camh < 0.f)
+			camh = 0.f;
 	}
 }
 
