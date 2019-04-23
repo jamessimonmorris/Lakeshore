@@ -137,7 +137,7 @@ void Windmill::drawBase(float radius)
 	float mat_colour[]                      // colour reflected by diffuse light
 		= { 0.796f, 0.255f, 0.329f, 1.f };         // mid brown
 	float mat_ambient[]                     // ambient colour
-		= { 0.796f, 0.255f, 0.329f, 1.f };         // dark brown
+		= { 0.696f, 0.155f, 0.229f, 1.f };         // dark brown
 	float mat_spec[]                        // specular colour
 		= { 0.f, 0.f, 0.f, 1.f };               // no reflectance (black)
 
@@ -176,7 +176,7 @@ void Windmill::drawRoof(float radius)
 	float mat_colour[]                      // colour reflected by diffuse light
 		= { 0.231f, 0.416f, 0.627f, 1.f };         // mid brown
 	float mat_ambient[]                     // ambient colour
-		= { 0.231f, 0.416f, 0.627f, 1.f };         // dark brown
+		= { 0.131f, 0.316f, 0.527f, 1.f };         // dark brown
 	float mat_spec[]                        // specular colour
 		= { 0.f, 0.f, 0.f, 1.f };               // no reflectance (black)
 
@@ -204,7 +204,7 @@ void Windmill::drawRotors()
 	float mat_colour[]                      // colour reflected by diffuse light
 		= { 0.412f, 0.412f, 0.412f, 1.f };         // mid brown
 	float mat_ambient[]                     // ambient colour
-		= { 0.412f, 0.412f, 0.412f, 1.f };         // dark brown
+		= { 0.312f, 0.312f, 0.312f, 1.f };         // dark brown
 	float mat_spec[]                        // specular colour
 		= { 0.f, 0.f, 0.f, 1.f };               // no reflectance (black)
 
@@ -214,6 +214,7 @@ void Windmill::drawRotors()
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_spec);   // set colour for specular reflectance
 
 	glPushMatrix();
+	glTranslatef(0.f, -0.1f, 0.f);
 	do
 	{                                     // create branch with multiple QUADS
 		glBegin(GL_QUADS);
@@ -235,7 +236,7 @@ void Windmill::drawRotors()
 	glRotatef(-90.f, 1.f, 0.f, 0.f);
 	glTranslatef(0.f, 0.f, h);
 
-	glutSolidSphere(0.17, 20, 20);
+	glutSolidCube(0.2);
 	glPopAttrib();
 
 	glPushMatrix();
@@ -271,13 +272,13 @@ void Windmill::drawRotor()
 
 	float length = 4.f;
 	float width = 1.f;
-	float thickness = 0.25f;
+	float thickness = 0.15f;
 	float z = 0.f;
 	float p = 1.f;
 	float mat_colour[]                      // colour reflected by diffuse light
 		= { 0.925f, 0.925f, 0.925f, 1.f };         // mid brown
 	float mat_ambient[]                     // ambient colour
-		= { 0.925f, 0.925f, 0.925f, 1.f };         // dark brown
+		= { 0.825f, 0.825f, 0.825f, 1.f };         // dark brown
 	float mat_spec[]                        // specular colour
 		= { 0.f, 0.f, 0.f, 1.f };               // no reflectance (black)
 

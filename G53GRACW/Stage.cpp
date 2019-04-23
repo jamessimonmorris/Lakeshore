@@ -126,7 +126,7 @@ void Stage::drawStage()
 	float mat_ambient6[]                     // ambient colour
 		= { 1.0f, 0.9f, 1.0f, 1.f };         // dark brown
 	float mat_spec6[]                        // specular colour
-		= { 1.0f, 0.9f, 1.0f, 1.f };               // no reflectance (black)
+		= { 0.f, 0.f, 0.f, 1.f };               // no reflectance (black)
 
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient6); // set colour for ambient reflectance
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_colour6);  // set colour for diffuse reflectance

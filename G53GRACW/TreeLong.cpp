@@ -1,13 +1,13 @@
-#include "Tree.h"
+#include "TreeLong.h"
 
-Tree::Tree(float randomNum) :
+TreeLong::TreeLong(float randomNum) :
 	ranNum(randomNum),
-	tier((int)ranNum % 2)
+	height(((int)ranNum % 2) + 6)
 {
 }
 
 // define display function (to be called by MyScene)
-void Tree::display()
+void TreeLong::display()
 {
 	glPushMatrix();
 	{
@@ -22,10 +22,7 @@ void Tree::display()
 		char curr;
 		string sequence;
 
-		if (tier)
-			sequence = "[tt[>lll]]";
-		else
-			sequence = "[tt[>llll]]";
+		sequence = "[tt[>l]]";
 
 		for (unsigned int i = 0; i < sequence.size(); i++)
 		{
@@ -58,7 +55,7 @@ void Tree::display()
 	glPopMatrix();
 }
 
-void Tree::leaves()
+void TreeLong::leaves()
 {
 	float rad = ranNum / 15;		// radius of leaves
 	float mat_colour[]                      // colour reflected by diffuse light
@@ -75,13 +72,13 @@ void Tree::leaves()
 
 	glColor3f(0.133f, 0.545f, 0.133f);
 
-	glutSolidCone(rad, (rad * 5) / 4, 50, 50);
+	glutSolidCone(rad, height, 50, 50);
 
 	glTranslatef(0.f, 0.f, (rad * 3) / 5);            // translate to top of branch
 	glPopAttrib();
 }
 
-void Tree::trunk()
+void TreeLong::trunk()
 {
 	float res = 0.1f * M_PI;                // resolution (in radians: equivalent to 18 degrees)
 	float r = ranNum / 100;					// ratio of radius to height

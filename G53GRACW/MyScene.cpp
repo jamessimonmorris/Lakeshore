@@ -17,20 +17,25 @@ void setup()
 	objects["_stage"] = stage;           // Add to objects map with id "stage"
 
 	Windmill* windmill = new Windmill();
-	windmill->size(75.f);
+	windmill->size(scale);
 	objects["windmill"] = windmill;
 
 	srand((int)time(0));							// Seed rand() using current time
 
 	Tree* tree = new Tree(randomNumGen());
 	tree->position(500.f, 0.f, 0.f);
-	tree->size(75.f);
+	tree->size(scale);
 	objects["tree"] = tree;
 
 	Tree* tree1 = new Tree(randomNumGen());
 	tree1->position(-360.f, 0.f, -173.f);
-	tree1->size(75.f);
+	tree1->size(scale);
 	objects["tree1"] = tree1;
+
+	TreeLong* treeL = new TreeLong(randomNumGen());
+	treeL->position(-450.f, 0.f, 250.f);
+	treeL->size(scale);
+	objects["treeL"] = treeL;
 	
 	reshape(width, height);
 	prevTime = glutGet(GLUT_ELAPSED_TIME);
@@ -58,8 +63,12 @@ void reshape(int _width, int _height)
 
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();     // reset matrix
-	gluPerspective(60.0, aspect, 1.0, camrad*10.f);
-	//glOrtho(-width/2.f, width/2.f, -height/2.f, height/2.f, 1.f, camrad*2.f);       // orthographic
+
+	if (!ortho)
+		gluPerspective(60.0, aspect, 1.0, camrad*10.f);
+	else
+		glOrtho(-width, width, -height, height, 1.f, camrad*100.f);       // orthographic
+
 	glViewport(0, 0, width, height);
 	glMatrixMode(GL_MODELVIEW); // return matrix mode to modelling and viewing
 }
@@ -92,6 +101,7 @@ void draw()
 	{
 		ani_obj = dynamic_cast<Animation*>(itr->second);
 		if (ani_obj != NULL) ani_obj->update(dT);        // update if subclasses Animation
+		if (itr->first != "_stage") itr->second->size(scale);
 		itr->second->display();                         // call display method on DisplayableObject
 	}
 
@@ -145,6 +155,36 @@ void keyPressed(int keyCode, int xm, int ym)
 	{              // right arrow (move camera right around scene)
 		camangle += incr;     // increment camera angle
 	}
+	else if (keyCode == GLUT_KEY_UP)
+	{
+		zoom -= 1.f;
+
+		if (zoom < 10.f)
+			zoom = 10.f;
+	}
+	else if (keyCode == GLUT_KEY_DOWN)
+	{
+		zoom += 1.f;
+
+		if (zoom > 30.f)
+			zoom = 30.f;
+	}
+	else if (keyCode == GLUT_KEY_PAGE_UP)
+	{
+		camh += 5.f;
+
+		if (camh > 120.f)
+			camh = 120.f;
+	}
+	else if (keyCode == GLUT_KEY_PAGE_DOWN)
+	{
+		camh -= 5.f;
+
+		if (camh < 0.f)
+			camh = 0.f;
+	}
+
+	printf("Angle: %f; Height: %f; Zoom: %f\n", camangle, camh, zoom);
 }
 
 void keyPressed(unsigned char key, int xm, int ym)
@@ -152,7 +192,9 @@ void keyPressed(unsigned char key, int xm, int ym)
 	float incr = (float)M_PI / 36.f;
 	if (key == ' ')
 	{                                     // if space bar pressed
-		camangle = 0.f;                   //reset angle to 0.0
+		camangle = -0.785398f;                   //reset angle to 0.0
+		zoom = 24.f;
+		camh = 45.f;
 	}
 	else if (key == 'a')
 	{
@@ -166,8 +208,8 @@ void keyPressed(unsigned char key, int xm, int ym)
 	{
 		zoom -= 1.f;
 
-		if (zoom < 5.f)
-			zoom = 5.f;
+		if (zoom < 10.f)
+			zoom = 10.f;
 	}
 	else if (key == 's')
 	{
@@ -190,6 +232,22 @@ void keyPressed(unsigned char key, int xm, int ym)
 		if (camh < 0.f)
 			camh = 0.f;
 	}
+	else if (key == 'g')
+	{
+		if (ortho)
+		{
+			ortho = false;
+			scale = 75.f;
+		}
+		else
+		{
+			ortho = true;
+			scale = 50.f;
+		}
+		reshape(width, height);
+	}
+
+	printf("Angle: %f; Height: %f; Zoom: %f\n", camangle, camh, zoom);
 }
 
 // TODO: Implement mouse functions

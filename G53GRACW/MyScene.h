@@ -12,6 +12,7 @@
 #include "Stage.h"
 #include "Windmill.h"
 #include "Tree.h"
+#include "TreeLong.h"
 #include <string>
 #include <map>
 
@@ -26,7 +27,7 @@ int main(int argc, char **argv);
 
 int width, height, prevTime;
 map<string, DisplayableObject*> objects;
-float camrad, camangle = 0.f, zoom = 24.f, camh = 35.f;
+float camrad, camangle = -0.785398f, zoom = 24.f, camh = 45.f;
 float eye[3];
 float cen[3];
 
@@ -37,5 +38,7 @@ void keyPressed(int, int, int);
 void keyPressed(unsigned char, int, int);
 
 float ranNum;
+bool ortho = false;
+int scale = 75.f;
 
 #endif
