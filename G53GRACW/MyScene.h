@@ -30,6 +30,7 @@ float camrad, camangle = 0.f;
 float eye[3];
 float cen[3];
 
+void setGlobalLight();
 void positionCamera();
 void cameraRadius();
 void keyPressed(int, int, int);

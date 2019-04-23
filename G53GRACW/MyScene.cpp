@@ -76,11 +76,11 @@ void draw()
 	glFrontFace(GL_CCW);
 	positionCamera();
 
-	glEnable(GL_NORMALIZE);
-	glDisable(GL_LIGHTING);
-
 	glTranslatef(0.f, -height / 2.f, 0.f);
 	glColor3f(0.f, 0.f, 0.f);
+
+	glEnable(GL_NORMALIZE);
+	setGlobalLight();
 
 	// calculate runtime between now and last draw call
 	float dT = runtime();
@@ -97,6 +97,23 @@ void draw()
 
 	checkGLError();
 	glutSwapBuffers();
+}
+
+void setGlobalLight()
+{
+	// Set lighting effect colours and positional parameter
+	float ambient[] = { .2f, .2f, .2f, 1.f };      // ambient light (20% white)
+	float diffuse[] = { .5f, .5f, .5f, 1.f };      // diffuse light (50% white)
+	float specular[] = { 1.f, 1.f, 1.f, 1.f };      // specular light (100% white)
+	float position[] = { 1.f, .5f, 1.f, 0.f };      // directional light (w = 0)
+	// Attach properties to single light source (GL_LIGHT0)
+	glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);      // set ambient parameter of light source
+	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);      // set diffuse parameter of light source
+	glLightfv(GL_LIGHT0, GL_SPECULAR, specular);    // set specular parameter of light source
+	glLightfv(GL_LIGHT0, GL_POSITION, position);    // set direction vector of light source
+	// Enable this lighting effects
+	glEnable(GL_LIGHTING);  // enable scene lighting (required to enable a light source)
+	glEnable(GL_LIGHT0);    // enable light source with attached parameters (GL_LIGHT0)    
 }
 
 void positionCamera()

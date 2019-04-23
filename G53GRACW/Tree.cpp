@@ -61,8 +61,18 @@ void Tree::display()
 void Tree::leaves()
 {
 	float rad = ranNum / 15;		// radius of leaves
+	float mat_colour[]                      // colour reflected by diffuse light
+		= { 0.133f, 0.545f, 0.133f, 1.f };         // mid brown
+	float mat_ambient[]                     // ambient colour
+		= { 0.133f, 0.545f, 0.133f, 1.f };         // dark brown
+	float mat_spec[]                        // specular colour
+		= { 0.f, 0.f, 0.f, 1.f };               // no reflectance (black)
 
-	glPushAttrib(GL_ALL_ATTRIB_BITS);
+	glPushAttrib(GL_ALL_ATTRIB_BITS);       // save current style attributes (inc. material properties)
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient); // set colour for ambient reflectance
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_colour);  // set colour for diffuse reflectance
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_spec);   // set colour for specular reflectance
+
 	glColor3f(0.133f, 0.545f, 0.133f);
 
 	glutSolidCone(rad, (rad * 5) / 4, 50, 50);
@@ -77,8 +87,18 @@ void Tree::trunk()
 	float r = ranNum / 100;					// ratio of radius to height
 	float x = r, z = 0.f;                   // initialise x and z on right of cylinder centre
 	float t = 0.f;                          // initialise angle as 0
+	float mat_colour[]                      // colour reflected by diffuse light
+		= { 0.545f, 0.271f, 0.075f, 1.f };         // mid brown
+	float mat_ambient[]                     // ambient colour
+		= { 0.545f, 0.271f, 0.075f, 1.f };         // dark brown
+	float mat_spec[]                        // specular colour
+		= { 0.f, 0.f, 0.f, 1.f };               // no reflectance (black)
 
-	glPushAttrib(GL_ALL_ATTRIB_BITS);       // save current style attributes
+	glPushAttrib(GL_ALL_ATTRIB_BITS);       // save current style attributes (inc. material properties)
+	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient); // set colour for ambient reflectance
+	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_colour);  // set colour for diffuse reflectance
+	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_spec);   // set colour for specular reflectance
+
 	glColor3f(0.545f, 0.271f, 0.075f);         // set face colour to brown (rgb)
 
 	do
