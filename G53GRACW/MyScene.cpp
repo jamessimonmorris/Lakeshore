@@ -178,7 +178,7 @@ void keyPressed(int keyCode, int xm, int ym)
 	}
 	else if (keyCode == GLUT_KEY_PAGE_DOWN)
 	{
-		camh -= 5.f;
+		camh -= 5.f; 
 
 		if (camh < 0.f)
 			camh = 0.f;

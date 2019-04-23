@@ -15,6 +15,7 @@
 #include "TreeLong.h"
 #include <string>
 #include <map>
+#include "TextureManager.h"
 
 void setup();
 float runtime();
