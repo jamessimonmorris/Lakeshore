@@ -33,6 +33,7 @@ private:
 	bool toTextureB = false, toTextureR = false, toTextureW = false, toTextureF = false;
 	GLuint texidB, texidR, texidW, texidF;
 
-	int rotors = 4;
+	float speed = 0.0074444;
+	int rotors = 6;
 };
 #endif

@@ -3,8 +3,7 @@
 Windmill::Windmill(GLuint _texidB, GLuint _texidR, GLuint _texidW, GLuint _texidF) :
 	angle(0.f)
 {
-	float speed = 0.0074444;
-	animationTime = (360 / rotors) * speed;
+	animationTime = (float) ((360 / rotors) * speed);
 
 	texidB = _texidB;
 	if (texidB != NULL) toTextureB = true;
@@ -28,9 +27,13 @@ Windmill::Windmill() :
 
 void Windmill::update(float dT)
 {
+	animationTime = (float)((360 / rotors) * speed);
+
 	aT = fmod(aT + dT, animationTime);
 	int steps = 360 / (rotors * 5);
 	float aS = steps * aT / animationTime;
+
+	printf("%f\n", animationTime);
 
 	if (aS < 1.f)
 	{
@@ -38,74 +41,72 @@ void Windmill::update(float dT)
 	}
 	else if (aS < 2.f)
 	{
-		angle = 5.f;
+		angle = -360 / (rotors * steps);
 	}
 	else if (aS < 3.f)
 	{
-		angle = 10.f;
+		angle = -2 * (360 / (rotors * steps));
 	}
 	else if (aS < 4.f)
 	{
-		angle = 15.f;
+		angle = -3 * (360 / (rotors * steps));
 	}
 	else if (aS < 5.f)
 	{
-		angle = 20.f;
+		angle = -4 * (360 / (rotors * steps));
 	}
 	else if (aS < 6.f)
 	{
-		angle = 25.f;
+		angle = -5 * (360 / (rotors * steps));
 	}
 	else if (aS < 7.f)
 	{
-		angle = 30.f;
+		angle = -6 * (360 / (rotors * steps));
 	}
 	else if (aS < 8.f)
 	{
-		angle = 35.f;
+		angle = -7 * (360 / (rotors * steps));
 	}
 	else if (aS < 9.f)
 	{
-		angle = 40.f;
+		angle = -8 * (360 / (rotors * steps));
 	}
 	else if (aS < 10.f)
 	{
-		angle = 45.f;
+		angle = -9 * (360 / (rotors * steps));
 	}
 	else if (aS < 11.f)
 	{
-		angle = 50.f;
+		angle = -10 * (360 / (rotors * steps));
 	}
 	else if (aS < 12.f)
 	{
-		angle = 55.f;
+		angle = -11 * (360 / (rotors * steps));
 	}
 	else if (aS < 13.f)
 	{
-		angle = 60.f;
+		angle = -12 * (360 / (rotors * steps));
 	}
 	else if (aS < 14.f)
 	{
-		angle = 65.f;
+		angle = -13 * (360 / (rotors * steps));
 	}
 	else if (aS < 15.f)
 	{
-		angle = 70.f;
+		angle = -14 * (360 / (rotors * steps));
 	}
 	else if (aS < 16.f)
 	{
-		angle = 75.f;
+		angle = -15 * (360 / (rotors * steps));
 	}
 	else if (aS < 17.f)
 	{
-		angle = 80.f;
+		angle = -16 * (360 / (rotors * steps));
 	}
 	else
 	{
-		angle = 85.f;
+		angle = -17 * (360 / (rotors * steps));
 	}
-
-	angle = -angle;
 }
 
 void Windmill::setRotors(int _rotors)
@@ -168,9 +169,9 @@ void Windmill::drawBase(float radius)
 	float t = 0.f;                          // initialise angle as 0
 	float h = 7.5f;
 	float mat_colour[]                      // colour reflected by diffuse light
-		= { 0.796f, 0.255f, 0.329f, 1.f };         // mid brown
+		= { 0.729f, 0.416f, 0.345f, 1.f };         // mid brown
 	float mat_ambient[]                     // ambient colour
-		= { 0.696f, 0.155f, 0.229f, 1.f };         // dark brown
+		= { 0.829f, 0.516f, 0.445f, 1.f };         // dark brown
 	float mat_spec[]                        // specular colour
 		= { 0.f, 0.f, 0.f, 1.f };               // no reflectance (black)
 
@@ -219,9 +220,9 @@ void Windmill::drawRoof(float radius)
 	float r = radius * 0.99;                        // ratio of radius to height
 
 	float mat_colour[]                      // colour reflected by diffuse light
-		= { 0.231f, 0.416f, 0.627f, 1.f };         // mid brown
+		= { 0.265f, 0.386f, 0.661f, 1.f };         // mid brown
 	float mat_ambient[]                     // ambient colour
-		= { 0.231f, 0.416f, 0.627f, 1.f };         // dark brown
+		= { 0.365f, 0.486f, 0.761f, 1.f };         // dark brown
 	float mat_spec[]                        // specular colour
 		= { 0.f, 0.f, 0.f, 1.f };               // no reflectance (black)
 
