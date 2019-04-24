@@ -6,7 +6,7 @@ void setup()
 	height = 800;                                   // define in your header: int width, height;
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE);  // enable 3D rendering and double buffering
 	glutInitWindowSize(width, height);              // set window size
-	glutCreateWindow("My Scene");                   // create and show window (named MyScene)
+	glutCreateWindow("The Farm");                   // create and show window (named MyScene)
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
@@ -19,7 +19,7 @@ void setup()
 	skybox[1] = textureManager.loadImage("Textures/skybox/skybox_right.bmp");
 	skybox[2] = textureManager.loadImage("Textures/skybox/skybox_front.bmp");
 	skybox[3] = textureManager.loadImage("Textures/skybox/skybox_back.bmp");
-	skybox[4] = textureManager.loadImage("Textures/skybox/skybox_down.bmp");
+	skybox[4] = textureManager.loadImage("Textures/skybox1/floor.bmp");
 	skybox[5] = textureManager.loadImage("Textures/skybox/skybox_up.bmp");
 	stage->setTextures(skybox);
 	objects["_stage"] = stage;           // Add to objects map with id "stage"
@@ -28,27 +28,44 @@ void setup()
 	GLuint roof = textureManager.loadImage("Textures/roof.bmp"); if (roof != NULL) printf("roof loaded\n");
 	GLuint rotorWood = textureManager.loadImage("Textures/rotorwood.bmp"); if (rotorWood != NULL) printf("rotor wood loaded\n");
 	GLuint rotorFabric = textureManager.loadImage("Textures/rotorfabric.bmp"); if (rotorFabric != NULL) printf("rotor fabric loaded\n");
-	windmill = new Windmill(brick, roof, rotorWood, rotorFabric);
-	windmill->size(scale);
-	objects["windmill"] = windmill;
+	windmill[0] = new Windmill(brick, roof, rotorWood, rotorFabric);
+	windmill[0]->orientation(0.f, -13.3f, 0.f);
+	windmill[0]->size(scale);
+	objects["windmill"] = windmill[0];
 
 	srand((int)time(0));							// Seed rand() using current time
 
 	GLuint bark = textureManager.loadImage("Textures/bark.bmp");
-	Tree* tree = new Tree(randomNumGen(), bark);
-	tree->position(500.f, 0.f, 0.f);
-	tree->size(scale);
-	objects["tree"] = tree;
+	GLuint leaves = textureManager.loadImage("Textures/leaves1.bmp");
+	tree[0] = new Tree(randomNumGen(), bark, leaves);
+	tree[0]->position(556.f, 0.f, -456.f);
+	tree[0]->size(scale);
+	objects["tree"] = tree[0];
 
-	Tree* tree1 = new Tree(randomNumGen(), bark);
-	tree1->position(-360.f, 0.f, -173.f);
-	tree1->size(scale);
-	objects["tree1"] = tree1;
+	tree[1] = new Tree(randomNumGen(), bark, leaves);
+	tree[1]->position(-350.f, 0.f, -345.f);
+	tree[1]->size(scale);
+	objects["tree1"] = tree[1];
 
-	TreeLong* treeL = new TreeLong(randomNumGen(), bark);
-	treeL->position(-450.f, 0.f, 250.f);
-	treeL->size(scale);
-	objects["treeL"] = treeL;
+	tree[2] = new Tree(randomNumGen(), bark, leaves);
+	tree[2]->position(650.f, 0.f, 550.f);
+	tree[2]->size(scale);
+	objects["tree2"] = tree[2];
+
+	tree[3] = new Tree(randomNumGen(), bark, leaves);
+	tree[3]->position(-650.f, 0.f, 250.f);
+	tree[3]->size(scale);
+	objects["tree3"] = tree[3];
+
+	tree[4] = new Tree(randomNumGen(), bark, leaves);
+	tree[4]->position(-584.f, 0.f, -97.f);
+	tree[4]->size(scale);
+	objects["tree4"] = tree[4];
+
+	tree[5] = new Tree(randomNumGen(), bark, leaves);
+	tree[5]->position(700.f, 0.f, -100.f);
+	tree[5]->size(scale);
+	objects["tree5"] = tree[5];
 	
 	reshape(width, height);
 	prevTime = glutGet(GLUT_ELAPSED_TIME);
@@ -78,7 +95,7 @@ void reshape(int _width, int _height)
 	glLoadIdentity();     // reset matrix
 
 	if (!ortho)
-		gluPerspective(60.0, aspect, 50.0, camrad*100.f);
+		gluPerspective(60.0, aspect, 10.0, camrad*100.f);
 	else
 		glOrtho(-width, width, -height, height, 500.f, camrad*100.f);       // orthographic
 
@@ -98,7 +115,40 @@ void draw()
 	glFrontFace(GL_CCW);
 	positionCamera();
 
-	glTranslatef(0.f, -height / 3.f, 0.f);
+	float diff = 2800.f;
+	switch (view)
+	{
+	case 1:
+		glTranslatef(diff, -height / 3.f, -diff);
+		break;
+	case 2:
+		glTranslatef(0.f, -height / 3.f, -diff);
+		break;
+	case 3:
+		glTranslatef(-diff, -height / 3.f, -diff);
+		break;
+	case 4:
+		glTranslatef(diff, -height / 3.f, 0.f);
+		break;
+	case 5:
+		glTranslatef(0.f, -height / 3.f, 0.f);
+		break;
+	case 6:
+		glTranslatef(-diff, -height / 3.f, 0.f);
+		break;
+	case 7:
+		glTranslatef(diff, -height / 3.f, diff);
+		break;
+	case 8:
+		glTranslatef(0.f, -height / 3.f, diff);
+		break;
+	case 9:
+		glTranslatef(-diff, -height / 3.f, diff);
+		break;
+	default:
+		glTranslatef(0.f, -height / 3.f, 0.f);
+		break;
+	}
 	glColor3f(0.f, 0.f, 0.f);
 
 	glEnable(GL_NORMALIZE);
@@ -126,7 +176,8 @@ void setGlobalLight()
 {
 	// Set lighting effect colours and positional parameter
 	float ambient[] = { .2f, .2f, .2f, 1.f };      // ambient light (20% white)
-	float diffuse[] = { .5f, .5f, .5f, 1.f };      // diffuse light (50% white)
+	float diffuse[] = { .6f, .6f, .6f, 1.f };      // diffuse light (50% white)
+	//float specular[] = { .953f, .51f, .208f, 1.f };      // specular light (100% white)
 	float specular[] = { 1.f, 1.f, 1.f, 1.f };      // specular light (100% white)
 	float position[] = { 1.f, .5f, 1.f, 0.f };      // directional light (w = 0)
 	// Attach properties to single light source (GL_LIGHT0)
@@ -143,8 +194,7 @@ void positionCamera()
 {
 	cameraRadius();                                 // calculate current camera position
 	eye[0] = camrad * sin(camangle);                  // set eye x (at camrad*sin(0)[ = 0])
-	eye[1] = camh * zoom;
-	//eye[1] = cen[1];                                // set eye y (at 0)
+	eye[1] = camh * zoom;							// set eye y (at 0)
 	eye[2] = camrad * cos(camangle);                  // set eye z (at camrad*cos(0)[ = 1])
 	gluLookAt(eye[0], eye[1], eye[2],               // eye position
 		cen[0], cen[1], cen[2],               // point that you are looking at (origin)
@@ -153,8 +203,7 @@ void positionCamera()
 
 void cameraRadius()
 {
-	camrad = (height / 2.f) / tan(M_PI / zoom);
-	//camrad = (height / 2.f) / tan(M_PI / 8.f);      // calcualte camera radius based on height
+	camrad = (height / 2.f) / tan(M_PI / zoom);		// calculate camera radius based on height
 }
 
 void keyPressed(int keyCode, int xm, int ym)
@@ -168,28 +217,28 @@ void keyPressed(int keyCode, int xm, int ym)
 	{              // right arrow (move camera right around scene)
 		camangle += incr;     // increment camera angle
 	}
-	else if (keyCode == GLUT_KEY_UP)
+	else if (keyCode == GLUT_KEY_UP && !ortho)
 	{
 		zoom -= 1.f;
 
-		if (zoom < 00.f)
-			zoom = 00.f;
+		if (zoom < 10.f)
+			zoom = 10.f;
 	}
-	else if (keyCode == GLUT_KEY_DOWN)
+	else if (keyCode == GLUT_KEY_DOWN && !ortho)
 	{
 		zoom += 1.f;
 
 		if (zoom > 30.f)
 			zoom = 30.f;
 	}
-	else if (keyCode == GLUT_KEY_PAGE_UP)
+	else if (keyCode == GLUT_KEY_PAGE_UP && !ortho)
 	{
 		camh += 5.f;
 
 		if (camh > 120.f)
 			camh = 120.f;
 	}
-	else if (keyCode == GLUT_KEY_PAGE_DOWN)
+	else if (keyCode == GLUT_KEY_PAGE_DOWN && !ortho)
 	{
 		camh -= 5.f; 
 
@@ -208,6 +257,10 @@ void keyPressed(unsigned char key, int xm, int ym)
 		camangle = -0.785398f;                   //reset angle to 0.0
 		zoom = 24.f;
 		camh = 45.f;
+
+		cen[0] = 0.f;
+		cen[1] = 0.f;
+		cen[2] = 0.f;
 	}
 	else if (key == 'a')
 	{
@@ -217,28 +270,28 @@ void keyPressed(unsigned char key, int xm, int ym)
 	{
 		camangle += incr;
 	}
-	else if (key == 'w')
+	else if (key == 'w' && !ortho)
 	{
 		zoom -= 1.f;
 
 		if (zoom < 10.f)
 			zoom = 10.f;
 	}
-	else if (key == 's')
+	else if (key == 's' && !ortho)
 	{
 		zoom += 1.f;
 
 		if (zoom > 30.f)
 			zoom = 30.f;
 	}
-	else if (key == 'e')
+	else if (key == 'e' && !ortho)
 	{
 		camh += 5.f;
 
 		if (camh > 120.f)
 			camh = 120.f;
 	}
-	else if (key == 'q')
+	else if (key == 'q' && !ortho)
 	{
 		camh -= 5.f;
 
@@ -251,21 +304,65 @@ void keyPressed(unsigned char key, int xm, int ym)
 		{
 			ortho = false;
 			scale = 75.f;
+			camh = 45.f;
 		}
 		else
 		{
 			ortho = true;
 			scale = 50.f;
+			camh = 45.f;
 		}
 		reshape(width, height);
 	}
 	else if (key == '+' || key == '=')
 	{
-		windmill->setRotors((windmill->getRotors()) + 1);
+		for (int i = 0; i < windmills; i++)
+		{
+			windmill[i]->setRotors((windmill[i]->getRotors()) + 1);
+		}
 	}
 	else if (key == '_' || key == '-')
 	{
-		windmill->setRotors((windmill->getRotors()) - 1);
+		for (int i = 0; i < windmills; i++)
+		{
+			windmill[i]->setRotors((windmill[i]->getRotors()) - 1);
+		}
+	}
+	else if (key == '1')
+	{
+		view = 1;
+	}
+	else if (key == '2')
+	{
+		view = 2;
+	}
+	else if (key == '3')
+	{
+		view = 3;
+	}
+	else if (key == '4')
+	{
+		view = 4;
+	}
+	else if (key == '5')
+	{
+		view = 5;
+	}
+	else if (key == '6')
+	{
+		view = 6;
+	}
+	else if (key == '7')
+	{
+		view = 7;
+	}
+	else if (key == '8')
+	{
+		view = 8;
+	}
+	else if (key == '9')
+	{
+		view = 9;
 	}
 
 	printf("Angle: %f; Height: %f; Zoom: %f\n", camangle, camh, zoom);

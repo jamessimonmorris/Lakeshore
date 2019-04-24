@@ -12,7 +12,7 @@ using namespace std;
 class Tree : public DisplayableObject       // a Tree is a DisplayableObject
 {
 public:
-	Tree(float, GLuint _texid);                                 // constructor
+	Tree(float, GLuint, GLuint);                                 // constructor
 	Tree(float);
 	~Tree() { };                            // destructor
 	void display();                         // overloaded virtual display function
@@ -21,9 +21,10 @@ private:
 	void leaves();
 
 	float ranNum;
-	int tier;
+	int tier, height;
+	bool longTree;
 
-	bool toTexture = false;
-	GLuint texid;
+	bool toTexture = false, toTextureL = false;
+	GLuint texid, texidL;
 };
 #endif

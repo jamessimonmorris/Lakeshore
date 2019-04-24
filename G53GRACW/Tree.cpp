@@ -1,17 +1,21 @@
 #include "Tree.h"
 
-Tree::Tree(float randomNum, GLuint _texid) :
+Tree::Tree(float randomNum, GLuint _texid, GLuint _texidL) :
 	ranNum(randomNum),
-	tier((int)ranNum % 2)
+	tier((int)ranNum % 2),
+	height(((int)ranNum % 2) + 6)
 {
 	texid = _texid;
-	if (texid != NULL)
-		toTexture = true;
+	if (texid != NULL) toTexture = true;
+
+	texidL = _texidL;
+	if (texidL != NULL) toTextureL = true;
 }
 
 Tree::Tree(float randomNum) :
 	ranNum(randomNum),
-	tier((int)ranNum % 2)
+	tier((int)ranNum % 2),
+	height(((int)ranNum % 2) + 6)
 {
 }
 
@@ -31,10 +35,20 @@ void Tree::display()
 		char curr;
 		string sequence;
 
-		if (tier)
-			sequence = "[tt[>lll]]";
-		else
-			sequence = "[tt[>llll]]";
+		switch ((int)ranNum % 2)
+		{
+		case 0:
+			longTree = false;
+			if (tier)
+				sequence = "[tt[>lll]]";
+			else
+				sequence = "[tt[>llll]]";
+			break;
+		case 1:
+			longTree = true;
+			sequence = "[ttt[>l]]";
+			break;
+		}
 
 		for (unsigned int i = 0; i < sequence.size(); i++)
 		{
@@ -61,7 +75,6 @@ void Tree::display()
 				break;
 			}
 		}
-
 		glPopAttrib();
 	}
 	glPopMatrix();
@@ -69,7 +82,11 @@ void Tree::display()
 
 void Tree::leaves()
 {
+	float res = (2 * M_PI) / 50;                // resolution (in radians: equivalent to 18 degrees)
 	float rad = ranNum / 15;		// radius of leaves
+	float newRad = rad - 0.04;
+	float x = newRad, z = 0.f;                   // initialise x and z on right of cylinder centre
+	float t = 0.f;                          // initialise angle as 0
 	float mat_colour[]                      // colour reflected by diffuse light
 		= { 0.133f, 0.545f, 0.133f, 1.f };         // mid brown
 	float mat_ambient[]                     // ambient colour
@@ -82,9 +99,56 @@ void Tree::leaves()
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_colour);  // set colour for diffuse reflectance
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_spec);   // set colour for specular reflectance
 
-	glColor3f(0.133f, 0.545f, 0.133f);
+	if (toTextureL)
+	{
+		glEnable(GL_TEXTURE_2D);                // enable texturing
+		glDisable(GL_CULL_FACE);
+		//glBindTexture(GL_TEXTURE_2D, texidR);    // bind 2D texture to shape
+		GLUquadric* quadratic = gluNewQuadric();
+		gluQuadricNormals(quadratic, GLU_SMOOTH);
+		gluQuadricTexture(quadratic, GL_TRUE);
+		glBindTexture(GL_TEXTURE_2D, texidL);
+		if (longTree)
+			gluCylinder(quadratic, rad, 0.f, height, 50, 50); //cone
+		else
+			gluCylinder(quadratic, rad, 0.f, (rad * 5) / 4, 50, 50); //cone
+	}
+	else
+	{
+		if (longTree)
+			gluCylinder(gluNewQuadric(), rad, 0.f, height, 50, 50); //cone
+		else
+			gluCylinder(gluNewQuadric(), rad, 0.f, (rad * 5) / 4, 50, 50); //cone
+	}
+	glEnable(GL_CULL_FACE);
 
-	glutSolidCone(rad, (rad * 5) / 4, 50, 50);
+	glPushMatrix();
+	{
+		glRotatef(90.f, 1.f, 0.f, 0.f);
+		glTranslatef(0.f, 0.05f, 0.f);
+
+		do
+		{                                     // create branch with multiple QUADS
+			glBegin(GL_TRIANGLE_FAN);
+			glVertex3f(0.f, 0.f, 0.f);
+			// Create first points (with normals)
+			glNormal3f(0.f, -1.f, 0.f);          // define a normal facing out from the centre (0,0,0)
+			if (toTextureL) glTexCoord2f(0.f, 0.f);  // assign texture coordinates to next vertex (u,v) = (0,0)
+			glVertex3f(x, 0.f, z);          // bottom
+			// Iterate around circle
+			t += res;                       // add increment to angle
+			x = newRad * cos(t);                   // move x and z around circle
+			z = newRad * sin(t);
+			// Close quad (with new vertex normals)
+			glNormal3f(0.f, -1.f, 0.f);          // define a new normal now that x,z have moved around
+			if (toTextureL) glTexCoord2f(1.f, 1.f);  // assign texture coordinates to next vertex (u,v) = (1,0)
+			glVertex3f(x, 0.f, z);          // bottom
+			glEnd();
+		} while (t <= 2 * M_PI);                // full rotation around circle
+	}
+	glPopMatrix();
+	
+	if (toTextureL) glDisable(GL_TEXTURE_2D);    // disable texturing following this point
 
 	glTranslatef(0.f, 0.f, (rad * 3) / 5);            // translate to top of branch
 	glPopAttrib();

@@ -21,7 +21,7 @@ Windmill::Windmill(GLuint _texidB, GLuint _texidR, GLuint _texidW, GLuint _texid
 Windmill::Windmill() :
 	angle(0.f)
 {
-	float speed = 0.0074444;
+	double speed = 0.0074444;
 	animationTime = (360 / rotors) * speed;
 }
 
@@ -32,8 +32,6 @@ void Windmill::update(float dT)
 	aT = fmod(aT + dT, animationTime);
 	int steps = 360 / (rotors * 5);
 	float aS = steps * aT / animationTime;
-
-	printf("%f\n", animationTime);
 
 	if (aS < 1.f)
 	{
@@ -124,24 +122,27 @@ int Windmill::getRotors()
 // define display function (to be called by MyScene)
 void Windmill::display()
 {
-	glPushAttrib(GL_ALL_ATTRIB_BITS);
+	glPushMatrix();
+	{
+		glPushAttrib(GL_ALL_ATTRIB_BITS);
 
-	glTranslatef(pos[0], pos[1], pos[2]);               // Position
-	glScalef(scale[0], scale[1], scale[2]);             // Scale
-	glRotatef(rotation[1], 0.f, 1.f, 0.f);              // Set orientation (Y)
-	glRotatef(rotation[2], 0.f, 0.f, 1.f);              // Set orientation (Z)
-	glRotatef(rotation[0], 1.f, 0.f, 0.f);              // Set orientation (X)
+		glTranslatef(pos[0], pos[1], pos[2]);               // Position
+		glScalef(scale[0], scale[1], scale[2]);             // Scale
+		glRotatef(rotation[1], 0.f, 1.f, 0.f);              // Set orientation (Y)
+		glRotatef(rotation[2], 0.f, 0.f, 1.f);              // Set orientation (Z)
+		glRotatef(rotation[0], 1.f, 0.f, 0.f);              // Set orientation (X)
 
-	drawWindmill();
+		drawWindmill();
 
-	glPopAttrib();
+		glPopAttrib();
+	}
+	glPopMatrix();
 }
 
 void Windmill::drawWindmill()
 {
 	float radius = 2.f;
 
-	glTranslatef(0.f, 0.f, 0.f);                            // move draw position
 	glPushMatrix();                                         // save state
 	{
 		drawBase(radius);											// draw base
@@ -224,7 +225,7 @@ void Windmill::drawRoof(float radius)
 	float mat_ambient[]                     // ambient colour
 		= { 0.365f, 0.486f, 0.761f, 1.f };         // dark brown
 	float mat_spec[]                        // specular colour
-		= { 0.f, 0.f, 0.f, 1.f };               // no reflectance (black)
+		= { 0.1f, 0.1f, 0.1f, 1.f };               // no reflectance (black)
 
 	glPushAttrib(GL_ALL_ATTRIB_BITS);       // save current style attributes (inc. material properties)
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient); // set colour for ambient reflectance
@@ -234,7 +235,6 @@ void Windmill::drawRoof(float radius)
 	if (toTextureR)
 	{
 		glEnable(GL_TEXTURE_2D);                // enable texturing
-		//glBindTexture(GL_TEXTURE_2D, texidR);    // bind 2D texture to shape
 		GLUquadric* quadratic = gluNewQuadric();
 		gluQuadricNormals(quadratic, GLU_SMOOTH);
 		gluQuadricTexture(quadratic, GL_TRUE);
@@ -264,7 +264,7 @@ void Windmill::drawRotors()
 	float mat_colour[]                      // colour reflected by diffuse light
 		= { 0.412f, 0.412f, 0.412f, 1.f };         // mid brown
 	float mat_ambient[]                     // ambient colour
-		= { 0.312f, 0.312f, 0.312f, 1.f };         // dark brown
+		= { 0.512f, 0.512f, 0.512f, 1.f };         // dark brown
 	float mat_spec[]                        // specular colour
 		= { 0.f, 0.f, 0.f, 1.f };               // no reflectance (black)
 
@@ -326,7 +326,7 @@ void Windmill::drawRotor()
 	float mat_colour[]                      // colour reflected by diffuse light
 		= { 0.925f, 0.925f, 0.925f, 1.f };         // mid brown
 	float mat_ambient[]                     // ambient colour
-		= { 0.825f, 0.825f, 0.825f, 1.f };         // dark brown
+		= { 1.f, 1.f, 1.f, 1.f };         // dark brown
 	float mat_spec[]                        // specular colour
 		= { 0.f, 0.f, 0.f, 1.f };               // no reflectance (black)
 

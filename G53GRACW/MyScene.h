@@ -40,9 +40,14 @@ void keyPressed(unsigned char, int, int);
 
 float ranNum;
 bool ortho = false;
-int scale = 75.f;
+float scale = 75.f;
+int view = 5;
 
 TextureManager textureManager;
-Windmill* windmill;
+
+const int windmills = 1;
+
+Windmill* windmill[windmills];
+Tree* tree[10];
 
 #endif
