@@ -24,9 +24,11 @@ void setup()
 	stage->setTextures(skybox);
 	objects["_stage"] = stage;           // Add to objects map with id "stage"
 
-	GLuint brick = textureManager.loadImage("Textures/brick.bmp");
-	GLuint roof = textureManager.loadImage("Textures/roof.bmp");
-	Windmill* windmill = new Windmill(brick, roof);
+	GLuint brick = textureManager.loadImage("Textures/brick.bmp"); if (brick != NULL) printf("brick loaded\n");
+	GLuint roof = textureManager.loadImage("Textures/roof.bmp"); if (roof != NULL) printf("roof loaded\n");
+	GLuint rotorWood = textureManager.loadImage("Textures/rotorwood.bmp"); if (rotorWood != NULL) printf("rotor wood loaded\n");
+	GLuint rotorFabric = textureManager.loadImage("Textures/rotorfabric.bmp"); if (rotorFabric != NULL) printf("rotor fabric loaded\n");
+	windmill = new Windmill(brick, roof, rotorWood, rotorFabric);
 	windmill->size(scale);
 	objects["windmill"] = windmill;
 
@@ -76,9 +78,9 @@ void reshape(int _width, int _height)
 	glLoadIdentity();     // reset matrix
 
 	if (!ortho)
-		gluPerspective(60.0, aspect, 1.0, camrad*10.f);
+		gluPerspective(60.0, aspect, 50.0, camrad*100.f);
 	else
-		glOrtho(-width, width, -height, height, 1.f, camrad*100.f);       // orthographic
+		glOrtho(-width, width, -height, height, 500.f, camrad*100.f);       // orthographic
 
 	glViewport(0, 0, width, height);
 	glMatrixMode(GL_MODELVIEW); // return matrix mode to modelling and viewing
@@ -170,8 +172,8 @@ void keyPressed(int keyCode, int xm, int ym)
 	{
 		zoom -= 1.f;
 
-		if (zoom < 10.f)
-			zoom = 10.f;
+		if (zoom < 00.f)
+			zoom = 00.f;
 	}
 	else if (keyCode == GLUT_KEY_DOWN)
 	{
@@ -256,6 +258,14 @@ void keyPressed(unsigned char key, int xm, int ym)
 			scale = 50.f;
 		}
 		reshape(width, height);
+	}
+	else if (key == '+' || key == '=')
+	{
+		windmill->setRotors((windmill->getRotors()) + 1);
+	}
+	else if (key == '_' || key == '-')
+	{
+		windmill->setRotors((windmill->getRotors()) - 1);
 	}
 
 	printf("Angle: %f; Height: %f; Zoom: %f\n", camangle, camh, zoom);

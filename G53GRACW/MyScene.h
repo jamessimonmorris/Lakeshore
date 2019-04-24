@@ -43,5 +43,6 @@ bool ortho = false;
 int scale = 75.f;
 
 TextureManager textureManager;
+Windmill* windmill;
 
 #endif

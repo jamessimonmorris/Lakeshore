@@ -1,26 +1,36 @@
 #include "Windmill.h"
 
-Windmill::Windmill(GLuint _texidB, GLuint _texidR) :
-	animationTime(0.67f),
+Windmill::Windmill(GLuint _texidB, GLuint _texidR, GLuint _texidW, GLuint _texidF) :
 	angle(0.f)
 {
+	float speed = 0.0074444;
+	animationTime = (360 / rotors) * speed;
+
 	texidB = _texidB;
 	if (texidB != NULL) toTextureB = true;
 
 	texidR = _texidR;
 	if (texidR != NULL) toTextureR = true;
+
+	texidW = _texidW;
+	if (texidW != NULL) toTextureW = true;
+
+	texidF = _texidF;
+	if (texidF != NULL) toTextureF = true;
 }
 
 Windmill::Windmill() :
-	animationTime(0.67f),
 	angle(0.f)
 {
+	float speed = 0.0074444;
+	animationTime = (360 / rotors) * speed;
 }
 
 void Windmill::update(float dT)
 {
 	aT = fmod(aT + dT, animationTime);
-	float aS = 18.f * aT / animationTime;
+	int steps = 360 / (rotors * 5);
+	float aS = steps * aT / animationTime;
 
 	if (aS < 1.f)
 	{
@@ -96,6 +106,18 @@ void Windmill::update(float dT)
 	}
 
 	angle = -angle;
+}
+
+void Windmill::setRotors(int _rotors)
+{
+	if (_rotors > 8 || _rotors < 4) {}
+	else
+		rotors = _rotors;
+}
+
+int Windmill::getRotors()
+{
+	return rotors;
 }
 
 // define display function (to be called by MyScene)
@@ -199,7 +221,7 @@ void Windmill::drawRoof(float radius)
 	float mat_colour[]                      // colour reflected by diffuse light
 		= { 0.231f, 0.416f, 0.627f, 1.f };         // mid brown
 	float mat_ambient[]                     // ambient colour
-		= { 0.131f, 0.316f, 0.527f, 1.f };         // dark brown
+		= { 0.231f, 0.416f, 0.627f, 1.f };         // dark brown
 	float mat_spec[]                        // specular colour
 		= { 0.f, 0.f, 0.f, 1.f };               // no reflectance (black)
 
@@ -211,11 +233,17 @@ void Windmill::drawRoof(float radius)
 	if (toTextureR)
 	{
 		glEnable(GL_TEXTURE_2D);                // enable texturing
-		glBindTexture(GL_TEXTURE_2D, texidR);    // bind 2D texture to shape
+		//glBindTexture(GL_TEXTURE_2D, texidR);    // bind 2D texture to shape
+		GLUquadric* quadratic = gluNewQuadric();
+		gluQuadricNormals(quadratic, GLU_SMOOTH);
+		gluQuadricTexture(quadratic, GL_TRUE);
+		glBindTexture(GL_TEXTURE_2D, texidR);
+		gluSphere(quadratic, r, 50, 50);
 	}
-
-	glColor3f(0.231f, 0.416f, 0.627f);
-	glutSolidSphere(r, 50, 50);
+	else
+	{
+		gluSphere(gluNewQuadric(), r, 50, 50);
+	}
 
 	if (toTextureR) glDisable(GL_TEXTURE_2D);    // disable texturing following this point
 
@@ -267,32 +295,20 @@ void Windmill::drawRotors()
 	glRotatef(-90.f, 1.f, 0.f, 0.f);
 	glTranslatef(0.f, 0.f, h);
 
-	glutSolidCube(0.2);
+	glutSolidSphere(0.15, 20, 20);
 	glPopAttrib();
 
-	glPushMatrix();
+	for (int i = rotors; i > 0; i--)
 	{
-		drawRotor();
+		glPushMatrix();
+		{
+			drawRotor();
+		}
+		glPopMatrix();
+		glRotatef(-(360.f / rotors), 0.f, 0.f, 1.f);
 	}
-	glPopMatrix();
-	glRotatef(-90.f, 0.f, 0.f, 1.f);
-	glPushMatrix();
-	{
-		drawRotor();
-	}
-	glPopMatrix();
-	glRotatef(-90.f, 0.f, 0.f, 1.f);
-	glPushMatrix();
-	{
-		drawRotor();
-	}
-	glPopMatrix();
-	glRotatef(-90.f, 0.f, 0.f, 1.f);
-	glPushMatrix();
-	{
-		drawRotor();
-	}
-	glPopMatrix();
+
+	glRotatef(360.f / rotors, 0.f, 0.f, 1.f);
 }
 
 void Windmill::drawRotor()
@@ -318,27 +334,62 @@ void Windmill::drawRotor()
 	glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_colour);  // set colour for diffuse reflectance
 	glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_spec);   // set colour for specular reflectance
 
+	// Front wood
+	if (toTextureW)
+	{
+		glEnable(GL_TEXTURE_2D);                // enable texturing
+		glBindTexture(GL_TEXTURE_2D, texidW);    // bind 2D texture to shape
+	}
 	glBegin(GL_POLYGON);
-	//glColor3f(0.396f, 0.263f, 0.129f);
-	glColor3f(0.925f, 0.925f, 0.925f);
-	// Front
 	glNormal3f(z, z, p);
-	glVertex3f(z, length, z);
-	glVertex3f(-width, length, z);
-	glVertex3f(-width, length / 3, z);
-	glVertex3f(-width / 5, length / 3, z);
+	if (toTextureW) glTexCoord2f(0.f, 0.f);	// assign texture coordinates to next vertex (u,v) = (1,1)
 	glVertex3f(-width / 5, z, z);
+	if (toTextureW) glTexCoord2f(1.f, 0.f);	// assign texture coordinates to next vertex (u,v) = (1,1)
 	glVertex3f(z, z, z);
+	if (toTextureW) glTexCoord2f(1.f, 1.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	glVertex3f(z, length, z);
+	if (toTextureW) glTexCoord2f(0.f, 1.f);	// assign texture coordinates to next vertex (u,v) = (1,1)
+	glVertex3f(-width / 5, length, z);
 	glEnd();
+	if (toTextureW) glDisable(GL_TEXTURE_2D);    // disable texturing following this point
 
-	// Long Side
+	// Front fabric
+	if (toTextureF)
+	{
+		glEnable(GL_TEXTURE_2D);                // enable texturing
+		glBindTexture(GL_TEXTURE_2D, texidF);    // bind 2D texture to shape
+	}
+	glBegin(GL_POLYGON);
+	glNormal3f(z, z, p);
+	if (toTextureF) glTexCoord2f(0.f, 0.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	glVertex3f(-width, length / 3, -thickness / 3);
+	if (toTextureF) glTexCoord2f(1.f, 0.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	glVertex3f(-width / 5, length / 3, -thickness / 3);
+	if (toTextureF) glTexCoord2f(1.f, 1.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	glVertex3f(-width / 5, length, -thickness / 3);
+	if (toTextureF) glTexCoord2f(0.f, 1.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	glVertex3f(-width, length, -thickness / 3);
+	glEnd();
+	if (toTextureF) glDisable(GL_TEXTURE_2D);    // disable texturing following this point
+
+	// Long Wood Side
+	if (toTextureW)
+	{
+		glEnable(GL_TEXTURE_2D);                // enable texturing
+		glBindTexture(GL_TEXTURE_2D, texidW);    // bind 2D texture to shape
+	}
 	glBegin(GL_POLYGON);
 	glNormal3f(p, z, z);
-	glVertex3f(z, z, -thickness);
-	glVertex3f(z, length, -thickness);
-	glVertex3f(z, length, z);
+	if (toTextureW) glTexCoord2f(0.f, 0.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
 	glVertex3f(z, z, z);
+	if (toTextureW) glTexCoord2f(1.f, 0.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	glVertex3f(z, z, -thickness);
+	if (toTextureW) glTexCoord2f(1.f, 1.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	glVertex3f(z, length, -thickness);
+	if (toTextureW) glTexCoord2f(0.f, 1.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	glVertex3f(z, length, z);
 	glEnd();
+	if (toTextureW) glDisable(GL_TEXTURE_2D);    // disable texturing following this point
 
 	// Bottom
 	glBegin(GL_POLYGON);
@@ -349,50 +400,138 @@ void Windmill::drawRotor()
 	glVertex3f(z, z, z);
 	glEnd();
 
-	// Back
+	// Back wood
+	if (toTextureW)
+	{
+		glEnable(GL_TEXTURE_2D);                // enable texturing
+		glBindTexture(GL_TEXTURE_2D, texidW);    // bind 2D texture to shape
+	}
 	glBegin(GL_POLYGON);
 	glNormal3f(z, z, -p);
-	glVertex3f(z, length, -thickness);
+	if (toTextureW) glTexCoord2f(0.f, 0.f);	// assign texture coordinates to next vertex (u,v) = (1,1)
 	glVertex3f(z, z, -thickness);
+	if (toTextureW) glTexCoord2f(1.f, 0.f);	// assign texture coordinates to next vertex (u,v) = (1,1)
 	glVertex3f(-width / 5, z, -thickness);
-	glVertex3f(-width / 5, length / 3, -thickness);
-	glVertex3f(-width, length / 3, -thickness);
-	glVertex3f(-width, length, -thickness);
+	if (toTextureW) glTexCoord2f(1.f, 1.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	glVertex3f(-width / 5, length, -thickness);
+	if (toTextureW) glTexCoord2f(0.f, 1.f);	// assign texture coordinates to next vertex (u,v) = (1,1)
+	glVertex3f(z, length, -thickness);
 	glEnd();
+	if (toTextureW) glDisable(GL_TEXTURE_2D);    // disable texturing following this point
 
-	// Top
+	// Back fabric
+	if (toTextureF)
+	{
+		glEnable(GL_TEXTURE_2D);                // enable texturing
+		glBindTexture(GL_TEXTURE_2D, texidF);    // bind 2D texture to shape
+	}
+	glBegin(GL_POLYGON);
+	glNormal3f(z, z, -p);
+	if (toTextureF) glTexCoord2f(0.f, 0.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	glVertex3f(-width / 5, length / 3, -(2 * thickness) / 3);
+	if (toTextureF) glTexCoord2f(1.f, 0.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	glVertex3f(-width, length / 3, -(2 * thickness) / 3);
+	if (toTextureF) glTexCoord2f(1.f, 1.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	glVertex3f(-width, length, -(2 * thickness) / 3);
+	if (toTextureF) glTexCoord2f(0.f, 1.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	glVertex3f(-width / 5, length, -(2 * thickness) / 3);
+	glEnd();
+	if (toTextureF) glDisable(GL_TEXTURE_2D);    // disable texturing following this point
+
+	// Top Wood
+	if (toTextureW)
+	{
+		glEnable(GL_TEXTURE_2D);                // enable texturing
+		glBindTexture(GL_TEXTURE_2D, texidW);    // bind 2D texture to shape
+	}
 	glBegin(GL_POLYGON);
 	glNormal3f(z, p, z);
-	glVertex3f(z, length, -thickness);
-	glVertex3f(-width, length, -thickness);
-	glVertex3f(-width, length, z);
+	if (toTextureW) glTexCoord2f(0.f, 0.954f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	glVertex3f(-width / 5, length, z);
+	if (toTextureW) glTexCoord2f(1.f, 0.954f);  // assign texture coordinates to next vertex (u,v) = (1,1)
 	glVertex3f(z, length, z);
+	if (toTextureW) glTexCoord2f(1.f, 1.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	glVertex3f(z, length, -thickness);
+	if (toTextureW) glTexCoord2f(0.f, 1.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	glVertex3f(-width / 5, length, -thickness);
 	glEnd();
+	if (toTextureW) glDisable(GL_TEXTURE_2D);    // disable texturing following this point
 
-	// Messy side
+	// Top fabric
+	if (toTextureF)
+	{
+		glEnable(GL_TEXTURE_2D);                // enable texturing
+		glBindTexture(GL_TEXTURE_2D, texidF);    // bind 2D texture to shape
+	}
+	glBegin(GL_POLYGON);
+	glNormal3f(z, p, z);
+	if (toTextureF) glTexCoord2f(0.f, 0.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	glVertex3f(-width, length, -thickness / 3);
+	if (toTextureF) glTexCoord2f(1.f, 0.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	glVertex3f(-width / 5, length, -thickness / 3);
+	if (toTextureF) glTexCoord2f(1.f, 1.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	glVertex3f(-width / 5, length, -(2 * thickness) / 3);
+	if (toTextureF) glTexCoord2f(0.f, 1.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	glVertex3f(-width, length, -(2 * thickness) / 3);
+	glEnd();
+	if (toTextureF) glDisable(GL_TEXTURE_2D);    // disable texturing following this point
+
+	// Fabric side
+	if (toTextureF)
+	{
+		glEnable(GL_TEXTURE_2D);                // enable texturing
+		glBindTexture(GL_TEXTURE_2D, texidF);    // bind 2D texture to shape
+	}
 	glBegin(GL_POLYGON);
 	glNormal3f(-p, z, z);
-	glVertex3f(-width, length, -thickness);
-	glVertex3f(-width, length / 3, -thickness);
-	glVertex3f(-width, length / 3, z);
-	glVertex3f(-width, length, z);
+	if (toTextureF) glTexCoord2f(0.f, 0.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	glVertex3f(-width, length / 3, -(2 * thickness) / 3);
+	if (toTextureF) glTexCoord2f(1.f, 0.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	glVertex3f(-width, length / 3, -thickness / 3);
+	if (toTextureF) glTexCoord2f(1.f, 1.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	glVertex3f(-width, length, -thickness / 3);
+	if (toTextureF) glTexCoord2f(0.f, 1.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	glVertex3f(-width, length, -(2 * thickness) / 3);
 	glEnd();
+	if (toTextureF) glDisable(GL_TEXTURE_2D);    // disable texturing following this point
 
+	// Bottom fabric
+	if (toTextureF)
+	{
+		glEnable(GL_TEXTURE_2D);                // enable texturing
+		glBindTexture(GL_TEXTURE_2D, texidF);    // bind 2D texture to shape
+	}
 	glBegin(GL_POLYGON);
 	glNormal3f(z, -p, z);
-	glVertex3f(-width, length / 3, -thickness);
-	glVertex3f(-width / 5, length / 3, -thickness);
-	glVertex3f(-width / 5, length / 3, z);
-	glVertex3f(-width, length / 3, z);
+	if (toTextureF) glTexCoord2f(0.f, 0.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	glVertex3f(-width, length / 3, -(2 * thickness) / 3);
+	if (toTextureF) glTexCoord2f(1.f, 0.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	glVertex3f(-width / 5, length / 3, -(2 * thickness) / 3);
+	if (toTextureF) glTexCoord2f(1.f, 1.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	glVertex3f(-width / 5, length / 3, -thickness / 3);
+	if (toTextureF) glTexCoord2f(0.f, 1.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	glVertex3f(-width, length / 3, -thickness / 3);
 	glEnd();
+	if (toTextureF) glDisable(GL_TEXTURE_2D);    // disable texturing following this point
 
+	// Inside wood
+	if (toTextureW)
+	{
+		glEnable(GL_TEXTURE_2D);                // enable texturing
+		glBindTexture(GL_TEXTURE_2D, texidW);    // bind 2D texture to shape
+	}
 	glBegin(GL_POLYGON);
 	glNormal3f(-p, z, z);
-	glVertex3f(-width / 5, length / 3, -thickness);
+	if (toTextureW) glTexCoord2f(0.f, 0.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
 	glVertex3f(-width / 5, z, -thickness);
+	if (toTextureW) glTexCoord2f(1.f, 0.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
 	glVertex3f(-width / 5, z, z);
-	glVertex3f(-width / 5, length / 3, z);
+	if (toTextureW) glTexCoord2f(1.f, 1.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	glVertex3f(-width / 5, length, z);
+	if (toTextureW) glTexCoord2f(0.f, 1.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	glVertex3f(-width / 5, length, -thickness);
 	glEnd();
+	if (toTextureW) glDisable(GL_TEXTURE_2D);    // disable texturing following this point
 
 	glPopAttrib();
 }
