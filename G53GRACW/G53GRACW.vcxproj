@@ -129,18 +129,18 @@
     <ClInclude Include="Animation.h" />
     <ClInclude Include="DisplayableObject.h" />
     <ClInclude Include="MyScene.h" />
+    <ClInclude Include="Sign.h" />
     <ClInclude Include="Stage.h" />
     <ClInclude Include="TextureManager.h" />
     <ClInclude Include="Tree.h" />
-    <ClInclude Include="TreeLong.h" />
     <ClInclude Include="Windmill.h" />
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="MyScene.cpp" />
+    <ClCompile Include="Sign.cpp" />
     <ClCompile Include="Stage.cpp" />
     <ClCompile Include="TextureManager.cpp" />
     <ClCompile Include="Tree.cpp" />
-    <ClCompile Include="TreeLong.cpp" />
     <ClCompile Include="Windmill.cpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

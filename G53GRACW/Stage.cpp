@@ -36,83 +36,115 @@ void Stage::drawStage()
 	glColor4f(1.f, 1.f, 1.f, 0.f);          // Set fill to be invisible (only texture is rendered)
 	if (toTexture) glEnable(GL_TEXTURE_2D); // Enable 2D texturing
 
+	float adjustment = 0.005f;
+
 	if (toTexture) glBindTexture(GL_TEXTURE_2D, texids[0]); // skybox_left.bmp
-	glBegin(GL_QUADS);
-	// LEFT SIDE
-	if (toTexture) glTexCoord2f(1.f, 1.f);  // (u,v) = (1,1)
-	glVertex3f(-1.f, 1.f, -1.f);
-	if (toTexture) glTexCoord2f(0.f, 1.f);  // (u,v) = (0,1)
-	glVertex3f(-1.f, 1.f, 1.f);
-	if (toTexture) glTexCoord2f(0.f, 0.f);  // (u,v) = (0,0)
-	glVertex3f(-1.f, 0.f, 1.f);
-	if (toTexture) glTexCoord2f(1.f, 0.f);  // (u,v) = (1,0)
-	glVertex3f(-1.f, 0.f, -1.f);
-	glEnd();
+	glPushMatrix();
+	{
+		glTranslatef(adjustment, 0.f, 0.f);
+		glBegin(GL_QUADS);
+		// LEFT SIDE
+		if (toTexture) glTexCoord2f(1.f, 1.f);  // (u,v) = (1,1)
+		glVertex3f(-1.f, 1.f, -1.f);
+		if (toTexture) glTexCoord2f(0.f, 1.f);  // (u,v) = (0,1)
+		glVertex3f(-1.f, 1.f, 1.f);
+		if (toTexture) glTexCoord2f(0.f, 0.f);  // (u,v) = (0,0)
+		glVertex3f(-1.f, 0.f, 1.f);
+		if (toTexture) glTexCoord2f(1.f, 0.f);  // (u,v) = (1,0)
+		glVertex3f(-1.f, 0.f, -1.f);
+		glEnd();
+	}
+	glPopMatrix();
 
 	if (toTexture) glBindTexture(GL_TEXTURE_2D, texids[1]); // skybox_right.bmp
-	glBegin(GL_QUADS);
-	// RIGHT SIDE
-	if (toTexture) glTexCoord2f(1.f, 1.f);  // (u,v) = (1,1)
-	glVertex3f(1.f, 1.f, 1.f);
-	if (toTexture) glTexCoord2f(0.f, 1.f);  // (u,v) = (0,1)
-	glVertex3f(1.f, 1.f, -1.f);
-	if (toTexture) glTexCoord2f(0.f, 0.f);  // (u,v) = (0,0)
-	glVertex3f(1.f, 0.f, -1.f);
-	if (toTexture) glTexCoord2f(1.f, 0.f);  // (u,v) = (1,0)
-	glVertex3f(1.f, 0.f, 1.f);
-	glEnd();
+	glPushMatrix();
+	{
+		glTranslatef(-adjustment, 0.f, 0.f);
+		glBegin(GL_QUADS);
+		// RIGHT SIDE
+		if (toTexture) glTexCoord2f(1.f, 1.f);  // (u,v) = (1,1)
+		glVertex3f(1.f, 1.f, 1.f);
+		if (toTexture) glTexCoord2f(0.f, 1.f);  // (u,v) = (0,1)
+		glVertex3f(1.f, 1.f, -1.f);
+		if (toTexture) glTexCoord2f(0.f, 0.f);  // (u,v) = (0,0)
+		glVertex3f(1.f, 0.f, -1.f);
+		if (toTexture) glTexCoord2f(1.f, 0.f);  // (u,v) = (1,0)
+		glVertex3f(1.f, 0.f, 1.f);
+		glEnd();
+	}
+	glPopMatrix();
 
 	if (toTexture) glBindTexture(GL_TEXTURE_2D, texids[2]); // skybox_front.bmp
-	glBegin(GL_QUADS);
-	//  FAR SIDE
-	if (toTexture) glTexCoord2f(1.f, 1.f);  // (u,v) = (1,1)
-	glVertex3f(1.f, 1.f, -1.f);
-	if (toTexture) glTexCoord2f(0.f, 1.f);  // (u,v) = (0,1)
-	glVertex3f(-1.f, 1.f, -1.f);
-	if (toTexture) glTexCoord2f(0.f, 0.f);  // (u,v) = (0,0)
-	glVertex3f(-1.f, 0.f, -1.f);
-	if (toTexture) glTexCoord2f(1.f, 0.f);  // (u,v) = (1,0)
-	glVertex3f(1.f, 0.f, -1.f);
-	glEnd();
+	glPushMatrix();
+	{
+		glTranslatef(0.f, 0.f, adjustment);
+		glBegin(GL_QUADS);
+		//  FAR SIDE
+		if (toTexture) glTexCoord2f(1.f, 1.f);  // (u,v) = (1,1)
+		glVertex3f(1.f, 1.f, -1.f);
+		if (toTexture) glTexCoord2f(0.f, 1.f);  // (u,v) = (0,1)
+		glVertex3f(-1.f, 1.f, -1.f);
+		if (toTexture) glTexCoord2f(0.f, 0.f);  // (u,v) = (0,0)
+		glVertex3f(-1.f, 0.f, -1.f);
+		if (toTexture) glTexCoord2f(1.f, 0.f);  // (u,v) = (1,0)
+		glVertex3f(1.f, 0.f, -1.f);
+		glEnd();
+	}
+	glPopMatrix();
 
 	if (toTexture) glBindTexture(GL_TEXTURE_2D, texids[3]); // skybox_back.bmp
-	glBegin(GL_QUADS);
-	// NEAR SIDE
-	if (toTexture) glTexCoord2f(1.f, 1.f);  // (u,v) = (1,1)
-	glVertex3f(-1.f, 1.f, 1.f);
-	if (toTexture) glTexCoord2f(0.f, 1.f);  // (u,v) = (0,1)
-	glVertex3f(1.f, 1.f, 1.f);
-	if (toTexture) glTexCoord2f(0.f, 0.f);  // (u,v) = (0,0)
-	glVertex3f(1.f, 0.f, 1.f);
-	if (toTexture) glTexCoord2f(1.f, 0.f);  // (u,v) = (1,0)
-	glVertex3f(-1.f, 0.f, 1.f);
-	glEnd();
+	glPushMatrix();
+	{
+		glTranslatef(0.f, 0.f, -adjustment);
+		glBegin(GL_QUADS);
+		// NEAR SIDE
+		if (toTexture) glTexCoord2f(1.f, 1.f);  // (u,v) = (1,1)
+		glVertex3f(-1.f, 1.f, 1.f);
+		if (toTexture) glTexCoord2f(0.f, 1.f);  // (u,v) = (0,1)
+		glVertex3f(1.f, 1.f, 1.f);
+		if (toTexture) glTexCoord2f(0.f, 0.f);  // (u,v) = (0,0)
+		glVertex3f(1.f, 0.f, 1.f);
+		if (toTexture) glTexCoord2f(1.f, 0.f);  // (u,v) = (1,0)
+		glVertex3f(-1.f, 0.f, 1.f);
+		glEnd();
+	}
+	glPopMatrix();
 
 	if (toTexture) glBindTexture(GL_TEXTURE_2D, texids[4]); // skybox_down.bmp
-	glBegin(GL_QUADS);
-	// BOTTOM SIDE
-	if (toTexture) glTexCoord2f(0.f, 0.f);  // (u,v) = (0,0)
-	glVertex3f(-1.f, 0.f, 1.f);
-	if (toTexture) glTexCoord2f(1.f, 0.f);  // (u,v) = (1,0)
-	glVertex3f(1.f, 0.f, 1.f);
-	if (toTexture) glTexCoord2f(1.f, 1.f);  // (u,v) = (1,1)
-	glVertex3f(1.f, 0.f, -1.f);
-	if (toTexture) glTexCoord2f(0.f, 1.f);  // (u,v) = (0,1)
-	glVertex3f(-1.f, 0.f, -1.f);
-	glEnd();
+	glPushMatrix();
+	{
+		glTranslatef(0.f, adjustment, 0.f);
+		glBegin(GL_QUADS);
+		// BOTTOM SIDE
+		if (toTexture) glTexCoord2f(0.f, 0.f);  // (u,v) = (0,0)
+		glVertex3f(-1.f, 0.f, 1.f);
+		if (toTexture) glTexCoord2f(1.f, 0.f);  // (u,v) = (1,0)
+		glVertex3f(1.f, 0.f, 1.f);
+		if (toTexture) glTexCoord2f(1.f, 1.f);  // (u,v) = (1,1)
+		glVertex3f(1.f, 0.f, -1.f);
+		if (toTexture) glTexCoord2f(0.f, 1.f);  // (u,v) = (0,1)
+		glVertex3f(-1.f, 0.f, -1.f);
+		glEnd();
+	}
+	glPopMatrix();
 
 	if (toTexture) glBindTexture(GL_TEXTURE_2D, texids[5]); // skybox_up.bmp
-	glBegin(GL_QUADS);
-	// TOP SIDE
-	if (toTexture) glTexCoord2f(1.f, 1.f);  // (u,v) = (1,1)
-	glVertex3f(1.f, 1.f, 1.f);
-	if (toTexture) glTexCoord2f(0.f, 1.f);  // (u,v) = (0,1)
-	glVertex3f(-1.f, 1.f, 1.f);
-	if (toTexture) glTexCoord2f(0.f, 0.f);  // (u,v) = (0,0)
-	glVertex3f(-1.f, 1.f, -1.f);
-	if (toTexture) glTexCoord2f(1.f, 0.f);  // (u,v) = (1,0)
-	glVertex3f(1.f, 1.f, -1.f);
-	glEnd();
+	glPushMatrix();
+	{
+		glTranslatef(0.f, -adjustment, 0.f);
+		glBegin(GL_QUADS);
+		// TOP SIDE
+		if (toTexture) glTexCoord2f(1.f, 1.f);  // (u,v) = (1,1)
+		glVertex3f(1.f, 1.f, 1.f);
+		if (toTexture) glTexCoord2f(0.f, 1.f);  // (u,v) = (0,1)
+		glVertex3f(-1.f, 1.f, 1.f);
+		if (toTexture) glTexCoord2f(0.f, 0.f);  // (u,v) = (0,0)
+		glVertex3f(-1.f, 1.f, -1.f);
+		if (toTexture) glTexCoord2f(1.f, 0.f);  // (u,v) = (1,0)
+		glVertex3f(1.f, 1.f, -1.f);
+		glEnd();
+	}
+	glPopMatrix();
 
 	if (toTexture) glDisable(GL_TEXTURE_2D);    // Disable texturing until reenabled
 	glEnable(GL_LIGHTING);                      // Reenable lighting after drawing skybox

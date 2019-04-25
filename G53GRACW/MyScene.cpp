@@ -10,17 +10,18 @@ void setup()
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
+	glShadeModel(GL_SMOOTH);
 	
 	cameraRadius();                     // initialise camrad variable (based on window height)
 	Stage* stage = new Stage();         // new instance of Stage object    
 	stage->size(camrad * 5.f, camrad * 2.f, camrad * 5.f);                // resize to bound scene
 	GLuint* skybox = new GLuint[6];
-	skybox[0] = textureManager.loadImage("Textures/skybox/skybox_left.bmp");
-	skybox[1] = textureManager.loadImage("Textures/skybox/skybox_right.bmp");
-	skybox[2] = textureManager.loadImage("Textures/skybox/skybox_front.bmp");
-	skybox[3] = textureManager.loadImage("Textures/skybox/skybox_back.bmp");
+	skybox[0] = textureManager.loadImage("Textures/skybox1/left.bmp");
+	skybox[1] = textureManager.loadImage("Textures/skybox1/right.bmp");
+	skybox[2] = textureManager.loadImage("Textures/skybox1/far.bmp");
+	skybox[3] = textureManager.loadImage("Textures/skybox1/near.bmp");
 	skybox[4] = textureManager.loadImage("Textures/skybox1/floor.bmp");
-	skybox[5] = textureManager.loadImage("Textures/skybox/skybox_up.bmp");
+	skybox[5] = textureManager.loadImage("Textures/skybox1/up.bmp");
 	stage->setTextures(skybox);
 	objects["_stage"] = stage;           // Add to objects map with id "stage"
 
@@ -28,10 +29,19 @@ void setup()
 	GLuint roof = textureManager.loadImage("Textures/roof.bmp"); if (roof != NULL) printf("roof loaded\n");
 	GLuint rotorWood = textureManager.loadImage("Textures/rotorwood.bmp"); if (rotorWood != NULL) printf("rotor wood loaded\n");
 	GLuint rotorFabric = textureManager.loadImage("Textures/rotorfabric.bmp"); if (rotorFabric != NULL) printf("rotor fabric loaded\n");
-	windmill[0] = new Windmill(brick, roof, rotorWood, rotorFabric);
+	GLuint metal = textureManager.loadImage("Textures/metal1.bmp"); if (metal != NULL) printf("metal loaded\n");
+	windmill[0] = new Windmill(brick, roof, rotorWood, rotorFabric, metal);
 	windmill[0]->orientation(0.f, -13.3f, 0.f);
 	windmill[0]->size(scale);
 	objects["windmill"] = windmill[0];
+
+	GLuint board = textureManager.loadImage("Textures/sign.bmp"); if (board != NULL) printf("sign loaded\n");
+	GLuint backboard = textureManager.loadImage("Textures/backboard.bmp"); if (backboard != NULL) printf("backboard loaded\n");
+	sign[0] = new Sign(metal, board, backboard);
+	sign[0]->position(-2600.f, 0.f, 4696.f);
+	sign[0]->orientation(0.f, 6.f, 0.f);
+	sign[0]->size(scale);
+	objects["sign"] = sign[0];
 
 	srand((int)time(0));							// Seed rand() using current time
 
@@ -176,10 +186,10 @@ void setGlobalLight()
 {
 	// Set lighting effect colours and positional parameter
 	float ambient[] = { .2f, .2f, .2f, 1.f };      // ambient light (20% white)
-	float diffuse[] = { .6f, .6f, .6f, 1.f };      // diffuse light (50% white)
+	float diffuse[] = { .8f, .8f, .88f, 1.f };      // diffuse light (50% white)
 	//float specular[] = { .953f, .51f, .208f, 1.f };      // specular light (100% white)
 	float specular[] = { 1.f, 1.f, 1.f, 1.f };      // specular light (100% white)
-	float position[] = { 1.f, .5f, 1.f, 0.f };      // directional light (w = 0)
+	float position[] = { 1.f, .844f, 0.563f, 0.f };      // directional light (w = 0)
 	// Attach properties to single light source (GL_LIGHT0)
 	glLightfv(GL_LIGHT0, GL_AMBIENT, ambient);      // set ambient parameter of light source
 	glLightfv(GL_LIGHT0, GL_DIFFUSE, diffuse);      // set diffuse parameter of light source
@@ -209,51 +219,61 @@ void cameraRadius()
 void keyPressed(int keyCode, int xm, int ym)
 {	// Special (coded) key pressed
 	float incr = (float)M_PI / 36.f;   // increment angle by 5 degrees
-	if (keyCode == GLUT_KEY_LEFT)
-	{                      // left arrow (move camera left around scene)
+	switch (keyCode)
+	{
+	case GLUT_KEY_LEFT:// left arrow (move camera left around scene)
 		camangle -= incr;     // decrement camera angle
-	}
-	else if (keyCode == GLUT_KEY_RIGHT)
-	{              // right arrow (move camera right around scene)
+		break;
+	case GLUT_KEY_RIGHT:// right arrow (move camera right around scene)
 		camangle += incr;     // increment camera angle
-	}
-	else if (keyCode == GLUT_KEY_UP && !ortho)
-	{
-		zoom -= 1.f;
+		break;
+	case GLUT_KEY_UP:
+		if (!ortho)
+		{
+			zoom -= 1.f;
 
-		if (zoom < 10.f)
-			zoom = 10.f;
-	}
-	else if (keyCode == GLUT_KEY_DOWN && !ortho)
-	{
-		zoom += 1.f;
+			if (zoom < 10.f)
+				zoom = 10.f;
+		}
+		break;
+	case GLUT_KEY_DOWN:
+		if (!ortho)
+		{
+			zoom += 1.f;
 
-		if (zoom > 30.f)
-			zoom = 30.f;
-	}
-	else if (keyCode == GLUT_KEY_PAGE_UP && !ortho)
-	{
-		camh += 5.f;
+			if (zoom > 30.f)
+				zoom = 30.f;
+		}
+		break;
+	case GLUT_KEY_PAGE_UP:
+		if (!ortho)
+		{
+			camh += 5.f;
 
-		if (camh > 120.f)
-			camh = 120.f;
-	}
-	else if (keyCode == GLUT_KEY_PAGE_DOWN && !ortho)
-	{
-		camh -= 5.f; 
+			if (camh > 120.f)
+				camh = 120.f;
+		}
+		break;
+	case GLUT_KEY_PAGE_DOWN:
+		if (!ortho)
+		{
+			camh -= 5.f;
 
-		if (camh < 0.f)
-			camh = 0.f;
+			if (camh < 0.f)
+				camh = 0.f;
+		}
+		break;
 	}
-
 	printf("Angle: %f; Height: %f; Zoom: %f\n", camangle, camh, zoom);
 }
 
 void keyPressed(unsigned char key, int xm, int ym)
 {	// ASCII key pressed
 	float incr = (float)M_PI / 36.f;
-	if (key == ' ')
-	{                                     // if space bar pressed
+
+	switch (key)
+	{
+	case ' ':                                     // if space bar pressed
 		camangle = -0.785398f;                   //reset angle to 0.0
 		zoom = 24.f;
 		camh = 45.f;
@@ -261,45 +281,50 @@ void keyPressed(unsigned char key, int xm, int ym)
 		cen[0] = 0.f;
 		cen[1] = 0.f;
 		cen[2] = 0.f;
-	}
-	else if (key == 'a')
-	{
+		break;
+	case 'a':
 		camangle -= incr;
-	}
-	else if (key == 'd')
-	{
+		break;
+	case 'd':
 		camangle += incr;
-	}
-	else if (key == 'w' && !ortho)
-	{
-		zoom -= 1.f;
+		break;
+	case 'w':
+		if (!ortho)
+		{
+			zoom -= 1.f;
 
-		if (zoom < 10.f)
-			zoom = 10.f;
-	}
-	else if (key == 's' && !ortho)
-	{
-		zoom += 1.f;
+			if (zoom < 10.f)
+				zoom = 10.f;
+		}
+		break;
+	case 's':
+		if (!ortho)
+		{
+			zoom += 1.f;
 
-		if (zoom > 30.f)
-			zoom = 30.f;
-	}
-	else if (key == 'e' && !ortho)
-	{
-		camh += 5.f;
+			if (zoom > 30.f)
+				zoom = 30.f;
+		}
+		break;
+	case 'e':
+		if (!ortho)
+		{
+			camh += 5.f;
 
-		if (camh > 120.f)
-			camh = 120.f;
-	}
-	else if (key == 'q' && !ortho)
-	{
-		camh -= 5.f;
+			if (camh > 120.f)
+				camh = 120.f;
+		}
+		break;
+	case 'q':
+		if (!ortho)
+		{
+			camh -= 5.f;
 
-		if (camh < 0.f)
-			camh = 0.f;
-	}
-	else if (key == 'g')
-	{
+			if (camh < 0.f)
+				camh = 0.f;
+		}
+		break;
+	case 'g':
 		if (ortho)
 		{
 			ortho = false;
@@ -313,56 +338,48 @@ void keyPressed(unsigned char key, int xm, int ym)
 			camh = 45.f;
 		}
 		reshape(width, height);
-	}
-	else if (key == '+' || key == '=')
-	{
+		break;
+	case '=':
+	case '+':
 		for (int i = 0; i < windmills; i++)
 		{
 			windmill[i]->setRotors((windmill[i]->getRotors()) + 1);
 		}
-	}
-	else if (key == '_' || key == '-')
-	{
+		break;
+	case '-':
+	case '_':
 		for (int i = 0; i < windmills; i++)
 		{
 			windmill[i]->setRotors((windmill[i]->getRotors()) - 1);
 		}
-	}
-	else if (key == '1')
-	{
+		break;
+	case '1':
 		view = 1;
-	}
-	else if (key == '2')
-	{
+		break;
+	case '2':
 		view = 2;
-	}
-	else if (key == '3')
-	{
+		break;
+	case '3':
 		view = 3;
-	}
-	else if (key == '4')
-	{
+		break;
+	case '4':
 		view = 4;
-	}
-	else if (key == '5')
-	{
+		break;
+	case '5':
 		view = 5;
-	}
-	else if (key == '6')
-	{
+		break;
+	case '6':
 		view = 6;
-	}
-	else if (key == '7')
-	{
+		break;
+	case '7':
 		view = 7;
-	}
-	else if (key == '8')
-	{
+		break;
+	case '8':
 		view = 8;
-	}
-	else if (key == '9')
-	{
+		break;
+	case '9':
 		view = 9;
+		break;
 	}
 
 	printf("Angle: %f; Height: %f; Zoom: %f\n", camangle, camh, zoom);

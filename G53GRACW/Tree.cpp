@@ -90,7 +90,7 @@ void Tree::leaves()
 	float mat_colour[]                      // colour reflected by diffuse light
 		= { 0.133f, 0.545f, 0.133f, 1.f };         // mid brown
 	float mat_ambient[]                     // ambient colour
-		= { 0.033f, 0.445f, 0.033f, 1.f };         // dark brown
+		= { 0.233f, 0.645f, 0.233f, 1.f };         // dark brown
 	float mat_spec[]                        // specular colour
 		= { 0.f, 0.f, 0.f, 1.f };               // no reflectance (black)
 
@@ -163,7 +163,7 @@ void Tree::trunk()
 	float mat_colour[]                      // colour reflected by diffuse light
 		= { 0.545f, 0.271f, 0.075f, 1.f };         // mid brown
 	float mat_ambient[]                     // ambient colour
-		= { 0.445f, 0.171f, 0.f, 1.f };         // dark brown
+		= { 0.645f, 0.371f, 0.175f, 1.f };         // dark brown
 	float mat_spec[]                        // specular colour
 		= { 0.f, 0.f, 0.f, 1.f };               // no reflectance (black)
 
@@ -179,6 +179,8 @@ void Tree::trunk()
 		glEnable(GL_TEXTURE_2D);
 		glBindTexture(GL_TEXTURE_2D, texid);
 	}
+
+	glDisable(GL_CULL_FACE);
 
 	do
 	{                                     // create branch with multiple QUADS
@@ -203,6 +205,8 @@ void Tree::trunk()
 	} while (t <= 2 * M_PI);                // full rotation around circle
 
 	if (toTexture) glDisable(GL_TEXTURE_2D);    // disable texturing following this point
+
+	glEnable(GL_CULL_FACE);
 
 	glTranslatef(0.f, 0.75f, 0.f);            // translate to top of trunk
 	glPopAttrib();

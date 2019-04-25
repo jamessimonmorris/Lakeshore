@@ -12,7 +12,7 @@
 #include "Stage.h"
 #include "Windmill.h"
 #include "Tree.h"
-#include "TreeLong.h"
+#include "Sign.h"
 #include <string>
 #include <map>
 #include "TextureManager.h"
@@ -27,7 +27,7 @@ void destroyObjects();
 int main(int argc, char **argv);
 
 int width, height, prevTime;
-map<string, DisplayableObject*> objects;
+static map<string, DisplayableObject*> objects;
 float camrad, camangle = -0.785398f, zoom = 24.f, camh = 45.f;
 float eye[3];
 float cen[3];
@@ -47,7 +47,8 @@ TextureManager textureManager;
 
 const int windmills = 1;
 
-Windmill* windmill[windmills];
-Tree* tree[10];
+static Windmill* windmill[windmills];
+static Tree* tree[10];
+static Sign* sign[1];
 
 #endif

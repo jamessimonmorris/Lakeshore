@@ -33,10 +33,10 @@
     <ClInclude Include="Stage.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TreeLong.h">
+    <ClInclude Include="TextureManager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="TextureManager.h">
+    <ClInclude Include="Sign.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
@@ -53,10 +53,10 @@
     <ClCompile Include="Stage.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TreeLong.cpp">
+    <ClCompile Include="TextureManager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="TextureManager.cpp">
+    <ClCompile Include="Sign.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>

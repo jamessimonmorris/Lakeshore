@@ -12,7 +12,7 @@ using namespace std;
 class Windmill : public DisplayableObject, public Animation       // a Windmill is a DisplayableObject and Animation
 {
 public:
-	Windmill(GLuint, GLuint, GLuint, GLuint);                                 // constructor
+	Windmill(GLuint, GLuint, GLuint, GLuint, GLuint);                                 // constructor
 	Windmill();
 	~Windmill() { };                            // destructor
 	void display();                         // overloaded virtual display function
@@ -30,8 +30,8 @@ private:
 	void drawRotors();
 	void drawRotor();
 
-	bool toTextureB = false, toTextureR = false, toTextureW = false, toTextureF = false;
-	GLuint texidB, texidR, texidW, texidF;
+	bool toTextureB = false, toTextureR = false, toTextureW = false, toTextureF = false, toTextureM = false;
+	GLuint texidB, texidR, texidW, texidF, texidM;
 
 	double speed = 0.0074444;
 	int rotors = 6;
