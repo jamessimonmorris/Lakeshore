@@ -128,6 +128,7 @@
   <ItemGroup>
     <ClInclude Include="Animation.h" />
     <ClInclude Include="DisplayableObject.h" />
+    <ClInclude Include="House.h" />
     <ClInclude Include="MyScene.h" />
     <ClInclude Include="Sign.h" />
     <ClInclude Include="Stage.h" />
@@ -136,6 +137,7 @@
     <ClInclude Include="Windmill.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="House.cpp" />
     <ClCompile Include="MyScene.cpp" />
     <ClCompile Include="Sign.cpp" />
     <ClCompile Include="Stage.cpp" />

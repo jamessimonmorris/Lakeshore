@@ -125,9 +125,6 @@ int Windmill::getRotors()
 // define display function (to be called by MyScene)
 void Windmill::display()
 {
-	glEnable(GL_STENCIL_TEST);
-
-
 	glPushMatrix();
 	{
 		glPushAttrib(GL_ALL_ATTRIB_BITS);
@@ -227,11 +224,11 @@ void Windmill::drawRoof(float radius)
 	float r = radius * 0.99;                        // ratio of radius to height
 
 	float mat_colour[]                      // colour reflected by diffuse light
-		= { 0.265f, 0.386f, 0.661f, 1.f };         // mid brown
+		= { 0.729f, 0.416f, 0.345f, 1.f };         // mid brown
 	float mat_ambient[]                     // ambient colour
-		= { 0.365f, 0.486f, 0.761f, 1.f };         // dark brown
+		= { 0.829f, 0.516f, 0.445f, 1.f };         // dark brown
 	float mat_spec[]                        // specular colour
-		= { 0.1f, 0.1f, 0.1f, 1.f };               // no reflectance (black)
+		= { 0.2f, 0.2f, 0.2f, 1.f };               // no reflectance (black)
 
 	glPushAttrib(GL_ALL_ATTRIB_BITS);       // save current style attributes (inc. material properties)
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient); // set colour for ambient reflectance

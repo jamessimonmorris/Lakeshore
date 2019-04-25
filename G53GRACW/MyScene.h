@@ -13,6 +13,7 @@
 #include "Windmill.h"
 #include "Tree.h"
 #include "Sign.h"
+#include "House.h"
 #include <string>
 #include <map>
 #include "TextureManager.h"
@@ -50,5 +51,6 @@ const int windmills = 1;
 static Windmill* windmill[windmills];
 static Tree* tree[10];
 static Sign* sign[1];
+static House* house[5];
 
 #endif

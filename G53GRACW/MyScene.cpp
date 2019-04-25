@@ -6,7 +6,7 @@ void setup()
 	height = 800;                                   // define in your header: int width, height;
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE);  // enable 3D rendering and double buffering
 	glutInitWindowSize(width, height);              // set window size
-	glutCreateWindow("The Farm");                   // create and show window (named MyScene)
+	glutCreateWindow("Lakeshore");                   // create and show window (named MyScene)
 
 	glEnable(GL_DEPTH_TEST);
 	glDepthFunc(GL_LEQUAL);
@@ -45,6 +45,15 @@ void setup()
 
 	srand((int)time(0));							// Seed rand() using current time
 
+	GLuint house1 = textureManager.loadImage("Textures/house1.bmp"); if (house1 != NULL) printf("house1 loaded\n");
+	//GLuint house2 = textureManager.loadImage("Textures/house2.bmp"); if (house2 != NULL) printf("house2 loaded\n");
+	GLuint church = textureManager.loadImage("Textures/church.bmp"); if (church != NULL) printf("church loaded\n");
+	house[0] = new House(randomNumGen(), roof, brick, church, house1, house1);
+	house[0]->orientation(0.f, 90.f, 0.f);
+	house[0]->position(-3500.f, 0.f, 600.f);
+	house[0]->size(scale);
+	objects["house"] = house[0];
+
 	GLuint bark = textureManager.loadImage("Textures/bark.bmp");
 	GLuint leaves = textureManager.loadImage("Textures/leaves1.bmp");
 	tree[0] = new Tree(randomNumGen(), bark, leaves);
@@ -76,6 +85,21 @@ void setup()
 	tree[5]->position(700.f, 0.f, -100.f);
 	tree[5]->size(scale);
 	objects["tree5"] = tree[5];
+
+	tree[6] = new Tree(randomNumGen(), bark, leaves);
+	tree[6]->position(-1965.f, 0.f, 735.f);
+	tree[6]->size(scale);
+	objects["tree6"] = tree[6];
+
+	tree[7] = new Tree(randomNumGen(), bark, leaves);
+	tree[7]->position(-2082.f, 0.f, -835.f);
+	tree[7]->size(scale);
+	objects["tree7"] = tree[7];
+
+	tree[8] = new Tree(randomNumGen(), bark, leaves);
+	tree[8]->position(-2408.f, 0.f, -705.f);
+	tree[8]->size(scale);
+	objects["tree8"] = tree[8];
 	
 	reshape(width, height);
 	prevTime = glutGet(GLUT_ELAPSED_TIME);
@@ -105,9 +129,9 @@ void reshape(int _width, int _height)
 	glLoadIdentity();     // reset matrix
 
 	if (!ortho)
-		gluPerspective(60.0, aspect, 10.0, camrad*100.f);
+		gluPerspective(60.0, aspect, 250.0, camrad*100.f);
 	else
-		glOrtho(-width, width, -height, height, 500.f, camrad*100.f);       // orthographic
+		glOrtho(-width, width, -height, height, 100.f, camrad*100.f);       // orthographic
 
 	glViewport(0, 0, width, height);
 	glMatrixMode(GL_MODELVIEW); // return matrix mode to modelling and viewing
@@ -230,37 +254,37 @@ void keyPressed(int keyCode, int xm, int ym)
 	case GLUT_KEY_UP:
 		if (!ortho)
 		{
-			zoom -= 1.f;
-
-			if (zoom < 10.f)
-				zoom = 10.f;
-		}
-		break;
-	case GLUT_KEY_DOWN:
-		if (!ortho)
-		{
-			zoom += 1.f;
-
-			if (zoom > 30.f)
-				zoom = 30.f;
-		}
-		break;
-	case GLUT_KEY_PAGE_UP:
-		if (!ortho)
-		{
 			camh += 5.f;
 
 			if (camh > 120.f)
 				camh = 120.f;
 		}
 		break;
-	case GLUT_KEY_PAGE_DOWN:
+	case GLUT_KEY_DOWN:
 		if (!ortho)
 		{
 			camh -= 5.f;
 
 			if (camh < 0.f)
 				camh = 0.f;
+		}
+		break;
+	case GLUT_KEY_PAGE_UP:
+		if (!ortho)
+		{
+			zoom -= 1.f;
+
+			if (zoom < 10.f)
+				zoom = 10.f;
+		}
+		break;
+	case GLUT_KEY_PAGE_DOWN:
+		if (!ortho)
+		{
+			zoom += 1.f;
+
+			if (zoom > 30.f)
+				zoom = 30.f;
 		}
 		break;
 	}
@@ -291,37 +315,37 @@ void keyPressed(unsigned char key, int xm, int ym)
 	case 'w':
 		if (!ortho)
 		{
-			zoom -= 1.f;
-
-			if (zoom < 10.f)
-				zoom = 10.f;
-		}
-		break;
-	case 's':
-		if (!ortho)
-		{
-			zoom += 1.f;
-
-			if (zoom > 30.f)
-				zoom = 30.f;
-		}
-		break;
-	case 'e':
-		if (!ortho)
-		{
 			camh += 5.f;
 
 			if (camh > 120.f)
 				camh = 120.f;
 		}
 		break;
-	case 'q':
+	case 's':
 		if (!ortho)
 		{
 			camh -= 5.f;
 
 			if (camh < 0.f)
 				camh = 0.f;
+		}
+		break;
+	case 'e':
+		if (!ortho)
+		{
+			zoom -= 1.f;
+
+			if (zoom < 10.f)
+				zoom = 10.f;
+		}
+		break;
+	case 'q':
+		if (!ortho)
+		{
+			zoom += 1.f;
+
+			if (zoom > 30.f)
+				zoom = 30.f;
 		}
 		break;
 	case 'g':
