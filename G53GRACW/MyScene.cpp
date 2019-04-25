@@ -46,13 +46,30 @@ void setup()
 	srand((int)time(0));							// Seed rand() using current time
 
 	GLuint house1 = textureManager.loadImage("Textures/house1.bmp"); if (house1 != NULL) printf("house1 loaded\n");
-	//GLuint house2 = textureManager.loadImage("Textures/house2.bmp"); if (house2 != NULL) printf("house2 loaded\n");
+	GLuint house2 = textureManager.loadImage("Textures/house2.bmp"); if (house2 != NULL) printf("house2 loaded\n");
 	GLuint church = textureManager.loadImage("Textures/church.bmp"); if (church != NULL) printf("church loaded\n");
-	house[0] = new House(randomNumGen(), roof, brick, church, house1, house1);
+	house[0] = new House(randomNumGen(), roof, brick, church, house1, house2);
 	house[0]->orientation(0.f, 90.f, 0.f);
 	house[0]->position(-3500.f, 0.f, 600.f);
 	house[0]->size(scale);
 	objects["house"] = house[0];
+
+	house[1] = new House(randomNumGen(), roof, brick, church, house1, house2);
+	house[1]->position(-600.f, 0.f, -3500.f);
+	house[1]->size(scale);
+	objects["house1"] = house[1];
+
+	house[2] = new House(randomNumGen(), roof, brick, church, house1, house2);
+	house[2]->orientation(0.f, 90.f, 0.f);
+	house[2]->position(-3500.f, 0.f, -2220.f);
+	house[2]->size(scale);
+	objects["house2"] = house[2];
+
+	house[3] = new House(randomNumGen(), roof, brick, church, house1, house2);
+	house[3]->orientation(0.f, -105.f, 0.f);
+	house[3]->position(3000.f, 0.f, 2220.f);
+	house[3]->size(scale);
+	objects["house3"] = house[3];
 
 	GLuint bark = textureManager.loadImage("Textures/bark.bmp");
 	GLuint leaves = textureManager.loadImage("Textures/leaves1.bmp");
@@ -100,6 +117,21 @@ void setup()
 	tree[8]->position(-2408.f, 0.f, -705.f);
 	tree[8]->size(scale);
 	objects["tree8"] = tree[8];
+
+	tree[9] = new Tree(randomNumGen(), bark, leaves);
+	tree[9]->position(3250.f, 0.f, 1875.f);
+	tree[9]->size(scale);
+	objects["tree9"] = tree[9];
+
+	tree[10] = new Tree(randomNumGen(), bark, leaves);
+	tree[10]->position(3450.f, 0.f, 2325.f);
+	tree[10]->size(scale);
+	objects["tree10"] = tree[10];
+
+	tree[11] = new Tree(randomNumGen(), bark, leaves);
+	tree[11]->position(3400.f, 0.f, 2000.f);
+	tree[11]->size(scale);
+	objects["tree11"] = tree[11];
 	
 	reshape(width, height);
 	prevTime = glutGet(GLUT_ELAPSED_TIME);
@@ -274,8 +306,8 @@ void keyPressed(int keyCode, int xm, int ym)
 		{
 			zoom -= 1.f;
 
-			if (zoom < 10.f)
-				zoom = 10.f;
+			if (zoom < 7.f)
+				zoom = 7.f;
 		}
 		break;
 	case GLUT_KEY_PAGE_DOWN:
@@ -335,8 +367,8 @@ void keyPressed(unsigned char key, int xm, int ym)
 		{
 			zoom -= 1.f;
 
-			if (zoom < 10.f)
-				zoom = 10.f;
+			if (zoom < 7.f)
+				zoom = 7.f;
 		}
 		break;
 	case 'q':

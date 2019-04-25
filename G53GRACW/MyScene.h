@@ -49,7 +49,7 @@ TextureManager textureManager;
 const int windmills = 1;
 
 static Windmill* windmill[windmills];
-static Tree* tree[10];
+static Tree* tree[16];
 static Sign* sign[1];
 static House* house[5];
 

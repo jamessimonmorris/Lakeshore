@@ -173,9 +173,9 @@ void Windmill::drawBase(float radius)
 	float t = 0.f;                          // initialise angle as 0
 	float h = 7.5f;
 	float mat_colour[]                      // colour reflected by diffuse light
-		= { 0.729f, 0.416f, 0.345f, 1.f };         // mid brown
+		= { 0.925f, 0.925f, 0.925f, 1.f };         // mid brown
 	float mat_ambient[]                     // ambient colour
-		= { 0.829f, 0.516f, 0.445f, 1.f };         // dark brown
+		= { 1.f, 1.f, 1.f, 1.f };         // dark brown
 	float mat_spec[]                        // specular colour
 		= { 0.1f, 0.1f, 0.1f, 1.f };               // no reflectance (black)
 
