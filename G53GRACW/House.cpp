@@ -1,6 +1,6 @@
 #include "House.h"
 
-House::House(int _ranNum, GLuint _texidR, GLuint _texid1, GLuint _texid2, GLuint _texid3, GLuint _texid4) :
+House::House(int _ranNum, GLuint _texidR, GLuint _texid1, GLuint _texid2, GLuint _texid3, GLuint _texid4, GLuint _texidD1, GLuint _texidD2, GLuint _texidD3, GLuint _texidG1, GLuint _texidG2) :
 	ranNum(_ranNum)
 {
 	texidR = _texidR;
@@ -17,6 +17,21 @@ House::House(int _ranNum, GLuint _texidR, GLuint _texid1, GLuint _texid2, GLuint
 
 	texid4 = _texid4;
 	if (texid4 != NULL) toTexture4 = true;
+
+	texidD1 = _texidD1;
+	if (texidD1 != NULL) toTextureD1 = true;
+
+	texidD2 = _texidD2;
+	if (texidD2 != NULL) toTextureD2 = true;
+
+	texidD3 = _texidD3;
+	if (texidD3 != NULL) toTextureD3 = true;
+
+	texidG1 = _texidG1;
+	if (texidG1 != NULL) toTextureG1 = true;
+
+	texidG2 = _texidG2;
+	if (texidG2 != NULL) toTextureG2 = true;
 }
 
 House::House(int _ranNum) :
@@ -267,64 +282,69 @@ void House::drawRoof()
 		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_colour1);  // set colour for diffuse reflectance
 		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_spec);   // set colour for specular reflectance
 
-		switch (choice)
-		{
-		case 1:
-			if (toTexture1)
-			{
-				glEnable(GL_TEXTURE_2D);                // enable texturing
-				glBindTexture(GL_TEXTURE_2D, texid1);    // bind 2D texture to shape
-			}
-			break;
-		case 2:
-			if (toTexture2)
-			{
-				glEnable(GL_TEXTURE_2D);                // enable texturing
-				glBindTexture(GL_TEXTURE_2D, texid2);    // bind 2D texture to shape
-			}
-			break;
-		case 3:
-			if (toTexture3)
-			{
-				glEnable(GL_TEXTURE_2D);                // enable texturing
-				glBindTexture(GL_TEXTURE_2D, texid3);    // bind 2D texture to shape
-			}
-			break;
-		case 4:
-			if (toTexture4)
-			{
-				glEnable(GL_TEXTURE_2D);                // enable texturing
-				glBindTexture(GL_TEXTURE_2D, texid4);    // bind 2D texture to shape
-			}
-			break;
-		}
+		glEnable(GL_TEXTURE_2D);                // enable texturing
+		glBindTexture(GL_TEXTURE_2D, texid1);    // bind 2D texture to shape
 
 		glBegin(GL_POLYGON);
 		glNormal3f(-p, z, z);
-		if (toTexture1 || toTexture2 || toTexture3 || toTexture4) glTexCoord2f(0.f, 0.f);
+		if (toTexture1) glTexCoord2f(0.f, 0.f);
 		glVertex3f(z, z, z);
-		if (toTexture1 || toTexture2 || toTexture3 || toTexture4) glTexCoord2f(2 * texCoord, 0.f);
+		if (toTexture1) glTexCoord2f(2 * texCoord, 0.f);
 		glVertex3f(z, z, 8.f);
-		if (toTexture1 || toTexture2 || toTexture3 || toTexture4) glTexCoord2f(texCoord, 0.5f);
+		if (toTexture1) glTexCoord2f(texCoord, 0.5f);
 		glVertex3f(z, h - 0.25f, 4.f);
 		glEnd();
 		glBegin(GL_POLYGON);
 		glNormal3f(z, z, p);
-		if (toTexture1 || toTexture2 || toTexture3 || toTexture4) glTexCoord2f(0.f, 0.f);
+		if (toTexture1) glTexCoord2f(0.f, 0.f);
 		glVertex3f(8.f, z, 12.f);
-		if (toTexture1 || toTexture2 || toTexture3 || toTexture4) glTexCoord2f(2 * texCoord, 0.f);
+		if (toTexture1) glTexCoord2f(2 * texCoord, 0.f);
 		glVertex3f(16.f, z, 12.f);
-		if (toTexture1 || toTexture2 || toTexture3 || toTexture4) glTexCoord2f(texCoord, 0.5f);
+		if (toTexture1) glTexCoord2f(texCoord, 0.5f);
 		glVertex3f(12.f, h - 0.25f, 12.f);
 		glEnd();
 		glBegin(GL_POLYGON);
 		glNormal3f(p, z, z);
-		if (toTexture1 || toTexture2 || toTexture3 || toTexture4) glTexCoord2f(0.f, 0.f);
+		if (toTexture1) glTexCoord2f(0.f, 0.f);
 		glVertex3f(16.f, z, 8.f);
-		if (toTexture1 || toTexture2 || toTexture3 || toTexture4) glTexCoord2f(2 * texCoord, 0.f);
+		if (toTexture1) glTexCoord2f(2 * texCoord, 0.f);
 		glVertex3f(16.f, z, z);
-		if (toTexture1 || toTexture2 || toTexture3 || toTexture4) glTexCoord2f(texCoord, 0.5f);
+		if (toTexture1) glTexCoord2f(texCoord, 0.5f);
 		glVertex3f(16.f, h - 0.25f, 4.f);
+		glEnd();
+		if (toTexture1 || toTexture2 || toTexture3 || toTexture4) glDisable(GL_TEXTURE_2D);
+
+		glEnable(GL_TEXTURE_2D);                // enable texturing
+		glBindTexture(GL_TEXTURE_2D, texidD2);    // bind 2D texture to shape
+
+		glTranslatef(2.5f, -4.6f, 8.01f);
+		glBegin(GL_POLYGON);
+		glNormal3f(z, z, p);
+		if (toTextureD2) glTexCoord2f(0.f, 0.f);
+		glVertex3f(z, z, z);
+		if (toTextureD2) glTexCoord2f(1.f, 0.f);
+		glVertex3f(3.f, z, z);
+		if (toTextureD2) glTexCoord2f(1.f, 1.f);
+		glVertex3f(3.f, 3.f * 1.170f, z);
+		if (toTextureD2) glTexCoord2f(0.f, 1.f);
+		glVertex3f(z, 3.f * 1.170f, z);
+		glEnd();
+		if (toTexture1 || toTexture2 || toTexture3 || toTexture4) glDisable(GL_TEXTURE_2D);
+
+		glEnable(GL_TEXTURE_2D);                // enable texturing
+		glBindTexture(GL_TEXTURE_2D, texidG1);    // bind 2D texture to shape
+
+		glTranslatef(7.25f, 0.f, 4.f);
+		glBegin(GL_POLYGON);
+		glNormal3f(z, z, p);
+		if (toTextureG1) glTexCoord2f(0.f, 0.f);
+		glVertex3f(z, z, z);
+		if (toTextureG1) glTexCoord2f(1.f, 0.f);
+		glVertex3f(4.5f, z, z);
+		if (toTextureG1) glTexCoord2f(1.f, 1.f);
+		glVertex3f(4.5f, 4.5f * 1.f, z);
+		if (toTextureG1) glTexCoord2f(0.f, 1.f);
+		glVertex3f(z, 4.5f * 1.f, z);
 		break;
 	case 2:
 		glNormal3f(z, p, -h);
@@ -378,54 +398,25 @@ void House::drawRoof()
 		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_colour1);  // set colour for diffuse reflectance
 		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_spec);   // set colour for specular reflectance
 
-		switch (choice)
-		{
-		case 1:
-			if (toTexture1)
-			{
-				glEnable(GL_TEXTURE_2D);                // enable texturing
-				glBindTexture(GL_TEXTURE_2D, texid1);    // bind 2D texture to shape
-			}
-			break;
-		case 2:
-			if (toTexture2)
-			{
-				glEnable(GL_TEXTURE_2D);                // enable texturing
-				glBindTexture(GL_TEXTURE_2D, texid2);    // bind 2D texture to shape
-			}
-			break;
-		case 3:
-			if (toTexture3)
-			{
-				glEnable(GL_TEXTURE_2D);                // enable texturing
-				glBindTexture(GL_TEXTURE_2D, texid3);    // bind 2D texture to shape
-			}
-			break;
-		case 4:
-			if (toTexture4)
-			{
-				glEnable(GL_TEXTURE_2D);                // enable texturing
-				glBindTexture(GL_TEXTURE_2D, texid4);    // bind 2D texture to shape
-			}
-			break;
-		}
+		glEnable(GL_TEXTURE_2D);                // enable texturing
+		glBindTexture(GL_TEXTURE_2D, texid2);    // bind 2D texture to shape
 
 		glBegin(GL_POLYGON);
 		glNormal3f(-p, z, z);
-		if (toTexture1 || toTexture2 || toTexture3 || toTexture4) glTexCoord2f(0.f, 0.f);
+		if (toTexture2) glTexCoord2f(0.f, 0.f);
 		glVertex3f(z, z, z);
-		if (toTexture1 || toTexture2 || toTexture3 || toTexture4) glTexCoord2f(2 * texCoord, 0.f);
+		if (toTexture2) glTexCoord2f(2 * texCoord, 0.f);
 		glVertex3f(z, z, 8.f);
-		if (toTexture1 || toTexture2 || toTexture3 || toTexture4) glTexCoord2f(texCoord, 0.5f);
+		if (toTexture2) glTexCoord2f(texCoord, 0.5f);
 		glVertex3f(z, h - 0.25f, 4.f);
 		glEnd();
 		glBegin(GL_POLYGON);
 		glNormal3f(z, z, p);
-		if (toTexture1 || toTexture2 || toTexture3 || toTexture4) glTexCoord2f(0.f, 0.f);
+		if (toTexture2) glTexCoord2f(0.f, 0.f);
 		glVertex3f(4.f, z, 12.f);
-		if (toTexture1 || toTexture2 || toTexture3 || toTexture4) glTexCoord2f(texCoord, 0.f);
+		if (toTexture2) glTexCoord2f(texCoord, 0.f);
 		glVertex3f(8.f, z, 12.f);
-		if (toTexture1 || toTexture2 || toTexture3 || toTexture4) glTexCoord2f(texCoord / 2, 0.5f);
+		if (toTexture2) glTexCoord2f(texCoord / 2, 0.5f);
 		glVertex3f(6.f, h - 0.25f, 12.f);
 		glEnd();
 
@@ -454,6 +445,23 @@ void House::drawRoof()
 		glVertex3f(16.f, z, z);
 		if (toTexture1 || toTexture2 || toTexture3 || toTexture4) glTexCoord2f(texCoord, 0.5f);
 		glVertex3f(16.f, h - 0.25f, 4.f);
+		glEnd();
+		if (toTexture1 || toTexture2 || toTexture3 || toTexture4) glDisable(GL_TEXTURE_2D);
+
+		glEnable(GL_TEXTURE_2D);                // enable texturing
+		glBindTexture(GL_TEXTURE_2D, texidD1);    // bind 2D texture to shape
+
+		glTranslatef(4.875f, -4.6f, 12.01f);
+		glBegin(GL_POLYGON);
+		glNormal3f(z, z, p);
+		if (toTextureD1) glTexCoord2f(0.f, 0.f);
+		glVertex3f(z, z, z);
+		if (toTextureD1) glTexCoord2f(1.f, 0.f);
+		glVertex3f(2.25f, z, z);
+		if (toTextureD1) glTexCoord2f(1.f, 1.f);
+		glVertex3f(2.25f, 2.25f * 1.522f, z);
+		if (toTextureD1) glTexCoord2f(0.f, 1.f);
+		glVertex3f(z, 2.25f * 1.522f, z);
 		break;
 	case 3:
 		glNormal3f(z, p, -h);
@@ -507,37 +515,8 @@ void House::drawRoof()
 		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_colour1);  // set colour for diffuse reflectance
 		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_spec);   // set colour for specular reflectance
 
-		switch (choice)
-		{
-		case 1:
-			if (toTexture1)
-			{
-				glEnable(GL_TEXTURE_2D);                // enable texturing
-				glBindTexture(GL_TEXTURE_2D, texid1);    // bind 2D texture to shape
-			}
-			break;
-		case 2:
-			if (toTexture2)
-			{
-				glEnable(GL_TEXTURE_2D);                // enable texturing
-				glBindTexture(GL_TEXTURE_2D, texid2);    // bind 2D texture to shape
-			}
-			break;
-		case 3:
-			if (toTexture3)
-			{
-				glEnable(GL_TEXTURE_2D);                // enable texturing
-				glBindTexture(GL_TEXTURE_2D, texid3);    // bind 2D texture to shape
-			}
-			break;
-		case 4:
-			if (toTexture4)
-			{
-				glEnable(GL_TEXTURE_2D);                // enable texturing
-				glBindTexture(GL_TEXTURE_2D, texid4);    // bind 2D texture to shape
-			}
-			break;
-		}
+		glEnable(GL_TEXTURE_2D);                // enable texturing
+		glBindTexture(GL_TEXTURE_2D, texid3);    // bind 2D texture to shape
 
 		glBegin(GL_POLYGON);
 		glNormal3f(-p, z, z);
@@ -565,6 +544,40 @@ void House::drawRoof()
 		glVertex3f(16.f, z, z);
 		if (toTexture1 || toTexture2 || toTexture3 || toTexture4) glTexCoord2f(texCoord, 0.5f);
 		glVertex3f(16.f, h - 0.25f, 4.f);
+		glEnd();
+		if (toTexture1 || toTexture2 || toTexture3 || toTexture4) glDisable(GL_TEXTURE_2D);
+
+		glEnable(GL_TEXTURE_2D);                // enable texturing
+		glBindTexture(GL_TEXTURE_2D, texidD3);    // bind 2D texture to shape
+
+		glTranslatef(10.75f, -4.6f, 8.01f);
+		glBegin(GL_POLYGON);
+		glNormal3f(z, z, p);
+		if (toTextureD3) glTexCoord2f(0.f, 0.f);
+		glVertex3f(z, z, z);
+		if (toTextureD3) glTexCoord2f(1.f, 0.f);
+		glVertex3f(2.5f, z, z);
+		if (toTextureD3) glTexCoord2f(1.f, 1.f);
+		glVertex3f(2.5f, 2.5f * 1.377f, z);
+		if (toTextureD3) glTexCoord2f(0.f, 1.f);
+		glVertex3f(z, 2.5f * 1.377f, z);
+		glEnd();
+		if (toTexture1 || toTexture2 || toTexture3 || toTexture4) glDisable(GL_TEXTURE_2D);
+
+		glEnable(GL_TEXTURE_2D);                // enable texturing
+		glBindTexture(GL_TEXTURE_2D, texidG2);    // bind 2D texture to shape
+
+		glTranslatef(-9.25f, 0.f, 4.f);
+		glBegin(GL_POLYGON);
+		glNormal3f(z, z, p);
+		if (toTextureG2) glTexCoord2f(0.f, 0.f);
+		glVertex3f(z, z, z);
+		if (toTextureG2) glTexCoord2f(1.f, 0.f);
+		glVertex3f(5.f, z, z);
+		if (toTextureG2) glTexCoord2f(1.f, 1.f);
+		glVertex3f(5.f, 5.f * 0.875f, z);
+		if (toTextureG2) glTexCoord2f(0.f, 1.f);
+		glVertex3f(z, 5.f * 0.875f, z);
 		break;
 	case 4:
 		glNormal3f(z, p, -h);
@@ -596,37 +609,8 @@ void House::drawRoof()
 		glMaterialfv(GL_FRONT_AND_BACK, GL_DIFFUSE, mat_colour1);  // set colour for diffuse reflectance
 		glMaterialfv(GL_FRONT_AND_BACK, GL_SPECULAR, mat_spec);   // set colour for specular reflectance
 
-		switch (choice)
-		{
-		case 1:
-			if (toTexture1)
-			{
-				glEnable(GL_TEXTURE_2D);                // enable texturing
-				glBindTexture(GL_TEXTURE_2D, texid1);    // bind 2D texture to shape
-			}
-			break;
-		case 2:
-			if (toTexture2)
-			{
-				glEnable(GL_TEXTURE_2D);                // enable texturing
-				glBindTexture(GL_TEXTURE_2D, texid2);    // bind 2D texture to shape
-			}
-			break;
-		case 3:
-			if (toTexture3)
-			{
-				glEnable(GL_TEXTURE_2D);                // enable texturing
-				glBindTexture(GL_TEXTURE_2D, texid3);    // bind 2D texture to shape
-			}
-			break;
-		case 4:
-			if (toTexture4)
-			{
-				glEnable(GL_TEXTURE_2D);                // enable texturing
-				glBindTexture(GL_TEXTURE_2D, texid4);    // bind 2D texture to shape
-			}
-			break;
-		}
+		glEnable(GL_TEXTURE_2D);                // enable texturing
+		glBindTexture(GL_TEXTURE_2D, texid4);    // bind 2D texture to shape
 
 		glBegin(GL_POLYGON);
 		glNormal3f(-p, z, z);
@@ -645,6 +629,40 @@ void House::drawRoof()
 		glVertex3f(16.f, z, z);
 		if (toTexture1 || toTexture2 || toTexture3 || toTexture4) glTexCoord2f(1.5 * texCoord, 0.5f);
 		glVertex3f(16.f, h - 0.25f, 6.f);
+		glEnd();
+		if (toTexture1 || toTexture2 || toTexture3 || toTexture4) glDisable(GL_TEXTURE_2D);
+
+		glEnable(GL_TEXTURE_2D);                // enable texturing
+		glBindTexture(GL_TEXTURE_2D, texidD3);    // bind 2D texture to shape
+
+		glTranslatef(3.f, -4.6f, 12.01f);
+		glBegin(GL_POLYGON);
+		glNormal3f(z, z, p);
+		if (toTextureD3) glTexCoord2f(0.f, 0.f);
+		glVertex3f(z, z, z);
+		if (toTextureD3) glTexCoord2f(1.f, 0.f);
+		glVertex3f(2.5f, z, z);
+		if (toTextureD3) glTexCoord2f(1.f, 1.f);
+		glVertex3f(2.5f, 2.5f * 1.377f, z);
+		if (toTextureD3) glTexCoord2f(0.f, 1.f);
+		glVertex3f(z, 2.5f * 1.377f, z);
+		glEnd();
+		if (toTexture1 || toTexture2 || toTexture3 || toTexture4) glDisable(GL_TEXTURE_2D);
+
+		glEnable(GL_TEXTURE_2D);                // enable texturing
+		glBindTexture(GL_TEXTURE_2D, texidG2);    // bind 2D texture to shape
+
+		glTranslatef(7.5f, 0.f, 0.f);
+		glBegin(GL_POLYGON);
+		glNormal3f(z, z, p);
+		if (toTextureG2) glTexCoord2f(0.f, 0.f);
+		glVertex3f(z, z, z);
+		if (toTextureG2) glTexCoord2f(1.f, 0.f);
+		glVertex3f(4.75f, z, z);
+		if (toTextureG2) glTexCoord2f(1.f, 1.f);
+		glVertex3f(4.75f, 4.75f * 0.875f, z);
+		if (toTextureG2) glTexCoord2f(0.f, 1.f);
+		glVertex3f(z, 4.75f * 0.875f, z);
 		break;
 	}
 

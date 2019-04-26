@@ -16,12 +16,12 @@ void setup()
 	Stage* stage = new Stage();         // new instance of Stage object    
 	stage->size(camrad * 5.f, camrad * 2.f, camrad * 5.f);                // resize to bound scene
 	GLuint* skybox = new GLuint[6];
-	skybox[0] = textureManager.loadImage("Textures/skybox1/left.bmp");
-	skybox[1] = textureManager.loadImage("Textures/skybox1/right.bmp");
-	skybox[2] = textureManager.loadImage("Textures/skybox1/far.bmp");
-	skybox[3] = textureManager.loadImage("Textures/skybox1/near.bmp");
-	skybox[4] = textureManager.loadImage("Textures/skybox1/floor.bmp");
-	skybox[5] = textureManager.loadImage("Textures/skybox1/up.bmp");
+	skybox[0] = textureManager.loadImage("Textures/skybox/left.bmp");
+	skybox[1] = textureManager.loadImage("Textures/skybox/right.bmp");
+	skybox[2] = textureManager.loadImage("Textures/skybox/far.bmp");
+	skybox[3] = textureManager.loadImage("Textures/skybox/near.bmp");
+	skybox[4] = textureManager.loadImage("Textures/skybox/floor.bmp");
+	skybox[5] = textureManager.loadImage("Textures/skybox/up.bmp");
 	stage->setTextures(skybox);
 	objects["_stage"] = stage;           // Add to objects map with id "stage"
 
@@ -31,9 +31,9 @@ void setup()
 	GLuint rotorFabric = textureManager.loadImage("Textures/rotorfabric.bmp"); if (rotorFabric != NULL) printf("rotor fabric loaded\n");
 	GLuint metal = textureManager.loadImage("Textures/metal1.bmp"); if (metal != NULL) printf("metal loaded\n");
 	windmill[0] = new Windmill(brick, roof, rotorWood, rotorFabric, metal);
-	windmill[0]->position(0.f, 0.f, 2800.f);
-	windmill[0]->orientation(0.f, -13.3f, 0.f);
-	windmill[0]->size(scale);
+	windmill[0]->position(200.f, 0.f, 2800.f);
+	windmill[0]->orientation(0.f, -30.f, 0.f);
+	windmill[0]->size(1.3 * scale);
 	objects["windmill"] = windmill[0];
 
 	GLuint board = textureManager.loadImage("Textures/sign.bmp"); if (board != NULL) printf("sign loaded\n");
@@ -49,54 +49,59 @@ void setup()
 	GLuint house1 = textureManager.loadImage("Textures/house1.bmp"); if (house1 != NULL) printf("house1 loaded\n");
 	GLuint house2 = textureManager.loadImage("Textures/house2.bmp"); if (house2 != NULL) printf("house2 loaded\n");
 	GLuint church = textureManager.loadImage("Textures/church.bmp"); if (church != NULL) printf("church loaded\n");
-	house[0] = new House(randomNumGen(), roof, brick, church, house1, house2);
+	GLuint door1 = textureManager.loadImage("Textures/door1.bmp"); if (door1 != NULL) printf("door1 loaded\n");
+	GLuint door2 = textureManager.loadImage("Textures/door2.bmp"); if (door2 != NULL) printf("door2 loaded\n");
+	GLuint door3 = textureManager.loadImage("Textures/door3.bmp"); if (door3 != NULL) printf("door3 loaded\n");
+	GLuint garage1 = textureManager.loadImage("Textures/garage1.bmp"); if (garage1 != NULL) printf("garage1 loaded\n");
+	GLuint garage2 = textureManager.loadImage("Textures/garage2.bmp"); if (garage2 != NULL) printf("garage2 loaded\n");
+	house[0] = new House(randomNumGen(), roof, brick, church, house1, house2, door1, door2, door3, garage1, garage2);
 	house[0]->orientation(0.f, 90.f, 0.f);
 	house[0]->position(-3500.f, 0.f, 600.f);
 	house[0]->size(scale);
 	objects["house"] = house[0];
 
-	house[1] = new House(randomNumGen(), roof, brick, church, house1, house2);
+	house[1] = new House(randomNumGen(), roof, brick, church, house1, house2, door1, door2, door3, garage1, garage2);
 	house[1]->position(-900.f, 0.f, -3500.f);
 	house[1]->size(scale);
 	objects["house1"] = house[1];
 
-	house[2] = new House(randomNumGen(), roof, brick, church, house1, house2);
+	house[2] = new House(randomNumGen(), roof, brick, church, house1, house2, door1, door2, door3, garage1, garage2);
 	house[2]->orientation(0.f, 90.f, 0.f);
-	house[2]->position(-3500.f, 0.f, -2220.f);
+	house[2]->position(-3500.f, 0.f, -1850.f);
 	house[2]->size(scale);
 	objects["house2"] = house[2];
 
-	house[3] = new House(randomNumGen(), roof, brick, church, house1, house2);
+	house[3] = new House(randomNumGen(), roof, brick, church, house1, house2, door1, door2, door3, garage1, garage2);
 	house[3]->orientation(0.f, -105.f, 0.f);
-	house[3]->position(3100.f, 0.f, 2294.f);
+	house[3]->position(3100.f, 0.f, 2184.f);
 	house[3]->size(scale);
 	objects["house3"] = house[3];
 
-	house[4] = new House(randomNumGen(), roof, brick, church, house1, house2);
+	house[4] = new House(randomNumGen(), roof, brick, church, house1, house2, door1, door2, door3, garage1, garage2);
 	house[4]->orientation(0.f, 90.f, 0.f);
 	house[4]->position(-2950.f, 0.f, 3200.f);
 	house[4]->size(scale);
 	objects["house4"] = house[4];
 
-	house[5] = new House(3, roof, brick, church, house1, house2);
+	house[5] = new House(randomNumGen(), roof, brick, church, house1, house2, door1, door2, door3, garage1, garage2);
 	house[5]->orientation(0.f, -45.f, 0.f);
 	house[5]->position(2600.f, 0.f, -3750.f);
 	house[5]->size(scale);
 	objects["house5"] = house[5];
 
-	house[6] = new House(randomNumGen(), roof, brick, church, house1, house2);
+	house[6] = new House(randomNumGen(), roof, brick, church, house1, house2, door1, door2, door3, garage1, garage2);
 	house[6]->orientation(0.f, -90.f, 0.f);
 	house[6]->position(2700.f, 0.f, -950.f);
 	house[6]->size(0.8 * scale);
 	objects["house6"] = house[6];
 
-	house[7] = new House(randomNumGen(), roof, brick, church, house1, house2);
+	house[7] = new House(randomNumGen(), roof, brick, church, house1, house2, door1, door2, door3, garage1, garage2);
 	house[7]->orientation(0.f, 90.f, 0.f);
 	house[7]->position(2900.f, 0.f, 74.f);
 	house[7]->size(0.8 * scale);
 	objects["house7"] = house[7];
 
-	house[8] = new House(randomNumGen(), roof, brick, church, house1, house2);
+	house[8] = new House(randomNumGen(), roof, brick, church, house1, house2, door1, door2, door3, garage1, garage2);
 	house[8]->position(2000.f, 0.f, 180.f);
 	house[8]->size(0.8 * scale);
 	objects["house8"] = house[8];
@@ -700,9 +705,9 @@ void reshape(int _width, int _height)
 	glLoadIdentity();     // reset matrix
 
 	if (!ortho)
-		gluPerspective(60.0, aspect, 100.0, camrad*100.f);
+		gluPerspective(60.0, aspect, 100.0, camrad * 100.f);
 	else
-		glOrtho(-width, width, -height, height, 100.f, camrad*100.f);       // orthographic
+		glOrtho(-width, width, -height, height, 100.f, camrad * 100.f);       // orthographic
 
 	glViewport(0, 0, width, height);
 	glMatrixMode(GL_MODELVIEW); // return matrix mode to modelling and viewing
