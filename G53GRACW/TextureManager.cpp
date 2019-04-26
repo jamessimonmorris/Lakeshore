@@ -63,13 +63,24 @@ GLuint TextureManager::loadImage(const char* filename) {
 	glBindTexture(GL_TEXTURE_2D, texObject);
 
 	// Set texture parameters
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
-	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
+	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
 	// Upload texture data
-	glTexImage2D(GL_TEXTURE_2D, 0, infoHeader.biBitCount == 32 ? GL_RGBA : GL_RGB, infoHeader.biWidth, infoHeader.biHeight, 0, infoHeader.biBitCount == 32 ? GL_RGBA : GL_BGR_EXT, GL_UNSIGNED_BYTE, pixelBuffer);
+	string fileNameStr = filename;
+	string subStr = "Textures/skybox";
+	if (fileNameStr == "Textures/bark.bmp" || fileNameStr == "Textures/rotorfabric.bmp" || !strncmp(fileNameStr.c_str(), subStr.c_str(), subStr.size()))
+	{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR);
+		glTexImage2D(GL_TEXTURE_2D, 0, infoHeader.biBitCount == 32 ? GL_RGBA : GL_RGB, infoHeader.biWidth, infoHeader.biHeight, 0, infoHeader.biBitCount == 32 ? GL_RGBA : GL_BGR_EXT, GL_UNSIGNED_BYTE, pixelBuffer);
+	}
+	else
+	{
+		glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
+		gluBuild2DMipmaps(GL_TEXTURE_2D, 3, infoHeader.biWidth, infoHeader.biHeight, infoHeader.biBitCount == 32 ? GL_RGBA : GL_BGR_EXT, GL_UNSIGNED_BYTE, pixelBuffer);
+	}
 
 	// insert texture into texture list
 	textures.push_back(texObject);

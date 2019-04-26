@@ -17,6 +17,7 @@
 #include <string>
 #include <map>
 #include "TextureManager.h"
+#include <iostream>
 
 void setup();
 float runtime();
@@ -29,7 +30,7 @@ int main(int argc, char **argv);
 
 int width, height, prevTime;
 static map<string, DisplayableObject*> objects;
-float camrad, camangle = -0.785398f, zoom = 24.f, camh = 45.f;
+float camrad, camangle = -0.785398f, zoom = 24.f, camh = 75.f;
 float eye[3];
 float cen[3];
 
@@ -41,16 +42,17 @@ void keyPressed(unsigned char, int, int);
 
 float ranNum;
 bool ortho = false;
-float scale = 75.f;
-int view = 5;
+float scale = 80.f;
+int view = 2;
+int treeItr = 0;
 
 TextureManager textureManager;
 
 const int windmills = 1;
 
 static Windmill* windmill[windmills];
-static Tree* tree[16];
+static Tree* tree[100];
 static Sign* sign[1];
-static House* house[5];
+static House* house[10];
 
 #endif

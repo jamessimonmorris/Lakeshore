@@ -41,11 +41,11 @@ void Sign::display()
 
 void Sign::drawSign()
 {
-	float postRadius = 0.25f;
-	float postHeight = 6.f;
-	float signWidth = 10.f;
-	float signHeight = 5.f;
-	float signThickness = 0.1f;
+	float postRadius = 0.1875f;
+	float postHeight = 4.5f;
+	float signWidth = 7.5f;
+	float signHeight = 3.75f;
+	float signThickness = 0.075f;
 
 	drawPost(postRadius, postHeight);
 	glTranslatef(signWidth * 0.85f, -postHeight, 0.f);
@@ -159,10 +159,21 @@ void Sign::drawBoard(float width, float height, float thickness)
 	glVertex3f(-width, -height, thickness);
 	if (toTextureS) glTexCoord2f(1.f, 0.f);
 	glVertex3f(z, -height, thickness);
-	if (toTextureS) glTexCoord2f(1.f, 1.f);
-	glVertex3f(z, z, thickness);
+	if (toTextureS) glTexCoord2f(1.f, 0.754f);
+	glVertex3f(z, -0.246f * height, thickness);
+	if (toTextureS) glTexCoord2f(0.572f, 1.f);
+	glVertex3f(-0.428 * width, z, thickness);
 	if (toTextureS) glTexCoord2f(0.f, 1.f);
 	glVertex3f(-width, z, thickness);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glNormal3f((-(5 * thickness) * (0.246 * height)), (5 * thickness) * (-0.428 * width), (0.227 - (0.246 * height)) * (-0.428 * width));
+	if (toTextureS) glTexCoord2f(1.f, 0.754f);
+	glVertex3f(z, -0.246f * height, thickness); // 1
+	if (toTextureS) glTexCoord2f(1.f, 1.f);
+	glVertex3f(z, -0.227f, 6 * thickness); // 2
+	if (toTextureS) glTexCoord2f(0.572f, 1.f);
+	glVertex3f(-0.428 * width, z, thickness); // 3
 	glEnd();
 	if (toTextureS) glDisable(GL_TEXTURE_2D);
 
@@ -180,8 +191,21 @@ void Sign::drawBoard(float width, float height, float thickness)
 	glVertex3f(-width, -height, z);
 	if (toTextureB) glTexCoord2f(1.f, 1.f);
 	glVertex3f(-width, z, z);
+	if (toTextureS) glTexCoord2f(0.428f, 1.f);
+	glVertex3f(-0.428 * width, z, z);
+	if (toTextureS) glTexCoord2f(0.f, 0.754f);
+	glVertex3f(z, -0.246f * height, z);
 	if (toTextureB) glTexCoord2f(0.f, 1.f);
 	glVertex3f(z, z, z);
+	glEnd();
+	glBegin(GL_POLYGON);
+	glNormal3f(((5 * thickness) * (0.246 * height)), -(5 * thickness) * (-0.428 * width), -(0.227 - (0.246 * height)) * (-0.428 * width));
+	if (toTextureS) glTexCoord2f(0.f, 0.754f);
+	glVertex3f(z, -0.246f * height, z);
+	if (toTextureS) glTexCoord2f(0.428f, 0.754f);
+	glVertex3f(-0.428 * width, z, z);
+	if (toTextureS) glTexCoord2f(0.f, 1.f);
+	glVertex3f(z, -0.191f, 0.02 + 5 * thickness);
 	glEnd();
 	if (toTextureB) glDisable(GL_TEXTURE_2D);
 
@@ -197,10 +221,20 @@ void Sign::drawBoard(float width, float height, float thickness)
 	glVertex3f(z, -height, thickness);
 	if (toTextureP) glTexCoord2f(1.f, 0.f);
 	glVertex3f(z, -height, z);
+	if (toTextureS) glTexCoord2f(1.f, 0.754f);
+	glVertex3f(z, -0.246f * height, z);
+	if (toTextureS) glTexCoord2f(0.f, 0.754f);
+	glVertex3f(z, -0.246f * height, thickness);
+	glEnd();
+	glBegin(GL_POLYGON);
+	if (toTextureS) glTexCoord2f(0.f, 0.754f);
+	glVertex3f(z, -0.246f * height, thickness);
+	if (toTextureS) glTexCoord2f(1.f, 0.754f);
+	glVertex3f(z, -0.246f * height, z);
 	if (toTextureP) glTexCoord2f(1.f, 1.f);
-	glVertex3f(z, z, z);
+	glVertex3f(z, -0.191f, 0.02 + 5 * thickness);
 	if (toTextureP) glTexCoord2f(0.f, 1.f);
-	glVertex3f(z, z, thickness);
+	glVertex3f(z, -0.227f, 6 * thickness);
 	glEnd();
 
 	// Left Side
@@ -221,12 +255,22 @@ void Sign::drawBoard(float width, float height, float thickness)
 	glNormal3f(z, p, z);
 	if (toTextureP) glTexCoord2f(0.f, 0.f);
 	glVertex3f(-width, z, thickness);
-	if (toTextureP) glTexCoord2f(1.f, 0.f);
-	glVertex3f(z, z, thickness);
-	if (toTextureP) glTexCoord2f(1.f, 1.f);
-	glVertex3f(z, z, z);
+	if (toTextureS) glTexCoord2f(0.572f, 0.f);
+	glVertex3f(-0.428 * width, z, thickness);
+	if (toTextureS) glTexCoord2f(0.572f, 1.f);
+	glVertex3f(-0.428 * width, z, z);
 	if (toTextureP) glTexCoord2f(0.f, 1.f);
 	glVertex3f(-width, z, z);
+	glEnd();
+	glBegin(GL_POLYGON);
+	if (toTextureS) glTexCoord2f(0.572f, 0.f);
+	glVertex3f(-0.428 * width, z, thickness);
+	if (toTextureP) glTexCoord2f(1.f, 0.f);
+	glVertex3f(z, -0.227f, 6 * thickness);
+	if (toTextureP) glTexCoord2f(1.f, 1.f);
+	glVertex3f(z, -0.191f, 0.02 + 5 * thickness);
+	if (toTextureS) glTexCoord2f(0.572f, 1.f);
+	glVertex3f(-0.428 * width, z, z);
 	glEnd();
 
 	// Bottom

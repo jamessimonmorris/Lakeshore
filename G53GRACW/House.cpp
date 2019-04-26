@@ -252,7 +252,7 @@ void House::drawRoof()
 		glNormal3f(h, p, z);
 		if (toTextureR) glTexCoord2f(0.f, 0.f);
 		glVertex3f(16.f + (2 * g), z, 12.f + (2 * g));
-		if (toTextureR) glTexCoord2f(0.529f, 0.f);
+		if (toTextureR) glTexCoord2f(0.471f, 0.f);
 		glVertex3f(16.f + (2 * g), z, 8.f + (2 * g));
 		if (toTextureR) glTexCoord2f(1.f, 1.f);
 		glVertex3f(12.f + g, h, 4.f + g);
@@ -363,7 +363,7 @@ void House::drawRoof()
 		glNormal3f(h, p, z);
 		if (toTextureR) glTexCoord2f(0.f, 0.f);
 		glVertex3f(8.f + (1.5 * g), z, 12.f + (2 * g));
-		if (toTextureR) glTexCoord2f(0.529f, 0.f);
+		if (toTextureR) glTexCoord2f(0.471f, 0.f);
 		glVertex3f(8.f + (1.5 * g), z, 8.f + (2 * g));
 		if (toTextureR) glTexCoord2f(1.f, 1.f);
 		glVertex3f(6.f + g, h, 4.f + g);
@@ -492,7 +492,7 @@ void House::drawRoof()
 		glNormal3f(h, p, z);
 		if (toTextureR) glTexCoord2f(0.f, 0.f);
 		glVertex3f(8.f + (2 * g), z, 12.f + (2 * g));
-		if (toTextureR) glTexCoord2f(0.529f, 0.f);
+		if (toTextureR) glTexCoord2f(0.471f, 0.f);
 		glVertex3f(8.f + (2 * g), z, 8.f + (2 * g));
 		if (toTextureR) glTexCoord2f(1.f, 1.f);
 		glVertex3f(4.f + g, h, 4.f + g);

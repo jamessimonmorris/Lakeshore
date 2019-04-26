@@ -31,6 +31,7 @@ void setup()
 	GLuint rotorFabric = textureManager.loadImage("Textures/rotorfabric.bmp"); if (rotorFabric != NULL) printf("rotor fabric loaded\n");
 	GLuint metal = textureManager.loadImage("Textures/metal1.bmp"); if (metal != NULL) printf("metal loaded\n");
 	windmill[0] = new Windmill(brick, roof, rotorWood, rotorFabric, metal);
+	windmill[0]->position(0.f, 0.f, 2800.f);
 	windmill[0]->orientation(0.f, -13.3f, 0.f);
 	windmill[0]->size(scale);
 	objects["windmill"] = windmill[0];
@@ -38,8 +39,8 @@ void setup()
 	GLuint board = textureManager.loadImage("Textures/sign.bmp"); if (board != NULL) printf("sign loaded\n");
 	GLuint backboard = textureManager.loadImage("Textures/backboard.bmp"); if (backboard != NULL) printf("backboard loaded\n");
 	sign[0] = new Sign(metal, board, backboard);
-	sign[0]->position(-2600.f, 0.f, 4696.f);
-	sign[0]->orientation(0.f, 6.f, 0.f);
+	sign[0]->position(-2400.f, 0.f, 3750.f);
+	sign[0]->orientation(-2.f, 8.f, 0.f);
 	sign[0]->size(scale);
 	objects["sign"] = sign[0];
 
@@ -55,7 +56,7 @@ void setup()
 	objects["house"] = house[0];
 
 	house[1] = new House(randomNumGen(), roof, brick, church, house1, house2);
-	house[1]->position(-600.f, 0.f, -3500.f);
+	house[1]->position(-900.f, 0.f, -3500.f);
 	house[1]->size(scale);
 	objects["house1"] = house[1];
 
@@ -67,72 +68,610 @@ void setup()
 
 	house[3] = new House(randomNumGen(), roof, brick, church, house1, house2);
 	house[3]->orientation(0.f, -105.f, 0.f);
-	house[3]->position(3000.f, 0.f, 2220.f);
+	house[3]->position(3100.f, 0.f, 2294.f);
 	house[3]->size(scale);
 	objects["house3"] = house[3];
 
+	house[4] = new House(randomNumGen(), roof, brick, church, house1, house2);
+	house[4]->orientation(0.f, 90.f, 0.f);
+	house[4]->position(-2950.f, 0.f, 3200.f);
+	house[4]->size(scale);
+	objects["house4"] = house[4];
+
+	house[5] = new House(3, roof, brick, church, house1, house2);
+	house[5]->orientation(0.f, -45.f, 0.f);
+	house[5]->position(2600.f, 0.f, -3750.f);
+	house[5]->size(scale);
+	objects["house5"] = house[5];
+
+	house[6] = new House(randomNumGen(), roof, brick, church, house1, house2);
+	house[6]->orientation(0.f, -90.f, 0.f);
+	house[6]->position(2700.f, 0.f, -950.f);
+	house[6]->size(0.8 * scale);
+	objects["house6"] = house[6];
+
+	house[7] = new House(randomNumGen(), roof, brick, church, house1, house2);
+	house[7]->orientation(0.f, 90.f, 0.f);
+	house[7]->position(2900.f, 0.f, 74.f);
+	house[7]->size(0.8 * scale);
+	objects["house7"] = house[7];
+
+	house[8] = new House(randomNumGen(), roof, brick, church, house1, house2);
+	house[8]->position(2000.f, 0.f, 180.f);
+	house[8]->size(0.8 * scale);
+	objects["house8"] = house[8];
+
 	GLuint bark = textureManager.loadImage("Textures/bark.bmp");
 	GLuint leaves = textureManager.loadImage("Textures/leaves1.bmp");
-	tree[0] = new Tree(randomNumGen(), bark, leaves);
-	tree[0]->position(556.f, 0.f, -456.f);
-	tree[0]->size(scale);
-	objects["tree"] = tree[0];
 
-	tree[1] = new Tree(randomNumGen(), bark, leaves);
-	tree[1]->position(-350.f, 0.f, -345.f);
-	tree[1]->size(scale);
-	objects["tree1"] = tree[1];
+	// Block 2 trees
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(556.f, 0.f, 2344.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
 
-	tree[2] = new Tree(randomNumGen(), bark, leaves);
-	tree[2]->position(650.f, 0.f, 550.f);
-	tree[2]->size(scale);
-	objects["tree2"] = tree[2];
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-350.f, 0.f, 2455.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
 
-	tree[3] = new Tree(randomNumGen(), bark, leaves);
-	tree[3]->position(-650.f, 0.f, 250.f);
-	tree[3]->size(scale);
-	objects["tree3"] = tree[3];
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(650.f, 0.f, 3200.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
 
-	tree[4] = new Tree(randomNumGen(), bark, leaves);
-	tree[4]->position(-584.f, 0.f, -97.f);
-	tree[4]->size(scale);
-	objects["tree4"] = tree[4];
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-650.f, 0.f, 3050.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
 
-	tree[5] = new Tree(randomNumGen(), bark, leaves);
-	tree[5]->position(700.f, 0.f, -100.f);
-	tree[5]->size(scale);
-	objects["tree5"] = tree[5];
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-584.f, 0.f, 2703.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
 
-	tree[6] = new Tree(randomNumGen(), bark, leaves);
-	tree[6]->position(-1965.f, 0.f, 735.f);
-	tree[6]->size(scale);
-	objects["tree6"] = tree[6];
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(700.f, 0.f, 2700.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
 
-	tree[7] = new Tree(randomNumGen(), bark, leaves);
-	tree[7]->position(-2082.f, 0.f, -835.f);
-	tree[7]->size(scale);
-	objects["tree7"] = tree[7];
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-100.f, 0.f, 2350.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
 
-	tree[8] = new Tree(randomNumGen(), bark, leaves);
-	tree[8]->position(-2408.f, 0.f, -705.f);
-	tree[8]->size(scale);
-	objects["tree8"] = tree[8];
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(210.f, 0.f, 2200.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
 
-	tree[9] = new Tree(randomNumGen(), bark, leaves);
-	tree[9]->position(3250.f, 0.f, 1875.f);
-	tree[9]->size(scale);
-	objects["tree9"] = tree[9];
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(500.f, 0.f, 2050.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
 
-	tree[10] = new Tree(randomNumGen(), bark, leaves);
-	tree[10]->position(3450.f, 0.f, 2325.f);
-	tree[10]->size(scale);
-	objects["tree10"] = tree[10];
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-500.f, 0.f, 2250.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
 
-	tree[11] = new Tree(randomNumGen(), bark, leaves);
-	tree[11]->position(3400.f, 0.f, 2000.f);
-	tree[11]->size(scale);
-	objects["tree11"] = tree[11];
-	
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-200.f, 0.f, 2075.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(100.f, 0.f, 1920.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	// Block 4 trees
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-1965.f, 0.f, 735.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-1982.f, 0.f, -835.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-2258.f, 0.f, -705.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	// Block 3 trees
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(3250.f, 0.f, 1875.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(3450.f, 0.f, 2325.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(3400.f, 0.f, 2000.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(3450.f, 0.f, 3100.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(3500.f, 0.f, 3350.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(3400.f, 0.f, 3600.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(3150.f, 0.f, 3475.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(2035.f, 0.f, 3675.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(1900.f, 0.f, 3425.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	// Block 9 trees
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(3300.f, 0.f, -3475.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(3540.f, 0.f, -3625.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(3650.f, 0.f, -3350.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(3450.f, 0.f, -2000.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(3660.f, 0.f, -2200.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(3330.f, 0.f, -2275.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	// Block 1 trees
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-3600.f, 0.f, 3625.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-3250.f, 0.f, 3575.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-3700.f, 0.f, 3325.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-3300.f, 0.f, 3125.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-3525.f, 0.f, 2990.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-3605.f, 0.f, 2750.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-3510.f, 0.f, 2525.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-3600.f, 0.f, 2255.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-3355.f, 0.f, 2100.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-3200.f, 0.f, 2750.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-2950.f, 0.f, 3700.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-2650.f, 0.f, 3580.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	// Block 7 trees
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-2015.f, 0.f, -3435.f);
+	tree[treeItr]->size(1.5 * scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	// Block 6 trees
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(3280.f, 0.f, 450.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(3596.f, 0.f, 600.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(3364.f, 0.f, 860.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	// Block 8 trees
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(700.f, 0.f, -3600.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(700.f, 0.f, -3300.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(700.f, 0.f, -3000.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(700.f, 0.f, -2700.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(700.f, 0.f, -2400.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(700.f, 0.f, -2100.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	// Block 5 trees
+	int range = 75;
+	float variation = (rand() % range) - (range / 2) - 1;
+	float variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(700.f + variation, 0.f, 700.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	variation = (rand() % range) - (range / 2) - 1;
+	variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(700.f + variation, 0.f, 420.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	variation = (rand() % range) - (range / 2) - 1;
+	variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(700.f + variation, 0.f, 140.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	variation = (rand() % range) - (range / 2) - 1;
+	variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(700.f + variation, 0.f, -140.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	variation = (rand() % range) - (range / 2) - 1;
+	variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(700.f + variation, 0.f, -420.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	variation = (rand() % range) - (range / 2) - 1;
+	variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(700.f + variation, 0.f, -700.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+
+
+	variation = (rand() % range) - (range / 2) - 1;
+	variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(420.f + variation, 0.f, 700.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	variation = (rand() % range) - (range / 2) - 1;
+	variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(420.f + variation, 0.f, 420.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	variation = (rand() % range) - (range / 2) - 1;
+	variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(420.f + variation, 0.f, 140.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	variation = (rand() % range) - (range / 2) - 1;
+	variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(420.f + variation, 0.f, -140.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	variation = (rand() % range) - (range / 2) - 1;
+	variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(420.f + variation, 0.f, -420.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	variation = (rand() % range) - (range / 2) - 1;
+	variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(420.f + variation, 0.f, -700.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+
+
+	variation = (rand() % range) - (range / 2) - 1;
+	variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(140.f + variation, 0.f, 700.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	variation = (rand() % range) - (range / 2) - 1;
+	variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(140.f + variation, 0.f, 420.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	variation = (rand() % range) - (range / 2) - 1;
+	variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(140.f + variation, 0.f, 140.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	variation = (rand() % range) - (range / 2) - 1;
+	variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(140.f + variation, 0.f, -140.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	variation = (rand() % range) - (range / 2) - 1;
+	variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(140.f + variation, 0.f, -420.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	variation = (rand() % range) - (range / 2) - 1;
+	variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(140.f + variation, 0.f, -700.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+
+
+	variation = (rand() % range) - (range / 2) - 1;
+	variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-140.f + variation, 0.f, 700.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	variation = (rand() % range) - (range / 2) - 1;
+	variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-140.f + variation, 0.f, 420.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	variation = (rand() % range) - (range / 2) - 1;
+	variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-140.f + variation, 0.f, 140.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	variation = (rand() % range) - (range / 2) - 1;
+	variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-140.f + variation, 0.f, -140.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	variation = (rand() % range) - (range / 2) - 1;
+	variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-140.f + variation, 0.f, -420.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	variation = (rand() % range) - (range / 2) - 1;
+	variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-140.f + variation, 0.f, -700.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+
+
+	variation = (rand() % range) - (range / 2) - 1;
+	variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-420.f + variation, 0.f, 700.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	variation = (rand() % range) - (range / 2) - 1;
+	variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-420.f + variation, 0.f, 420.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	variation = (rand() % range) - (range / 2) - 1;
+	variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-420.f + variation, 0.f, 140.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	variation = (rand() % range) - (range / 2) - 1;
+	variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-420.f + variation, 0.f, -140.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	variation = (rand() % range) - (range / 2) - 1;
+	variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-420.f + variation, 0.f, -420.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	variation = (rand() % range) - (range / 2) - 1;
+	variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-420.f + variation, 0.f, -700.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+
+
+	variation = (rand() % range) - (range / 2) - 1;
+	variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-700.f + variation, 0.f, 700.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	variation = (rand() % range) - (range / 2) - 1;
+	variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-700.f + variation, 0.f, 420.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	variation = (rand() % range) - (range / 2) - 1;
+	variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-700.f + variation, 0.f, 140.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	variation = (rand() % range) - (range / 2) - 1;
+	variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-700.f + variation, 0.f, -140.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	variation = (rand() % range) - (range / 2) - 1;
+	variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-700.f + variation, 0.f, -420.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	variation = (rand() % range) - (range / 2) - 1;
+	variation1 = (rand() % range) - (range / 2) - 1;
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-700.f + variation, 0.f, -700.f + variation1);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
 	reshape(width, height);
 	prevTime = glutGet(GLUT_ELAPSED_TIME);
 
@@ -161,7 +700,7 @@ void reshape(int _width, int _height)
 	glLoadIdentity();     // reset matrix
 
 	if (!ortho)
-		gluPerspective(60.0, aspect, 250.0, camrad*100.f);
+		gluPerspective(60.0, aspect, 100.0, camrad*100.f);
 	else
 		glOrtho(-width, width, -height, height, 100.f, camrad*100.f);       // orthographic
 
@@ -230,7 +769,7 @@ void draw()
 	{
 		ani_obj = dynamic_cast<Animation*>(itr->second);
 		if (ani_obj != NULL) ani_obj->update(dT);        // update if subclasses Animation
-		if (itr->first != "_stage") itr->second->size(scale);
+		//if (itr->first != "_stage") itr->second->size(scale);
 		itr->second->display();                         // call display method on DisplayableObject
 	}
 
@@ -332,7 +871,7 @@ void keyPressed(unsigned char key, int xm, int ym)
 	case ' ':                                     // if space bar pressed
 		camangle = -0.785398f;                   //reset angle to 0.0
 		zoom = 24.f;
-		camh = 45.f;
+		camh = 75.f;
 
 		cen[0] = 0.f;
 		cen[1] = 0.f;
@@ -391,7 +930,7 @@ void keyPressed(unsigned char key, int xm, int ym)
 		{
 			ortho = true;
 			scale = 50.f;
-			camh = 45.f;
+			camh = 75.f;
 		}
 		reshape(width, height);
 		break;
