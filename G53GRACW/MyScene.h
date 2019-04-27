@@ -39,6 +39,8 @@ void positionCamera();
 void cameraRadius();
 void keyPressed(int, int, int);
 void keyPressed(unsigned char, int, int);
+void mouseClick(int, int, int, int);
+void mouseDrag(int, int);
 
 float ranNum;				// random number set in randomNumGen()
 bool ortho = false;			// check if in orthographic or perspective view
@@ -54,5 +56,8 @@ static Windmill* windmill[windmills];
 static Tree* tree[100];
 static Sign* sign[1];
 static House* house[10];
+
+bool leftClick = false;
+int startX, startY;
 
 #endif

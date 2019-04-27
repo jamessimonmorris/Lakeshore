@@ -988,7 +988,40 @@ void keyPressed(unsigned char key, int xm, int ym)
 	printf("Angle: %f; Height: %f; Zoom: %f\n", camangle, camh, zoom);
 }
 
-// TODO: Implement mouse functions
+void mouseClick(int button, int state, int x, int y)
+{
+	if (button == GLUT_LEFT_BUTTON && state == GLUT_DOWN)
+	{
+		leftClick = true;
+		startX = x;
+		startY = y;
+	}
+	else if (button == GLUT_RIGHT_BUTTON && state == GLUT_DOWN)
+	{
+		camangle = -0.785398f;
+		zoom = 24.f;
+		camh = 75.f;
+
+		cen[0] = 0.f;
+		cen[1] = 0.f;
+		cen[2] = 0.f;
+	}
+	else
+	{
+		leftClick = false;
+	}
+}
+
+void mouseDrag(int x, int y)
+{
+	if (leftClick)
+	{
+		camangle += ((float)(startX - x) / 2500);
+		if (camh > 120.f) camh = 120.f; else if (camh < 0.f) camh = 0.f;
+		else
+			camh += ((float)(startY - y) / 50);
+	}
+}
 
 float randomNumGen()
 {
@@ -1028,6 +1061,8 @@ int main(int argc, char **argv)
 	glutReshapeFunc(reshape);		// Register reshape function to handle window resizing
 	glutKeyboardFunc(keyPressed);	// ASCII key handling
 	glutSpecialFunc(keyPressed);	// Coded key handling
+	glutMouseFunc(mouseClick);		// Mouse clicks handling
+	glutMotionFunc(mouseDrag);		// Mouse movement handling
 	checkGLError();                 // Check any OpenGL errors in initialisation
 	glutMainLoop();                 // Begin rendering sequence
 	destroyObjects();				// Run upon exit
