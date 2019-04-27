@@ -3,7 +3,7 @@
 House::House(int _ranNum, GLuint _texidR, GLuint _texid1, GLuint _texid2, GLuint _texid3, GLuint _texid4, GLuint _texidD1, GLuint _texidD2, GLuint _texidD3, GLuint _texidG1, GLuint _texidG2) :
 	ranNum(_ranNum)
 {
-	texidR = _texidR;
+	texidR = _texidR;							// Instantiate all necessary texture supporting variables
 	if (texidR != NULL) toTextureR = true;
 
 	texid1 = _texid1;
@@ -58,6 +58,7 @@ void House::display()
 		char curr;
 		string sequence;
 
+		// Hierarchical modelling depending on random number gen
 		switch (ranNum % 4)
 		{
 		case 0:
@@ -117,13 +118,13 @@ void House::display()
 void House::drawWall()
 {
 	float mat_colour[]                      // colour reflected by diffuse light
-		= { 0.925f, 0.925f, 0.925f, 1.f };         // mid brown
+		= { 0.925f, 0.925f, 0.925f, 1.f };
 	float mat_ambient[]                     // ambient colour
-		= { 1.f, 1.f, 1.f, 1.f };         // dark brown
+		= { 1.f, 1.f, 1.f, 1.f };
 	float mat_spec[]                        // specular colour
-		= { 0.1f, 0.1f, 0.1f, 1.f };               // no reflectance (black)
-	float z = 0.f;
-	float p = 1.f;
+		= { 0.1f, 0.1f, 0.1f, 1.f };
+	float z = 0.f;							// zero
+	float p = 1.f;							// positive (1)
 	float h = 5.f;							// Wall height
 	float w = 4.f;							// Wall width
 
@@ -162,7 +163,7 @@ void House::drawWall()
 		}
 		break;
 	case 4:
-		if (toTexture4)
+		if (toTexture4)	// house2
 		{
 			glEnable(GL_TEXTURE_2D);                // enable texturing
 			glBindTexture(GL_TEXTURE_2D, texid4);    // bind 2D texture to shape
@@ -197,15 +198,15 @@ void House::drawWall()
 void House::drawRoof()
 {
 	float mat_colour[]                      // colour reflected by diffuse light
-		= { 0.729f, 0.416f, 0.345f, 1.f };         // mid brown
+		= { 0.729f, 0.416f, 0.345f, 1.f };
 	float mat_ambient[]                     // ambient colour
-		= { 0.829f, 0.516f, 0.445f, 1.f };         // dark brown
-	float mat_colour1[]                      // colour reflected by diffuse light
-	= { 0.925f, 0.925f, 0.925f, 1.f };         // mid brown
-	float mat_ambient1[]                     // ambient colour
-		= { 1.f, 1.f, 1.f, 1.f };         // dark brown
+		= { 0.829f, 0.516f, 0.445f, 1.f };
+	float mat_colour1[]                      // second colour values for walls
+	= { 0.925f, 0.925f, 0.925f, 1.f };
+	float mat_ambient1[]
+		= { 1.f, 1.f, 1.f, 1.f };
 	float mat_spec[]                        // specular colour
-		= { 0.1f, 0.1f, 0.1f, 1.f };               // no reflectance (black)
+		= { 0.1f, 0.1f, 0.1f, 1.f };
 	float z = 0.f;
 	float p = 1.f;
 	float h = 2.5f;							// Roof height

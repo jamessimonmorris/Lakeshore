@@ -31,9 +31,9 @@ private:
 	void drawRotor();
 
 	bool toTextureB = false, toTextureR = false, toTextureW = false, toTextureF = false, toTextureM = false;
-	GLuint texidB, texidR, texidW, texidF, texidM;
+	GLuint texidB, texidR, texidW, texidF, texidM;			// texture supporting variables (Base, Roof, Wood, Fabric, Metal)
 
-	double speed = 0.0074444;
-	int rotors = 6;
+	double speed = 0.0074444;		// rotor speed
+	int rotors = 6;					// default number of rotors
 };
 #endif

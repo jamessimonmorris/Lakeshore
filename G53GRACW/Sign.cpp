@@ -2,7 +2,7 @@
 
 Sign::Sign(GLuint _texidP, GLuint _texidS, GLuint _texidB)
 {
-	texidP = _texidP;
+	texidP = _texidP;							// Instantiate all necessary texture supporting variables
 	if (texidP != NULL) toTextureP = true;
 
 	texidS = _texidS;

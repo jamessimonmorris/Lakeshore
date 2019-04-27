@@ -6,16 +6,16 @@ void setup()
 	height = 800;                                   // define in your header: int width, height;
 	glutInitDisplayMode(GLUT_DEPTH | GLUT_DOUBLE);  // enable 3D rendering and double buffering
 	glutInitWindowSize(width, height);              // set window size
-	glutCreateWindow("Lakeshore");                   // create and show window (named MyScene)
+	glutCreateWindow("Lakeshore");                  // create and show window (named Lakeshore)
 
-	glEnable(GL_DEPTH_TEST);
+	glEnable(GL_DEPTH_TEST);						// Enable Depth Testing and set func/shade model
 	glDepthFunc(GL_LEQUAL);
 	glShadeModel(GL_SMOOTH);
 	
 	cameraRadius();                     // initialise camrad variable (based on window height)
 	Stage* stage = new Stage();         // new instance of Stage object    
 	stage->size(camrad * 5.f, camrad * 2.f, camrad * 5.f);                // resize to bound scene
-	GLuint* skybox = new GLuint[6];
+	GLuint* skybox = new GLuint[6];		// Instantiate skybox images and set stage textures
 	skybox[0] = textureManager.loadImage("Textures/skybox/left.bmp");
 	skybox[1] = textureManager.loadImage("Textures/skybox/right.bmp");
 	skybox[2] = textureManager.loadImage("Textures/skybox/far.bmp");
@@ -25,6 +25,7 @@ void setup()
 	stage->setTextures(skybox);
 	objects["_stage"] = stage;           // Add to objects map with id "stage"
 
+	// Load images for windmill and instantiate
 	GLuint brick = textureManager.loadImage("Textures/brick.bmp"); if (brick != NULL) printf("brick loaded\n");
 	GLuint roof = textureManager.loadImage("Textures/roof.bmp"); if (roof != NULL) printf("roof loaded\n");
 	GLuint rotorWood = textureManager.loadImage("Textures/rotorwood.bmp"); if (rotorWood != NULL) printf("rotor wood loaded\n");
@@ -36,6 +37,7 @@ void setup()
 	windmill[0]->size(1.3 * scale);
 	objects["windmill"] = windmill[0];
 
+	// Images for sign
 	GLuint board = textureManager.loadImage("Textures/sign.bmp"); if (board != NULL) printf("sign loaded\n");
 	GLuint backboard = textureManager.loadImage("Textures/backboard.bmp"); if (backboard != NULL) printf("backboard loaded\n");
 	sign[0] = new Sign(metal, board, backboard);
@@ -46,6 +48,7 @@ void setup()
 
 	srand((int)time(0));							// Seed rand() using current time
 
+	// Load images necessary for houses and instantiate and place them
 	GLuint house1 = textureManager.loadImage("Textures/house1.bmp"); if (house1 != NULL) printf("house1 loaded\n");
 	GLuint house2 = textureManager.loadImage("Textures/house2.bmp"); if (house2 != NULL) printf("house2 loaded\n");
 	GLuint church = textureManager.loadImage("Textures/church.bmp"); if (church != NULL) printf("church loaded\n");
@@ -106,8 +109,69 @@ void setup()
 	house[8]->size(0.8 * scale);
 	objects["house8"] = house[8];
 
+	// Tree textures
 	GLuint bark = textureManager.loadImage("Textures/bark.bmp");
 	GLuint leaves = textureManager.loadImage("Textures/leaves1.bmp");
+	// Block 1 trees
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-3600.f, 0.f, 3625.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-3250.f, 0.f, 3575.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-3700.f, 0.f, 3325.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-3300.f, 0.f, 3125.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-3525.f, 0.f, 2990.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-3605.f, 0.f, 2750.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-3510.f, 0.f, 2525.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-3600.f, 0.f, 2255.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-3355.f, 0.f, 2100.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-3200.f, 0.f, 2750.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-2950.f, 0.f, 3700.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-2650.f, 0.f, 3580.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
 
 	// Block 2 trees
 	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
@@ -170,22 +234,6 @@ void setup()
 	tree[treeItr]->size(scale);
 	objects["tree" + to_string(treeItr)] = tree[treeItr++];
 
-	// Block 4 trees
-	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
-	tree[treeItr]->position(-1965.f, 0.f, 735.f);
-	tree[treeItr]->size(scale);
-	objects["tree" + to_string(treeItr)] = tree[treeItr++];
-
-	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
-	tree[treeItr]->position(-1982.f, 0.f, -835.f);
-	tree[treeItr]->size(scale);
-	objects["tree" + to_string(treeItr)] = tree[treeItr++];
-
-	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
-	tree[treeItr]->position(-2258.f, 0.f, -705.f);
-	tree[treeItr]->size(scale);
-	objects["tree" + to_string(treeItr)] = tree[treeItr++];
-
 	// Block 3 trees
 	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
 	tree[treeItr]->position(3250.f, 0.f, 1875.f);
@@ -232,148 +280,19 @@ void setup()
 	tree[treeItr]->size(scale);
 	objects["tree" + to_string(treeItr)] = tree[treeItr++];
 
-	// Block 9 trees
+	// Block 4 trees
 	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
-	tree[treeItr]->position(3300.f, 0.f, -3475.f);
+	tree[treeItr]->position(-1965.f, 0.f, 735.f);
 	tree[treeItr]->size(scale);
 	objects["tree" + to_string(treeItr)] = tree[treeItr++];
 
 	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
-	tree[treeItr]->position(3540.f, 0.f, -3625.f);
+	tree[treeItr]->position(-1982.f, 0.f, -835.f);
 	tree[treeItr]->size(scale);
 	objects["tree" + to_string(treeItr)] = tree[treeItr++];
 
 	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
-	tree[treeItr]->position(3650.f, 0.f, -3350.f);
-	tree[treeItr]->size(scale);
-	objects["tree" + to_string(treeItr)] = tree[treeItr++];
-
-	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
-	tree[treeItr]->position(3450.f, 0.f, -2000.f);
-	tree[treeItr]->size(scale);
-	objects["tree" + to_string(treeItr)] = tree[treeItr++];
-
-	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
-	tree[treeItr]->position(3660.f, 0.f, -2200.f);
-	tree[treeItr]->size(scale);
-	objects["tree" + to_string(treeItr)] = tree[treeItr++];
-
-	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
-	tree[treeItr]->position(3330.f, 0.f, -2275.f);
-	tree[treeItr]->size(scale);
-	objects["tree" + to_string(treeItr)] = tree[treeItr++];
-
-	// Block 1 trees
-	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
-	tree[treeItr]->position(-3600.f, 0.f, 3625.f);
-	tree[treeItr]->size(scale);
-	objects["tree" + to_string(treeItr)] = tree[treeItr++];
-
-	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
-	tree[treeItr]->position(-3250.f, 0.f, 3575.f);
-	tree[treeItr]->size(scale);
-	objects["tree" + to_string(treeItr)] = tree[treeItr++];
-
-	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
-	tree[treeItr]->position(-3700.f, 0.f, 3325.f);
-	tree[treeItr]->size(scale);
-	objects["tree" + to_string(treeItr)] = tree[treeItr++];
-
-	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
-	tree[treeItr]->position(-3300.f, 0.f, 3125.f);
-	tree[treeItr]->size(scale);
-	objects["tree" + to_string(treeItr)] = tree[treeItr++];
-
-	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
-	tree[treeItr]->position(-3525.f, 0.f, 2990.f);
-	tree[treeItr]->size(scale);
-	objects["tree" + to_string(treeItr)] = tree[treeItr++];
-
-	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
-	tree[treeItr]->position(-3605.f, 0.f, 2750.f);
-	tree[treeItr]->size(scale);
-	objects["tree" + to_string(treeItr)] = tree[treeItr++];
-
-	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
-	tree[treeItr]->position(-3510.f, 0.f, 2525.f);
-	tree[treeItr]->size(scale);
-	objects["tree" + to_string(treeItr)] = tree[treeItr++];
-
-	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
-	tree[treeItr]->position(-3600.f, 0.f, 2255.f);
-	tree[treeItr]->size(scale);
-	objects["tree" + to_string(treeItr)] = tree[treeItr++];
-
-	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
-	tree[treeItr]->position(-3355.f, 0.f, 2100.f);
-	tree[treeItr]->size(scale);
-	objects["tree" + to_string(treeItr)] = tree[treeItr++];
-
-	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
-	tree[treeItr]->position(-3200.f, 0.f, 2750.f);
-	tree[treeItr]->size(scale);
-	objects["tree" + to_string(treeItr)] = tree[treeItr++];
-
-	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
-	tree[treeItr]->position(-2950.f, 0.f, 3700.f);
-	tree[treeItr]->size(scale);
-	objects["tree" + to_string(treeItr)] = tree[treeItr++];
-
-	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
-	tree[treeItr]->position(-2650.f, 0.f, 3580.f);
-	tree[treeItr]->size(scale);
-	objects["tree" + to_string(treeItr)] = tree[treeItr++];
-
-	// Block 7 trees
-	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
-	tree[treeItr]->position(-2015.f, 0.f, -3435.f);
-	tree[treeItr]->size(1.5 * scale);
-	objects["tree" + to_string(treeItr)] = tree[treeItr++];
-
-	// Block 6 trees
-	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
-	tree[treeItr]->position(3280.f, 0.f, 450.f);
-	tree[treeItr]->size(scale);
-	objects["tree" + to_string(treeItr)] = tree[treeItr++];
-
-	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
-	tree[treeItr]->position(3596.f, 0.f, 600.f);
-	tree[treeItr]->size(scale);
-	objects["tree" + to_string(treeItr)] = tree[treeItr++];
-
-	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
-	tree[treeItr]->position(3364.f, 0.f, 860.f);
-	tree[treeItr]->size(scale);
-	objects["tree" + to_string(treeItr)] = tree[treeItr++];
-
-	// Block 8 trees
-	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
-	tree[treeItr]->position(700.f, 0.f, -3600.f);
-	tree[treeItr]->size(scale);
-	objects["tree" + to_string(treeItr)] = tree[treeItr++];
-
-	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
-	tree[treeItr]->position(700.f, 0.f, -3300.f);
-	tree[treeItr]->size(scale);
-	objects["tree" + to_string(treeItr)] = tree[treeItr++];
-
-	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
-	tree[treeItr]->position(700.f, 0.f, -3000.f);
-	tree[treeItr]->size(scale);
-	objects["tree" + to_string(treeItr)] = tree[treeItr++];
-
-	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
-	tree[treeItr]->position(700.f, 0.f, -2700.f);
-	tree[treeItr]->size(scale);
-	objects["tree" + to_string(treeItr)] = tree[treeItr++];
-
-	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
-	tree[treeItr]->position(700.f, 0.f, -2400.f);
-	tree[treeItr]->size(scale);
-	objects["tree" + to_string(treeItr)] = tree[treeItr++];
-
-	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
-	tree[treeItr]->position(700.f, 0.f, -2100.f);
+	tree[treeItr]->position(-2258.f, 0.f, -705.f);
 	tree[treeItr]->size(scale);
 	objects["tree" + to_string(treeItr)] = tree[treeItr++];
 
@@ -677,6 +596,90 @@ void setup()
 	tree[treeItr]->size(scale);
 	objects["tree" + to_string(treeItr)] = tree[treeItr++];
 
+	// Block 6 trees
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(3280.f, 0.f, 450.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(3596.f, 0.f, 600.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(3364.f, 0.f, 860.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	// Block 7 trees
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(-2015.f, 0.f, -3435.f);
+	tree[treeItr]->size(1.5 * scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	// Block 8 trees
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(700.f, 0.f, -3600.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(700.f, 0.f, -3300.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(700.f, 0.f, -3000.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(700.f, 0.f, -2700.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(700.f, 0.f, -2400.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(700.f, 0.f, -2100.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	// Block 9 trees
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(3300.f, 0.f, -3475.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(3540.f, 0.f, -3625.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(3650.f, 0.f, -3350.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(3450.f, 0.f, -2000.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(3660.f, 0.f, -2200.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
+	tree[treeItr] = new Tree(randomNumGen(), bark, leaves);
+	tree[treeItr]->position(3330.f, 0.f, -2275.f);
+	tree[treeItr]->size(scale);
+	objects["tree" + to_string(treeItr)] = tree[treeItr++];
+
 	reshape(width, height);
 	prevTime = glutGet(GLUT_ELAPSED_TIME);
 
@@ -704,6 +707,7 @@ void reshape(int _width, int _height)
 	glMatrixMode(GL_PROJECTION);
 	glLoadIdentity();     // reset matrix
 
+	// Add ability for user to switch viewing modes
 	if (!ortho)
 		gluPerspective(60.0, aspect, 100.0, camrad * 100.f);
 	else
@@ -725,6 +729,7 @@ void draw()
 	glFrontFace(GL_CCW);
 	positionCamera();
 
+	// Different camera views on different 'blocks'
 	float diff = 2800.f;
 	switch (view)
 	{
@@ -774,7 +779,6 @@ void draw()
 	{
 		ani_obj = dynamic_cast<Animation*>(itr->second);
 		if (ani_obj != NULL) ani_obj->update(dT);        // update if subclasses Animation
-		//if (itr->first != "_stage") itr->second->size(scale);
 		itr->second->display();                         // call display method on DisplayableObject
 	}
 
@@ -786,8 +790,7 @@ void setGlobalLight()
 {
 	// Set lighting effect colours and positional parameter
 	float ambient[] = { .2f, .2f, .2f, 1.f };      // ambient light (20% white)
-	float diffuse[] = { .8f, .8f, .88f, 1.f };      // diffuse light (50% white)
-	//float specular[] = { .953f, .51f, .208f, 1.f };      // specular light (100% white)
+	float diffuse[] = { .8f, .8f, .8f, 1.f };      // diffuse light (80% white)
 	float specular[] = { 1.f, 1.f, 1.f, 1.f };      // specular light (100% white)
 	float position[] = { 1.f, .844f, 0.563f, 0.f };      // directional light (w = 0)
 	// Attach properties to single light source (GL_LIGHT0)
@@ -804,7 +807,7 @@ void positionCamera()
 {
 	cameraRadius();                                 // calculate current camera position
 	eye[0] = camrad * sin(camangle);                  // set eye x (at camrad*sin(0)[ = 0])
-	eye[1] = camh * zoom;							// set eye y (at 0)
+	eye[1] = camh * zoom;							// set eye y (based on current height and zoom values)
 	eye[2] = camrad * cos(camangle);                  // set eye z (at camrad*cos(0)[ = 1])
 	gluLookAt(eye[0], eye[1], eye[2],               // eye position
 		cen[0], cen[1], cen[2],               // point that you are looking at (origin)
@@ -827,39 +830,39 @@ void keyPressed(int keyCode, int xm, int ym)
 	case GLUT_KEY_RIGHT:// right arrow (move camera right around scene)
 		camangle += incr;     // increment camera angle
 		break;
-	case GLUT_KEY_UP:
+	case GLUT_KEY_UP:	// up arrow (move camera height up)
 		if (!ortho)
 		{
 			camh += 5.f;
 
-			if (camh > 120.f)
+			if (camh > 120.f) // limit height to a max of 120
 				camh = 120.f;
 		}
 		break;
-	case GLUT_KEY_DOWN:
+	case GLUT_KEY_DOWN:	// down arrow (move camera height down)
 		if (!ortho)
 		{
 			camh -= 5.f;
 
-			if (camh < 0.f)
+			if (camh < 0.f) // limit height to a min of 0
 				camh = 0.f;
 		}
 		break;
-	case GLUT_KEY_PAGE_UP:
+	case GLUT_KEY_PAGE_UP:	// page up (zoom in camera)
 		if (!ortho)
 		{
 			zoom -= 1.f;
 
-			if (zoom < 7.f)
+			if (zoom < 7.f)	// limit zoom to min value of 7
 				zoom = 7.f;
 		}
 		break;
-	case GLUT_KEY_PAGE_DOWN:
+	case GLUT_KEY_PAGE_DOWN:	// page down (zoom out camera)
 		if (!ortho)
 		{
 			zoom += 1.f;
 
-			if (zoom > 30.f)
+			if (zoom > 30.f)	// limit zoom to max value of 30
 				zoom = 30.f;
 		}
 		break;
@@ -874,7 +877,7 @@ void keyPressed(unsigned char key, int xm, int ym)
 	switch (key)
 	{
 	case ' ':                                     // if space bar pressed
-		camangle = -0.785398f;                   //reset angle to 0.0
+		camangle = -0.785398f;                   // reset angle, zoom and height
 		zoom = 24.f;
 		camh = 75.f;
 
@@ -882,49 +885,49 @@ void keyPressed(unsigned char key, int xm, int ym)
 		cen[1] = 0.f;
 		cen[2] = 0.f;
 		break;
-	case 'a':
+	case 'a':									// 'a' key, decrease angle
 		camangle -= incr;
 		break;
-	case 'd':
+	case 'd':									// 'd' key, increase angle
 		camangle += incr;
 		break;
-	case 'w':
+	case 'w':									// 'w' key, increase cam height in perspective view
 		if (!ortho)
 		{
 			camh += 5.f;
 
-			if (camh > 120.f)
+			if (camh > 120.f)					// limit height to max of 120
 				camh = 120.f;
 		}
 		break;
-	case 's':
+	case 's':									// 's' key, decrease cam height in perspective view
 		if (!ortho)
 		{
 			camh -= 5.f;
 
-			if (camh < 0.f)
+			if (camh < 0.f)						// limit height to min of 0
 				camh = 0.f;
 		}
 		break;
-	case 'e':
+	case 'e':									// 'e' key, increase zoom
 		if (!ortho)
 		{
 			zoom -= 1.f;
 
-			if (zoom < 7.f)
+			if (zoom < 7.f)						// limit zoom to min 7
 				zoom = 7.f;
 		}
 		break;
-	case 'q':
+	case 'q':									// 'q' key, decrease zoom
 		if (!ortho)
 		{
 			zoom += 1.f;
 
-			if (zoom > 30.f)
+			if (zoom > 30.f)					// limit zoom to max 30
 				zoom = 30.f;
 		}
 		break;
-	case 'g':
+	case 'g':									// 'g' key, switch between orthographic and perspective view modes
 		if (ortho)
 		{
 			ortho = false;
@@ -940,20 +943,20 @@ void keyPressed(unsigned char key, int xm, int ym)
 		reshape(width, height);
 		break;
 	case '=':
-	case '+':
+	case '+':									// =/+ key, increase number of rotors on all windmill(s) in scene
 		for (int i = 0; i < windmills; i++)
 		{
 			windmill[i]->setRotors((windmill[i]->getRotors()) + 1);
 		}
 		break;
 	case '-':
-	case '_':
+	case '_':									// -/_ key, decrease number of rotors on all windmill(s) in scene
 		for (int i = 0; i < windmills; i++)
 		{
 			windmill[i]->setRotors((windmill[i]->getRotors()) - 1);
 		}
 		break;
-	case '1':
+	case '1':									// 1-9 keys, switch views
 		view = 1;
 		break;
 	case '2':
@@ -989,8 +992,7 @@ void keyPressed(unsigned char key, int xm, int ym)
 
 float randomNumGen()
 {
-	ranNum = (float) ((rand() % 21) + 30);
-
+	ranNum = (float) ((rand() % 21) + 30);		// generate random numbers for use in object functions
 	printf("%f\n", ranNum);
 
 	return ranNum;

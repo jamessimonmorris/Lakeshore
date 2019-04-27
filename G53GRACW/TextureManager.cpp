@@ -62,13 +62,13 @@ GLuint TextureManager::loadImage(const char* filename) {
 	// Bin to buffer
 	glBindTexture(GL_TEXTURE_2D, texObject);
 
-	// Set texture parameters
+	// Set texture parameters with mipmapping
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR);
 	glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR_MIPMAP_LINEAR);
 
-	// Upload texture data
+	// Upload texture data - disable mipmapping for specific textures
 	string fileNameStr = filename;
 	string subStr = "Textures/skybox";
 	if (fileNameStr == "Textures/bark.bmp" || fileNameStr == "Textures/rotorfabric.bmp" || !strncmp(fileNameStr.c_str(), subStr.c_str(), subStr.size()))

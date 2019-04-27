@@ -5,7 +5,7 @@ Windmill::Windmill(GLuint _texidB, GLuint _texidR, GLuint _texidW, GLuint _texid
 {
 	animationTime = (float) ((360 / rotors) * speed);
 
-	texidB = _texidB;
+	texidB = _texidB;							// Instantiate all necessary texture supporting variables
 	if (texidB != NULL) toTextureB = true;
 
 	texidR = _texidR;
@@ -24,12 +24,11 @@ Windmill::Windmill(GLuint _texidB, GLuint _texidR, GLuint _texidW, GLuint _texid
 Windmill::Windmill() :
 	angle(0.f)
 {
-	double speed = 0.0074444;
-	animationTime = (360 / rotors) * speed;
 }
 
 void Windmill::update(float dT)
 {
+	// Update windmill rotation based on current number of rotors and hard-coded speed
 	animationTime = (float)((360 / rotors) * speed);
 
 	aT = fmod(aT + dT, animationTime);
@@ -112,7 +111,7 @@ void Windmill::update(float dT)
 
 void Windmill::setRotors(int _rotors)
 {
-	if (_rotors > 8 || _rotors < 4) {}
+	if (_rotors > 8 || _rotors < 4) {}		// Change number of rotors
 	else
 		rotors = _rotors;
 }
@@ -148,14 +147,14 @@ void Windmill::drawWindmill()
 
 	glPushMatrix();                                         // save state
 	{
-		drawBase(radius);											// draw base
+		drawBase(radius);									// draw base
 		glPushMatrix();                                     // save position in centre of body
 		{
-			drawRoof(radius);                                          // draw the roof
+			drawRoof(radius);								// draw the roof
 			glPushMatrix();
 			{
 				glRotatef(angle, 0.f, 0.f, 1.f);
-				drawRotors();
+				drawRotors();								// draw each rotor at angle proportional to current number of rotors present
 			}
 			glPopMatrix();
 		}
@@ -173,11 +172,11 @@ void Windmill::drawBase(float radius)
 	float t = 0.f;                          // initialise angle as 0
 	float h = 7.5f;
 	float mat_colour[]                      // colour reflected by diffuse light
-		= { 0.925f, 0.925f, 0.925f, 1.f };         // mid brown
+		= { 0.925f, 0.925f, 0.925f, 1.f };
 	float mat_ambient[]                     // ambient colour
-		= { 1.f, 1.f, 1.f, 1.f };         // dark brown
+		= { 1.f, 1.f, 1.f, 1.f };
 	float mat_spec[]                        // specular colour
-		= { 0.1f, 0.1f, 0.1f, 1.f };               // no reflectance (black)
+		= { 0.1f, 0.1f, 0.1f, 1.f };
 
 	glPushAttrib(GL_ALL_ATTRIB_BITS);       // save current style attributes (inc. material properties)
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient); // set colour for ambient reflectance
@@ -191,7 +190,7 @@ void Windmill::drawBase(float radius)
 	}
 
 	do
-	{                                     // create branch with multiple QUADS
+	{                                     // create base of windmill with multiple QUADS
 		glBegin(GL_QUADS);
 		glColor3f(0.796f, 0.255f, 0.329f);
 		// Create first points (with normals)
@@ -215,20 +214,20 @@ void Windmill::drawBase(float radius)
 
 	if (toTextureB) glDisable(GL_TEXTURE_2D);    // disable texturing following this point
 
-	glTranslatef(0.f, h, 0.f);            // translate to top of branch
+	glTranslatef(0.f, h, 0.f);            // translate to top of base walls
 	glPopAttrib();
 }
 
 void Windmill::drawRoof(float radius)
 {
-	float r = radius * 0.99;                        // ratio of radius to height
+	float r = radius * 0.99;                        // calculate radius dependent on radius of base walls
 
 	float mat_colour[]                      // colour reflected by diffuse light
-		= { 0.729f, 0.416f, 0.345f, 1.f };         // mid brown
+		= { 0.729f, 0.416f, 0.345f, 1.f };
 	float mat_ambient[]                     // ambient colour
-		= { 0.829f, 0.516f, 0.445f, 1.f };         // dark brown
+		= { 0.829f, 0.516f, 0.445f, 1.f };
 	float mat_spec[]                        // specular colour
-		= { 0.2f, 0.2f, 0.2f, 1.f };               // no reflectance (black)
+		= { 0.2f, 0.2f, 0.2f, 1.f };
 
 	glPushAttrib(GL_ALL_ATTRIB_BITS);       // save current style attributes (inc. material properties)
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient); // set colour for ambient reflectance
@@ -237,8 +236,8 @@ void Windmill::drawRoof(float radius)
 
 	if (toTextureR)
 	{
-		glEnable(GL_TEXTURE_2D);                // enable texturing
-		GLUquadric* quadratic = gluNewQuadric();
+		glEnable(GL_TEXTURE_2D);					// enable texturing
+		GLUquadric* quadratic = gluNewQuadric();	// Create sphere with texturing
 		gluQuadricNormals(quadratic, GLU_SMOOTH);
 		gluQuadricTexture(quadratic, GL_TRUE);
 		glBindTexture(GL_TEXTURE_2D, texidR);
@@ -265,11 +264,11 @@ void Windmill::drawRotors()
 	float t = 0.f;                          // initialise angle as 0
 	float h = 0.5f;
 	float mat_colour[]                      // colour reflected by diffuse light
-		= { 0.412f, 0.412f, 0.412f, 1.f };         // mid brown
+		= { 0.412f, 0.412f, 0.412f, 1.f };
 	float mat_ambient[]                     // ambient colour
-		= { 0.512f, 0.512f, 0.512f, 1.f };         // dark brown
+		= { 0.512f, 0.512f, 0.512f, 1.f };
 	float mat_spec[]                        // specular colour
-		= { 0.15f, 0.15f, 0.15f, 1.f };               // no reflectance (black)
+		= { 0.15f, 0.15f, 0.15f, 1.f };
 
 	glPushAttrib(GL_ALL_ATTRIB_BITS);       // save current style attributes (inc. material properties)
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient); // set colour for ambient reflectance
@@ -281,7 +280,7 @@ void Windmill::drawRotors()
 
 	if (toTextureM)
 	{
-		glEnable(GL_TEXTURE_2D);
+		glEnable(GL_TEXTURE_2D);			// enable textures
 		glBindTexture(GL_TEXTURE_2D, texidM);
 	}
 
@@ -315,9 +314,9 @@ void Windmill::drawRotors()
 
 	if (toTextureM)
 	{
-		glEnable(GL_TEXTURE_2D);                // enable texturing
+		glEnable(GL_TEXTURE_2D);					// enable texturing
 		GLUquadric* quadratic = gluNewQuadric();
-		gluQuadricNormals(quadratic, GLU_SMOOTH);
+		gluQuadricNormals(quadratic, GLU_SMOOTH);	// create sphere with textures
 		gluQuadricTexture(quadratic, GL_TRUE);
 		glBindTexture(GL_TEXTURE_2D, texidM);
 		gluSphere(quadratic, 0.15, 20, 20);
@@ -331,7 +330,7 @@ void Windmill::drawRotors()
 
 	glPopAttrib();
 
-	for (int i = rotors; i > 0; i--)
+	for (int i = rotors; i > 0; i--)		// create number of rotors specified
 	{
 		glPushMatrix();
 		{
@@ -352,11 +351,11 @@ void Windmill::drawRotor()
 	float z = 0.f;
 	float p = 1.f;
 	float mat_colour[]                      // colour reflected by diffuse light
-		= { 0.925f, 0.925f, 0.925f, 1.f };         // mid brown
+		= { 0.925f, 0.925f, 0.925f, 1.f };
 	float mat_ambient[]                     // ambient colour
-		= { 1.f, 1.f, 1.f, 1.f };         // dark brown
+		= { 1.f, 1.f, 1.f, 1.f };
 	float mat_spec[]                        // specular colour
-		= { 0.f, 0.f, 0.f, 1.f };               // no reflectance (black)
+		= { 0.f, 0.f, 0.f, 1.f };
 
 	glPushAttrib(GL_ALL_ATTRIB_BITS);       // save current style attributes (inc. material properties)
 	glMaterialfv(GL_FRONT_AND_BACK, GL_AMBIENT, mat_ambient); // set colour for ambient reflectance
@@ -371,13 +370,13 @@ void Windmill::drawRotor()
 	}
 	glBegin(GL_POLYGON);
 	glNormal3f(z, z, p);
-	if (toTextureW) glTexCoord2f(0.f, 0.f);	// assign texture coordinates to next vertex (u,v) = (1,1)
+	if (toTextureW) glTexCoord2f(0.f, 0.f);	// assign texture coordinates to next vertex (u,v) = (0,0)
 	glVertex3f(-width / 5, z, z);
-	if (toTextureW) glTexCoord2f(1.f, 0.f);	// assign texture coordinates to next vertex (u,v) = (1,1)
+	if (toTextureW) glTexCoord2f(1.f, 0.f);	// assign texture coordinates to next vertex (u,v) = (1,0)
 	glVertex3f(z, z, z);
 	if (toTextureW) glTexCoord2f(1.f, 1.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
 	glVertex3f(z, length, z);
-	if (toTextureW) glTexCoord2f(0.f, 1.f);	// assign texture coordinates to next vertex (u,v) = (1,1)
+	if (toTextureW) glTexCoord2f(0.f, 1.f);	// assign texture coordinates to next vertex (u,v) = (0,1)
 	glVertex3f(-width / 5, length, z);
 	glEnd();
 	if (toTextureW) glDisable(GL_TEXTURE_2D);    // disable texturing following this point
@@ -390,13 +389,13 @@ void Windmill::drawRotor()
 	}
 	glBegin(GL_POLYGON);
 	glNormal3f(z, z, p);
-	if (toTextureF) glTexCoord2f(0.f, 0.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	if (toTextureF) glTexCoord2f(0.f, 0.f);  // assign texture coordinates to next vertex (u,v) = (0,0)
 	glVertex3f(-width, length / 3, -thickness / 3);
-	if (toTextureF) glTexCoord2f(1.f, 0.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	if (toTextureF) glTexCoord2f(1.f, 0.f);  // assign texture coordinates to next vertex (u,v) = (1,0)
 	glVertex3f(-width / 5, length / 3, -thickness / 3);
 	if (toTextureF) glTexCoord2f(1.f, 1.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
 	glVertex3f(-width / 5, length - (thickness / 3), -thickness / 3);
-	if (toTextureF) glTexCoord2f(0.f, 1.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	if (toTextureF) glTexCoord2f(0.f, 1.f);  // assign texture coordinates to next vertex (u,v) = (0,1)
 	glVertex3f(-width, length - (thickness / 3), -thickness / 3);
 	glEnd();
 	if (toTextureF) glDisable(GL_TEXTURE_2D);    // disable texturing following this point
@@ -409,13 +408,13 @@ void Windmill::drawRotor()
 	}
 	glBegin(GL_POLYGON);
 	glNormal3f(p, z, z);
-	if (toTextureW) glTexCoord2f(0.f, 0.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	if (toTextureW) glTexCoord2f(0.f, 0.f);  // assign texture coordinates to next vertex (u,v) = (0,0)
 	glVertex3f(z, z, z);
-	if (toTextureW) glTexCoord2f(1.f, 0.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	if (toTextureW) glTexCoord2f(1.f, 0.f);  // assign texture coordinates to next vertex (u,v) = (1,0)
 	glVertex3f(z, z, -thickness);
 	if (toTextureW) glTexCoord2f(1.f, 1.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
 	glVertex3f(z, length, -thickness);
-	if (toTextureW) glTexCoord2f(0.f, 1.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	if (toTextureW) glTexCoord2f(0.f, 1.f);  // assign texture coordinates to next vertex (u,v) = (0,1)
 	glVertex3f(z, length, z);
 	glEnd();
 	if (toTextureW) glDisable(GL_TEXTURE_2D);    // disable texturing following this point
@@ -437,13 +436,13 @@ void Windmill::drawRotor()
 	}
 	glBegin(GL_POLYGON);
 	glNormal3f(z, z, -p);
-	if (toTextureW) glTexCoord2f(0.f, 0.f);	// assign texture coordinates to next vertex (u,v) = (1,1)
+	if (toTextureW) glTexCoord2f(0.f, 0.f);	// assign texture coordinates to next vertex (u,v) = (0,0)
 	glVertex3f(z, z, -thickness);
-	if (toTextureW) glTexCoord2f(1.f, 0.f);	// assign texture coordinates to next vertex (u,v) = (1,1)
+	if (toTextureW) glTexCoord2f(1.f, 0.f);	// assign texture coordinates to next vertex (u,v) = (1,0)
 	glVertex3f(-width / 5, z, -thickness);
 	if (toTextureW) glTexCoord2f(1.f, 1.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
 	glVertex3f(-width / 5, length, -thickness);
-	if (toTextureW) glTexCoord2f(0.f, 1.f);	// assign texture coordinates to next vertex (u,v) = (1,1)
+	if (toTextureW) glTexCoord2f(0.f, 1.f);	// assign texture coordinates to next vertex (u,v) = (0,1)
 	glVertex3f(z, length, -thickness);
 	glEnd();
 	if (toTextureW) glDisable(GL_TEXTURE_2D);    // disable texturing following this point
@@ -456,13 +455,13 @@ void Windmill::drawRotor()
 	}
 	glBegin(GL_POLYGON);
 	glNormal3f(z, z, -p);
-	if (toTextureF) glTexCoord2f(0.f, 0.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	if (toTextureF) glTexCoord2f(0.f, 0.f);  // assign texture coordinates to next vertex (u,v) = (0,0)
 	glVertex3f(-width / 5, length / 3, -(2 * thickness) / 3);
-	if (toTextureF) glTexCoord2f(1.f, 0.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	if (toTextureF) glTexCoord2f(1.f, 0.f);  // assign texture coordinates to next vertex (u,v) = (1,0)
 	glVertex3f(-width, length / 3, -(2 * thickness) / 3);
 	if (toTextureF) glTexCoord2f(1.f, 1.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
 	glVertex3f(-width, length - (thickness / 3), -(2 * thickness) / 3);
-	if (toTextureF) glTexCoord2f(0.f, 1.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	if (toTextureF) glTexCoord2f(0.f, 1.f);  // assign texture coordinates to next vertex (u,v) = (0,1)
 	glVertex3f(-width / 5, length - (thickness / 3), -(2 * thickness) / 3);
 	glEnd();
 	if (toTextureF) glDisable(GL_TEXTURE_2D);    // disable texturing following this point
@@ -475,13 +474,13 @@ void Windmill::drawRotor()
 	}
 	glBegin(GL_POLYGON);
 	glNormal3f(z, p, z);
-	if (toTextureW) glTexCoord2f(0.f, 0.954f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	if (toTextureW) glTexCoord2f(0.f, 0.954f);  // assign texture coordinates to next vertex (u,v) = (0,0.954)
 	glVertex3f(-width / 5, length, z);
-	if (toTextureW) glTexCoord2f(1.f, 0.954f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	if (toTextureW) glTexCoord2f(1.f, 0.954f);  // assign texture coordinates to next vertex (u,v) = (1,0.954)
 	glVertex3f(z, length, z);
 	if (toTextureW) glTexCoord2f(1.f, 1.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
 	glVertex3f(z, length, -thickness);
-	if (toTextureW) glTexCoord2f(0.f, 1.f);  // assign texture coordinates to next vertex (u,v) = (1,1)
+	if (toTextureW) glTexCoord2f(0.f, 1.f);  // assign texture coordinates to next vertex (u,v) = (0,1)
 	glVertex3f(-width / 5, length, -thickness);
 	glEnd();
 	if (toTextureW) glDisable(GL_TEXTURE_2D);    // disable texturing following this point

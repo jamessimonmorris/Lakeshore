@@ -30,7 +30,7 @@ int main(int argc, char **argv);
 
 int width, height, prevTime;
 static map<string, DisplayableObject*> objects;
-float camrad, camangle = -0.785398f, zoom = 24.f, camh = 75.f;
+float camrad, camangle = -0.785398f, zoom = 24.f, camh = 75.f;	// Instantiate values for camera functionality
 float eye[3];
 float cen[3];
 
@@ -40,15 +40,15 @@ void cameraRadius();
 void keyPressed(int, int, int);
 void keyPressed(unsigned char, int, int);
 
-float ranNum;
-bool ortho = false;
-float scale = 80.f;
-int view = 2;
-int treeItr = 0;
+float ranNum;				// random number set in randomNumGen()
+bool ortho = false;			// check if in orthographic or perspective view
+float scale = 80.f;			// global object scale
+int view = 2;				// default block view
+int treeItr = 0;			// tree iterator: used to instantiate tree objects
 
 TextureManager textureManager;
 
-const int windmills = 1;
+const int windmills = 1;	// number of windmills in scene - necessary to loop all windmills to setRotors()
 
 static Windmill* windmill[windmills];
 static Tree* tree[100];

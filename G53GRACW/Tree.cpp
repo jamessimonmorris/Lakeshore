@@ -5,7 +5,7 @@ Tree::Tree(float randomNum, GLuint _texid, GLuint _texidL) :
 	tier((int)ranNum % 2),
 	height(((int)ranNum % 2) + 6)
 {
-	texid = _texid;
+	texid = _texid;							// Instantiate all necessary texture supporting variables
 	if (texid != NULL) toTexture = true;
 
 	texidL = _texidL;
