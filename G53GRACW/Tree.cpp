@@ -5,8 +5,6 @@ Tree::Tree(float randomNum, GLuint _texid, GLuint _texidL) :
 	tier(((((int)ranNum % 4) + 1) / 2) - 1),
 	height((((((int)ranNum % 4) + 1) / 2) - 1) + 6)
 {
-	if (tier && !((int)ranNum % 2)) height = height * 1.33f;
-
 	texid = _texid;							// Instantiate all necessary texture supporting variables
 	if (texid != NULL) toTexture = true;
 
@@ -19,7 +17,6 @@ Tree::Tree(float randomNum) :
 	tier(((((int)ranNum % 4) + 1) / 2) - 1),
 	height(((int)ranNum % 2) + 6)
 {
-	if (tier && !((int)ranNum % 2)) height = height * 1.33f;
 }
 
 // define display function (to be called by MyScene)
@@ -114,14 +111,25 @@ void Tree::leaves()
 		if (longTree)
 			gluCylinder(quadratic, rad, 0.f, height, 50, 50); //cone
 		else
-			gluCylinder(quadratic, rad, 0.f, (rad * 5) / 4, 50, 50); //cone
+		{
+			if (tier)
+				gluCylinder(quadratic, rad, 0.f, (rad * 5) / 3, 50, 50); //cone
+			else
+				gluCylinder(quadratic, rad, 0.f, (rad * 5) / 4, 50, 50); //cone
+		}
+			
 	}
 	else
 	{
 		if (longTree)
 			gluCylinder(gluNewQuadric(), rad, 0.f, height, 50, 50); //cone
 		else
-			gluCylinder(gluNewQuadric(), rad, 0.f, (rad * 5) / 4, 50, 50); //cone
+		{
+			if (tier)
+				gluCylinder(gluNewQuadric(), rad, 0.f, (rad * 5) / 3, 50, 50); //cone
+			else
+				gluCylinder(gluNewQuadric(), rad, 0.f, (rad * 5) / 4, 50, 50); //cone
+		}
 	}
 	glEnable(GL_CULL_FACE);
 

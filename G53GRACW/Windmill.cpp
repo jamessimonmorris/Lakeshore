@@ -32,81 +32,10 @@ void Windmill::update(float dT)
 	animationTime = (float)((360 / rotors) * speed);
 
 	aT = fmod(aT + dT, animationTime);
-	int steps = 360 / (rotors * 5);
+	int steps = 360 / (rotors * 1);
 	float aS = steps * aT / animationTime;
 
-	if (aS < 1.f)
-	{
-		angle = 0.f;
-	}
-	else if (aS < 2.f)
-	{
-		angle = -360 / (rotors * steps);
-	}
-	else if (aS < 3.f)
-	{
-		angle = -2 * (360 / (rotors * steps));
-	}
-	else if (aS < 4.f)
-	{
-		angle = -3 * (360 / (rotors * steps));
-	}
-	else if (aS < 5.f)
-	{
-		angle = -4 * (360 / (rotors * steps));
-	}
-	else if (aS < 6.f)
-	{
-		angle = -5 * (360 / (rotors * steps));
-	}
-	else if (aS < 7.f)
-	{
-		angle = -6 * (360 / (rotors * steps));
-	}
-	else if (aS < 8.f)
-	{
-		angle = -7 * (360 / (rotors * steps));
-	}
-	else if (aS < 9.f)
-	{
-		angle = -8 * (360 / (rotors * steps));
-	}
-	else if (aS < 10.f)
-	{
-		angle = -9 * (360 / (rotors * steps));
-	}
-	else if (aS < 11.f)
-	{
-		angle = -10 * (360 / (rotors * steps));
-	}
-	else if (aS < 12.f)
-	{
-		angle = -11 * (360 / (rotors * steps));
-	}
-	else if (aS < 13.f)
-	{
-		angle = -12 * (360 / (rotors * steps));
-	}
-	else if (aS < 14.f)
-	{
-		angle = -13 * (360 / (rotors * steps));
-	}
-	else if (aS < 15.f)
-	{
-		angle = -14 * (360 / (rotors * steps));
-	}
-	else if (aS < 16.f)
-	{
-		angle = -15 * (360 / (rotors * steps));
-	}
-	else if (aS < 17.f)
-	{
-		angle = -16 * (360 / (rotors * steps));
-	}
-	else
-	{
-		angle = -17 * (360 / (rotors * steps));
-	}
+	angle = -floor(aS) * (360 / (rotors * steps));		// Calculate rotation angle
 }
 
 void Windmill::setRotors(int _rotors)
@@ -258,7 +187,7 @@ void Windmill::drawRotors()
 {
 	glRotatef(90.f, 1.f, 0.f, 0.f);
 
-	float res = 0.04f * M_PI;                // resolution (in radians: equivalent to 7.2 degrees)
+	float res = 0.1f * M_PI;                // resolution (in radians: equivalent to 18 degrees)
 	float r = 0.1f;                        // ratio of radius to height
 	float x = r, z = 0.f;                   // initialise x and z on right of cylinder centre
 	float t = 0.f;                          // initialise angle as 0

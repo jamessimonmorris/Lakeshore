@@ -885,12 +885,15 @@ void keyPressed(unsigned char key, int xm, int ym)
 		cen[1] = 0.f;
 		cen[2] = 0.f;
 		break;
+	case 'A':
 	case 'a':									// 'a' key, decrease angle
 		camangle -= incr;
 		break;
+	case 'D':
 	case 'd':									// 'd' key, increase angle
 		camangle += incr;
 		break;
+	case 'W':
 	case 'w':									// 'w' key, increase cam height in perspective view
 		if (!ortho)
 		{
@@ -900,6 +903,7 @@ void keyPressed(unsigned char key, int xm, int ym)
 				camh = 120.f;
 		}
 		break;
+	case 'S':
 	case 's':									// 's' key, decrease cam height in perspective view
 		if (!ortho)
 		{
@@ -909,6 +913,7 @@ void keyPressed(unsigned char key, int xm, int ym)
 				camh = 0.f;
 		}
 		break;
+	case 'E':
 	case 'e':									// 'e' key, increase zoom
 		if (!ortho)
 		{
@@ -918,6 +923,7 @@ void keyPressed(unsigned char key, int xm, int ym)
 				zoom = 7.f;
 		}
 		break;
+	case 'Q':
 	case 'q':									// 'q' key, decrease zoom
 		if (!ortho)
 		{
@@ -927,6 +933,7 @@ void keyPressed(unsigned char key, int xm, int ym)
 				zoom = 30.f;
 		}
 		break;
+	case 'G':
 	case 'g':									// 'g' key, switch between orthographic and perspective view modes
 		if (ortho)
 		{
